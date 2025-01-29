@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בדיקת API</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <button onclick="fetchData()">קבל נתונים</button>
+
+    <script>
+        function fetchData() {
+            var data = {
+                resource_id: 'a30dcbea-a1d2-482c-ae29-8f781f5025fb', // מזהה המשאב
+                limit: 5, // מספר התוצאות
+                q: 'jones' // חיפוש מחרוזת
+            };
+
+            $.ajax({
+                url: 'https://data.gov.il/api/3/action/datastore_search',
+                data: data,
+                dataType: 'jsonp',
+                success: function(response) {
+                    alert('נמצאו סך הכול ' + response.result.total + ' תוצאות.');
+                    console.log(response.result.records); // מציג את הנתונים בקונסול
+                },
+                error: function(xhr, status, error) {
+                    console.error('שגיאה בשליפת הנתונים:', error);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
