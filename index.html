@@ -16,6 +16,24 @@
 	eruda.init();
 </script>
     <script>
+fetch("https://api.openai.com/v1/chat/completions", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": 'Berear 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';
+       
+  },
+  body: JSON.stringify({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: "Hello!" }]
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data))
+.catch(error => console.error(error));
+
+
+	    
         // המפתח שלך ל-OpenAI (הכנס כאן את המפתח שלך)
         const apiKey ='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';
       
