@@ -9,12 +9,15 @@
     #mic { font-size: 2em; cursor: pointer; }
     #result { margin-top: 2em; white-space: pre-line; direction: rtl; }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 </head>
 <body>
   <h1> הפעלת הוראות קוליות חדש</h1>
   <div id="mic">🎤</div>
   <div id="result">המתן לתשובה...</div>
-
+<script>    
+	eruda.init();
+</script> 
   <script>
     const apiKey = 'Bearer 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';
  
