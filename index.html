@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="he">
 <head>
@@ -12,16 +11,13 @@
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 </head>
 <body>
-  <h1> הפעלת הוראות קוליות חדש</h1>
+  <h1>הפעלת הוראות קוליות</h1>
   <div id="mic">🎤</div>
   <div id="result">המתן לתשובה...</div>
-<script>    
-	eruda.init();
-</script> 
-  <script>
-    
 
-    const SYSTEM_PROMPT = `
+<script>eruda.init();</script>
+<script>
+const SYSTEM_PROMPT = `
 אתה מערכת שמזהה כוונות של משתמשים ומחזירה תגובה מובנית בפורמט JSON.
 להלן הכללים:
 - אם המשתמש מתכוון לעבור למחשבונים פיננסיים, החזר {"target": 1}
@@ -33,123 +29,73 @@
 - לחיסכון לילד {"target": 7}
 - לקופות גמל {"target": 8}
 - לפוליסות חיסכון {"target": 9}
-
-אם מדובר על:
-- השוואת דמי ניהול – החזר {"action": "השוואת דמי ניהול"}
-- ערך עתידי / מחשבון ריבית דריבית – {"action": "ערך עתידי"}
-- הלוואות – {"action": "הלוואות"}
-- השוואת חברות – {"action": "השוואת חברות"}
-- תיק משולב – {"action": "תיק משולב"}
-- חשיפות – {"action": "חשיפות"}
-- שארפ – {"action": "שארפ"}
-- השוואת מסלולים – {"action": "השוואת מסלולים"}
-
-אם מדובר בהלוואות – בדוק אם נמסרו סכום, תקופה, ריבית.
-אם מדובר בערך עתידי – בדוק אם נמסרו סכום, הפקדה חודשית, ריבית ותקופה.
-אם מדובר בהשוואת חברות – בדוק אם נמסרו שמות של החברות:
-הראל, מנורה, מגדל, כלל, הפניקס, ילין לפידות, אלטשולר שחם, אנליסט, מור, מיטב.
-
-אם מדובר בהשוואת מסלולים – חובה לזהות: חברה, מוצר, מסלול.
-מוצרים אפשריים: קרן השתלמות, קופת גמל, קרן פנסיה, חיסכון לילד, גמל להשקעה, פוליסת חיסכון.
-
-אם חסר מידע קריטי – החזר גם {"missing": "ריבית"} או {"missing": ["ריבית", "תקופה"]} וכו'.
-החזר תמיד תשובה תקנית בפורמט JSON תקין בלבד.
+- אם מדובר על הלוואות – בדוק אם נמסרו סכום, תקופה, ריבית
+- אם מדובר בערך עתידי – בדוק אם נמסרו סכום, הפקדה חודשית, ריבית ותקופה
+- אם מדובר בהשוואת חברות – בדוק אם נמסרו שמות החברות: הראל, מנורה, מגדל, כלל, הפניקס, ילין לפידות, אלטשולר שחם, אנליסט, מור, מיטב
+- אם מדובר בהשוואת מסלולים – חובה לזהות: חברה, מוצר, מסלול. מוצרים אפשריים: קרן השתלמות, קופת גמל, קרן פנסיה, חיסכון לילד, גמל להשקעה, פוליסת חיסכון
+- אם חסר מידע קריטי – החזר גם {"missing": "ריבית"} או {"missing": ["ריבית", "תקופה"]}
+- החזר תמיד בפורמט JSON תקין בלבד
 `;
 
-    const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-    recognition.lang = "he-IL";
-    recognition.continuous = false;
-    recognition.interimResults = false;
+const apiKey = "Bearer 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";
+     // שנה כאן למפתח האמיתי שלך
 
-    function startListening() {
- const apiKey = 'Bearer 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';
- 
-      recognition.start();
-    }
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.lang = "he-IL";
+recognition.continuous = false;
+recognition.interimResults = false;
 
-    recognition.onresult = async (event) => {
-      const transcript = event.results[0][0].transcript;
-      document.getElementById("result").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
-      const res = await sendToOpenAI(transcript);
-      document.getElementById("result").textContent = "תשובת OpenAI:\n" + JSON.stringify(res, null, 2);
-    };
+document.getElementById("mic").onclick = () => {
+  console.log("האזנה התחילה");
+  recognition.start();
+};
 
-    recognition.onerror = (e) => {
-      document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
-    };
+recognition.onresult = async (event) => {
+  const transcript = event.results[0][0].transcript;
+  console.log("קלט מהמשתמש:", transcript);
+  document.getElementById("result").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
+  const response = await sendToOpenAI(transcript);
+  document.getElementById("result").textContent = "תשובת OpenAI:\n" + response;
+};
 
-    document.getElementById("mic").onclick = startListening;
-    window.onload = () => setTimeout(startListening, 1000);
+recognition.onerror = (e) => {
+  console.error("שגיאת זיהוי קולי:", e.error);
+  document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
+};
 
-    async function sendToOpenAI(userMessage) {
-     const apiKey = 'Bearer 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';
- 
-	try {
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": apiKey
-          },
-          body: JSON.stringify({
-            model: "gpt-4",
-            messages: [
-              { role: "system", content: SYSTEM_PROMPT },
-              { role: "user", content: userMessage }
-            ],
-            temperature: 0.0
-          })
-        });
-
-        const data = await response.json();
-        return data.choices?.[0]?.message?.content || "שגיאה בעיבוד התשובה";
-      } catch (err) {
-        return "שגיאה בבקשה ל-OpenAI: " + err.message;
-      }
-    }
-
- async function sendToOpenAI(userInput) {
-  console.log("נשלח ל-OpenAI:", userInput); // בדיקה
-  const apiKey = 'Bearer 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';
-   const systemInstructions = `
-    אתה מקבל בקשות מהמשתמש ומחזיר קוד פעולה.
-    אם המשתמש רוצה לעבור למחשבונים פיננסיים תחזיר 1, להשוואת חברות 2, למידע מקצועי 3...
-    אם המשתמש מבקש הלוואה, בדוק אם יש סכום, תקופה, ריבית...
-    (כאן תמשיך את כל ההגדרות שהגדרת לי קודם)
-  `;
-
+async function sendToOpenAI(userInput) {
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": apiKey,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4",
         messages: [
-          { role: "system", content: systemInstructions },
+          { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: userInput }
         ],
         temperature: 0
       })
     });
 
-    console.log("נשלחה בקשה ל-OpenAI");
-
-    if (!response.ok) {
-      console.error("שגיאה מהשרת:", response.status, await response.text());
-      return "שגיאה בקבלת תשובה מהשרת";
+    if (!res.ok) {
+      const errorText = await res.text();
+      console.error("שגיאת HTTP:", res.status, errorText);
+      return `שגיאה מהשרת: ${res.status}\n${errorText}`;
     }
 
-    const data = await response.json();
-    console.log("קיבלנו תשובה:", data);
+    const data = await res.json();
+    console.log("תשובת OpenAI:", data);
     return data.choices?.[0]?.message?.content || "לא התקבלה תשובה תקינה";
   } catch (err) {
     console.error("שגיאה כללית:", err);
-    return "אירעה שגיאה כללית";
+    return "שגיאה כללית: " + err.message;
   }
-	  }
-  </script>
+}
+
+</script>
 </body>
 </html>
