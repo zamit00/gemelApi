@@ -1,101 +1,53 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-  <meta charset="UTF-8" />
-  <title>Voice + OpenAI Test</title>
+  <meta charset="UTF-8">
+  <title>בדיקת זיהוי קולי</title>
   <style>
-    body { font-family: Arial; padding: 2em; text-align: center; }
-    #mic { font-size: 2em; cursor: pointer; }
-    #result { margin-top: 2em; white-space: pre-line; direction: rtl; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 2em;
+      direction: rtl;
+    }
+    #mic {
+      font-size: 3em;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 2em;
+      font-size: 1.5em;
+      color: #333;
+    }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 </head>
 <body>
-  <h1>הפעלת הוראות קוליות עדכני</h1>
+  <h1>זיהוי דיבור פשוט</h1>
   <div id="mic">🎤</div>
-  <div id="result">המתן לתשובה...</div>
+  <div id="output">לחץ על המיקרופון והתחל לדבר</div>
 
-<script>eruda.init();</script>
-<script>
-const SYSTEM_PROMPT = `
-אתה מערכת שמזהה כוונות של משתמשים ומחזירה תגובה מובנית בפורמט JSON.
-להלן הכללים:
-- אם המשתמש מתכוון לעבור למחשבונים פיננסיים, החזר {"target": 1}
-- להשוואת חברות {"target": 2}
-- למידע מקצועי {"target": 3}
-- לקרנות פנסיה {"target": 4}
-- לגמל להשקעה {"target": 5}
-- לקרנות השתלמות {"target": 6}
-- לחיסכון לילד {"target": 7}
-- לקופות גמל {"target": 8}
-- לפוליסות חיסכון {"target": 9}
-- אם מדובר על הלוואות – בדוק אם נמסרו סכום, תקופה, ריבית
-- אם מדובר בערך עתידי – בדוק אם נמסרו סכום, הפקדה חודשית, ריבית ותקופה
-- אם מדובר בהשוואת חברות – בדוק אם נמסרו שמות החברות: הראל, מנורה, מגדל, כלל, הפניקס, ילין לפידות, אלטשולר שחם, אנליסט, מור, מיטב
-- אם מדובר בהשוואת מסלולים – חובה לזהות: חברה, מוצר, מסלול. מוצרים אפשריים: קרן השתלמות, קופת גמל, קרן פנסיה, חיסכון לילד, גמל להשקעה, פוליסת חיסכון
-- אם חסר מידע קריטי – החזר גם {"missing": "ריבית"} או {"missing": ["ריבית", "תקופה"]}
-- החזר תמיד בפורמט JSON תקין בלבד
-`;
+  <script>
+    const mic = document.getElementById("mic");
+    const output = document.getElementById("output");
 
-const apiKey = "Bearer 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";
-     // שנה כאן למפתח האמיתי שלך
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "he-IL";
+    recognition.continuous = false;
+    recognition.interimResults = false;
 
-const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-recognition.lang = "he-IL";
-recognition.continuous = false;
-recognition.interimResults = false;
+    mic.onclick = () => {
+      output.textContent = "מאזין...";
+      recognition.start();
+    };
 
-document.getElementById("mic").onclick = () => {
-  console.log("האזנה התחילה");
-  recognition.start();
-};
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      output.textContent = "שמעת: " + transcript;
+    };
 
-recognition.onresult = async (event) => {
-  const transcript = event.results[0][0].transcript;
-  console.log("קלט מהמשתמש:", transcript);
-  document.getElementById("result").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
-  const response = await sendToOpenAI(transcript);
-  document.getElementById("result").textContent = "תשובת OpenAI:\n" + response;
-};
-
-recognition.onerror = (e) => {
-  console.error("שגיאת זיהוי קולי:", e.error);
-  document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
-};
-
-async function sendToOpenAI(userInput) {
-  try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": apiKey,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: userInput }
-        ],
-        temperature: 0
-      })
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      console.error("שגיאת HTTP:", res.status, errorText);
-      return `שגיאה מהשרת: ${res.status}\n${errorText}`;
-    }
-
-    const data = await res.json();
-    console.log("תשובת OpenAI:", data);
-    return data.choices?.[0]?.message?.content || "לא התקבלה תשובה תקינה";
-  } catch (err) {
-    console.error("שגיאה כללית:", err);
-    return "שגיאה כללית: " + err.message;
-  }
-}
-
-</script>
+    recognition.onerror = (event) => {
+      output.textContent = "שגיאה בזיהוי קולי: " + event.error;
+    };
+  </script>
 </body>
 </html>
