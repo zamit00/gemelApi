@@ -1,146 +1,90 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>הוראות קוליות - OpenAI</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      direction: rtl;
-      text-align: right;
-    }
-    #microphone {
-      width: 50px;
-      height: 50px;
-      background-color: #4CAF50;
-      color: white;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 50px;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    #response {
-      margin-top: 20px;
-      border: 1px solid #ddd;
-      padding: 10px;
-      max-width: 500px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Command Test</title>
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+	
 </head>
 <body>
-  <h1>הוראות קוליות למודל OpenAI</h1>
+    <h1>בדוק הוראות קוליות ל-OpenAI</h1>
 
-  <p>לחץ על המיקרופון או המתן שהמיקרופון יתחיל להאזין אוטומטית.</p>
+    <button id="microphone-btn">הפעל מיקרופון</button>
+    <div id="response"></div>
+<script>    
+	eruda.init();
+</script>
+    <script>
+        // המפתח שלך ל-OpenAI (הכנס כאן את המפתח שלך)
+        const apiKey ='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';
+      
 
-  <!-- אייקון המיקרופון -->
-  <div id="microphone">🎤</div>
+        // URL של ה-API של OpenAI
+        const openAiUrl = "https://api.openai.com/v1/completions";
 
-  <div id="response">תשובה מ־OpenAI תופיע כאן</div>
+        // הגדרות ה-OpenAI שלנו
+        const settings = {
+            "הוראות קוליות": "הבקשה היא הוראה קולית שנשלחה על ידי המשתמש",
+            "סימולטור הלוואות": "אם המשתמש רוצה להשתמש בסימולטור הלוואות, יש צורך בפרמטרים כמו סכום הלוואה, תקופה, וריבית",
+            "השוואת חברות": "המשתמש רוצה לבצע השוואת חברות, יש לזהות את שמות החברות ולהשוות ביניהן",
+            "חישוב ערך עתידי": "המשתמש רוצה לחשב ערך עתידי, יש לוודא שהוא מספק סכום ראשוני או הפקדה חודשית, ריבית ותקופת השקעה",
+            // הוסף כאן עוד את ההגדרות שלך...
+        };
 
-  <script>
-    const microphone = document.getElementById('microphone');
-    const responseDiv = document.getElementById('response');
-
-    // משתנים למעקב אחרי מצב המיקרופון
-    let isListening = false;
-    let recognition;
-
-    // הגדרות בסיסיות של OpenAI
-    const instructions = `
-      כאשר המשתמש מבקש לבצע חישוב או פעולה מסוימת, יש לזהות את הנתונים שהוא סיפק ולשלוח תשובה בהתאם. אם חסרים פרמטרים, יש להודיע על כך ולבקש מהם להשלים את המידע.
-      לדוגמה:
-      1. אם המשתמש מבקש לבצע השוואת דמי ניהול, יש להחזיר "השוואת דמי ניהול".
-      2. אם המשתמש מבקש חישוב ערך עתידי, יש לזהות אם נתקבלו פרמטרים של סכום ראשוני, הפקדה חודשית, תקופת השקעה וריבית.
-      3. אם המשתמש מבקש הלוואות, יש לזהות את סכום ההלוואה, התקופה והריבית.
-      4. אם המשתמש מבקש השוואת חברות, יש לזהות את שם החברה.
-      5. אם המשתמש מבקש השוואת מסלולים, יש לזהות את החברה, המוצר והמסלול.
-      6. אם חסרים פרמטרים כלשהם, יש לבקש מהמשתמש להשלים אותם.
-      חברות לזיהוי: הראל, מנורה, מגדל, כלל, הפניקס, ילין לפידות, אלטשולר שחם, אנליסט, מור, מיטב.
-      מוצרים לזיהוי: קרן השתלמות, קופת גמל, קרן פנסיה, חסכון לילד, גמל להשקעה, פוליסת חסכון.
-    `;
-
-    // אתחול המיקרופון עם Web Speech API
-    function initSpeechRecognition() {
-      if (!('webkitSpeechRecognition' in window)) {
-        responseDiv.innerHTML = "הדפדפן שלך לא תומך בהכרה קולית.";
-        return;
-      }
-
-      recognition = new webkitSpeechRecognition();
-      recognition.lang = "he-IL";
-      recognition.interimResults = false;  // לא להחזיר תוצאות ביניים
-
-      recognition.onstart = function() {
-        isListening = true;
-        microphone.innerHTML = '🛑';  // שינוי אייקון למצב פעיל
-      };
-
-      recognition.onend = function() {
-        isListening = false;
-        microphone.innerHTML = '🎤';  // חזרה לאייקון הרגיל
-      };
-
-      recognition.onresult = function(event) {
-        const transcript = event.results[0][0].transcript;
-        sendToOpenAI(transcript);
-      };
-    }
-
-    // שליחה ל-OpenAI
-    async function sendToOpenAI(userInput) {
-      // מענה ברירת מחדל בעת חיבור ל-OpenAI
-      const apiKey = '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';  // הכנס כאן את ה-API Key שלך
-      const url = 'https://api.openai.com/v1/completions';
-
-      // נוסיף את ההוראות להקלטה
-      const prompt = `${instructions}\n\nמשתמש אומר: ${userInput}\nהתגובה המיועדת:`;
-
-      const data = {
-        model: 'text-davinci-003',
-        prompt: prompt,
-        max_tokens: 150,
-        temperature: 0.5,
-      };
-
-      try {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify(data),
+        // הפעלת המיקרופון והאזנה להוראות קוליות
+        const microphoneBtn = document.getElementById('microphone-btn');
+        const responseDiv = document.getElementById('response');
+        
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+        recognition.lang = 'he-IL';
+        
+        microphoneBtn.addEventListener('click', () => {
+            recognition.start();
         });
         
-        const result = await response.json();
-        const output = result.choices[0].text.trim();
-        displayResponse(output);
-      } catch (error) {
-        console.error('Error:', error);
-        displayResponse('התרחשה שגיאה, אנא נסה שנית.');
-      }
-    }
+        recognition.onresult = function(event) {
+            const command = event.results[0][0].transcript;
+            console.log('הוראה קולית:', command);
 
-    // הצגת התשובה מ-OpenAI באתר
-    function displayResponse(responseText) {
-      responseDiv.innerHTML = `<strong>תשובה:</strong> ${responseText}`;
-    }
+            // כאן אנחנו שולחים את הקלט ל-OpenAI
+            sendToOpenAI(command);
+        };
 
-    // הפעלת המיקרופון כשעושים עליו click
-    microphone.addEventListener('click', function() {
-      if (isListening) {
-        recognition.stop(); // עצור את ההקלטה אם המיקרופון פעיל
-      } else {
-        recognition.start(); // התחל להאזין
-      }
-    });
+        recognition.onerror = function(event) {
+            console.error('שגיאה בהאזנה:', event.error);
+        };
 
-    // אתחול המיקרופון עם טעינת הדף
-    window.onload = function() {
-      initSpeechRecognition();
-    };
-  </script>
+        // שליחה ל-OpenAI
+        function sendToOpenAI(prompt) {
+            // הכנס את כל ההגדרות לפני שליחת הבקשה
+            const fullPrompt = `המשתמש שלח את הבקשה: "${prompt}". הנה ההגדרות שצריך לקחת בחשבון: ${JSON.stringify(settings)}.`;
+
+            axios.post(openAiUrl, {
+                model: "text-davinci-003", // המודל הנכון
+                prompt: fullPrompt,
+                max_tokens: 100,
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`,
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                // הדפס את התשובה המתקבלת
+                console.log('תשובת OpenAI:', response.data);
+                responseDiv.innerHTML = `<pre>${JSON.stringify(response.data, null, 2)}</pre>`;
+            })
+            .catch(error => {
+                // הדפס את השגיאה
+                console.error('שגיאה בבקשה ל-OpenAI:', error.response ? error.response.data : error.message);
+                responseDiv.innerHTML = `<p>שגיאה: ${error.response ? error.response.data : error.message}</p>`;
+            });
+        }
+
+    </script>
+
+    <!-- כדי להשתמש ב-Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>
