@@ -65,33 +65,22 @@ recognition.onerror = (e) => {
 
 async function sendToOpenAI(userInput) {
   try {
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    const res = await fetch("/ask", {
       method: "POST",
       headers: {
-        "Authorization": apiKey,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        model: "gpt-4",
-        messages: [
-          { role: "system", content: SYSTEM_PROMPT },
-          { role: "user", content: userInput }
-        ],
-        temperature: 0
-      })
+      body: JSON.stringify({ text: userInput })
     });
 
     if (!res.ok) {
       const errorText = await res.text();
-      console.error("שגיאת HTTP:", res.status, errorText);
       return `שגיאה מהשרת: ${res.status}\n${errorText}`;
     }
 
     const data = await res.json();
-    console.log("תשובת OpenAI:", data);
-    return data.choices?.[0]?.message?.content || "לא התקבלה תשובה תקינה";
+    return data.answer;
   } catch (err) {
-    console.error("שגיאה כללית:", err);
     return "שגיאה כללית: " + err.message;
   }
 }
