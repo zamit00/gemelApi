@@ -37,9 +37,6 @@ const SYSTEM_PROMPT = `
 - החזר תמיד בפורמט JSON תקין בלבד
 `;
 
-const apiKey = "Bearer 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";
-       // שנה כאן למפתח האמיתי שלך
-
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 recognition.lang = "he-IL";
 recognition.continuous = false;
@@ -65,10 +62,12 @@ recognition.onerror = (e) => {
 
 async function sendToOpenAI(userInput) {
   try {
-    const res = await fetch("/ask", {
+    const res = await fetch("https://financinet-95f193c98057.herokuapp.com/api/openai", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        // אפשר לשלב כאן גם את המפתח אם יש צורך בהעברתו מהלקוח,
+        // אבל עדיף לעבוד עם משתני סביבה (כמו שעשינו ב־Heroku).
       },
       body: JSON.stringify({ text: userInput })
     });
@@ -84,7 +83,6 @@ async function sendToOpenAI(userInput) {
     return "שגיאה כללית: " + err.message;
   }
 }
-
 </script>
 </body>
 </html>
