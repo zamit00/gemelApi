@@ -14,6 +14,8 @@
   <h1>הפעלת הוראות קוליות</h1>
   <div id="mic">🎤</div>
   <div id="result">המתן לתשובה...</div>
+   <div id="result1"></div>
+  
 
 <script>eruda.init();</script>
 <script>
@@ -50,7 +52,7 @@ document.getElementById("mic").onclick = () => {
 recognition.onresult = async (event) => {
   const transcript = event.results[0][0].transcript;
   console.log("קלט מהמשתמש:", transcript);
-  document.getElementById("result").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
+  document.getElementById("result1").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
   const response = await sendToOpenAI(transcript);
   document.getElementById("result").textContent = "תשובת OpenAI:\n" + response;
 };
