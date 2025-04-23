@@ -53,7 +53,7 @@ recognition.onresult = async (event) => {
   const transcript = event.results[0][0].transcript;
   console.log("קלט מהמשתמש:", transcript);
   document.getElementById("result1").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
-  const response = await sendToOpenAI(transcript);
+  const response = await sendToOpenAI(transcript,'https://financinet-95f193c98057.herokuapp.com/api/openai');
   document.getElementById("result").textContent = "תשובת OpenAI:\n" + response;
 };
 
