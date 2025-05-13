@@ -11,7 +11,6 @@
   <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 </head>
 <body>
-  <h1> הפעלת הוראות קוליות </h1>
   <div class="divarea">
     <textarea id="txtarea"></textarea>
     <button onclick="handleTxt()">בצע</button>
@@ -20,35 +19,52 @@
   <div id="result1"></div>
   
  <style>
-   .divarea{position:sticky;top:50px;z-index:10000;}
-   #txtarea {width:300px;height:50px;border:1px solid blue;}
+   .divarea{position:sticky;top:50px;z-index:10000;width:300px;right:30px;}
+   #txtarea {width:280px;height:50px;border:1px solid blue;margin-right:10px;}
+   button{margin: 10px;
  </style>  
   
 
 <script>eruda.init();</script>
 <script>
- function handleTxt(){
-    const pianoach=handleInput(document.getElementById("txtarea").value); 
-   console.log(pianoach)
-    document.getElementById("result1").textContent=pianoach;
- } 
+ function handleTxt() {
+  const input = document.getElementById("txtarea").value;
+  const pianoach = handleInput(input);
+
+  if (!pianoach) return;
+
+  let html = '<ul style="direction: rtl;">';
+
+  for (const key in pianoach) {
+    if (pianoach.hasOwnProperty(key)) {
+      html += `<li><strong>${key}:</strong> ${pianoach[key]}</li>`;
+    }
+  }
+
+  html += '</ul>';
+
+  document.getElementById("result1").innerHTML = html;
+}
   function clearTxt(){
    document.getElementById("txtarea").value='';
- } 
+ document.getElementById("result1").innerHTML='';
+    
+  } 
 function handleInput(text) {
  document.getElementById("result1").textContent='';
 // חילוץ ממוקד לפי הקשר ולא לפי סדר בטקסט
 const hadMatch = text.match(/(?:סכום\s+)?חד\s*פעמי\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
-const hodshiMatch = text.match(/(?:סכום\s+)?חודשי\s+(.*?)(?=(סכום|חד\s*פעמי|ריבית||בצע|חשב|תקופה|שיעור|$))/);
+const hodshiMatch = text.match(/(?:סכום\s+)?חודשי\s+(.*?)(?=(סכום|חד\s*פעמי|ריבית|תקופה|גרייס|$))/);
+
 const amountMatch = text.match(/(?:סכום\s+)(?!חודשי)(?!חד\s*פעמי)(.*?)(?=(חד\s*פעמי|חודשי|ריבית|בצע|חשב|תקופה|גרייס|$))/);
 const interestMatch = text.match(/(?:ריבית\s*(של)?\s*)(.*?)(?=(סכום|בצע|חשב|תקופה|גרייס|$))/);
 const termMatch = text.match(/(?:תקופ[ה|ת]\s*(של)?\s*)(.*?)(?=(ריבית|סכום|בצע|חשב|חודשים|גרייס|$))/);
 const graceMatch = text.match(/(?:גרייס\s*(של)?\s*)(.*?)(?=(ריבית|חודשים|בצע|חשב|תקופה|סכום|$))/);
 const dmeyMatch = text.match(/(?:ניהול\s*(של)?\s*)(.*?)(?=(ריבית|בצע|חשב|תקופה|סכום|$))/);
-const zvirakayammatch = text.match(/(?:ניהול\s+)?קיים\s*צבירה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/); 
-const zvirahadashmatch = text.match(/(?:ניהול\s+)?חדש\s*צבירה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/); 
-const hafkadakayammatch = text.match(/(?:ניהול\s+)?קיים\s*הפקדה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/); 
-const hafkadahadashmatch = text.match(/(?:ניהול\s+)?חדש\s*הפקדה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);   
+const zvirakayammatch = text.match(/דמי\s+ניהול\s+צבירה?\s+קיים\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
+const zvirahadashmatch = text.match(/דמי\s+ניהול\s+צבירה?\s+חדש\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
+const hafkadakayammatch = text.match(/דמי\s+ניהול\s+(?:מה)?(?:ה)?פקדה\s+קיים\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
+const hafkadahadashmatch = text.match(/דמי\s+ניהול\s+(?:מה)?(?:ה)?פקדה\s+חדש\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
   
 //const tesuaMatch = text.match(/(?:תשוא[אה]?|תשועה)\s*(של)?\s*(.*?)(?=(ריבית|תקופה|סכום|$))/);
 
@@ -60,10 +76,10 @@ const interestText = interestMatch ? interestMatch[2] : '';
 const dmeyText = dmeyMatch ? dmeyMatch[2] : '';
 const termText = termMatch ? termMatch[2] : '';
 const graceText = graceMatch ? graceMatch[2] : '';  
-const zvirakayamText = zvirakayammatch ? zvirakayammatch[2] : '';
-const zvirahadashText = zvirahadashmatch ? zvirahadashmatch[2] : '';
-const hafkadakayamText = hafkadakayammatch ? hafkadakayammatch[2] : '';
-const hafkadahadashText = hafkadahadashmatch ? hafkadahadashmatch[2] : '';
+const zvirakayamText = zvirakayammatch ? zvirakayammatch[1] : '';
+const zvirahadashText = zvirahadashmatch ? zvirahadashmatch[1] : '';
+const hafkadakayamText = hafkadakayammatch ? hafkadakayammatch[1] : '';
+const hafkadahadashText = hafkadahadashmatch ? hafkadahadashmatch[1] : '';
 
 
 // המרות
@@ -82,17 +98,17 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
 
 
   return {
+  dmey: dmey,
+  zvirakayam: zvirakayam,
+  zvirahadash: zvirahadash,
   had: had,
   hodshi: hodshi,
   amount: amount,
   interest: interest,
   term: term,
   grace: grace,
-  dmey: dmey,
-  zvirakayam:zvirakayam,
-  zvirahadash:zvirahadash,  
-  hafkadakayam:hafkadakayam,
-  hafkadahadash:hafkadahadash    
+  hafkadakayam: hafkadakayam,
+  hafkadahadash: hafkadahadash
 };
 }
 
@@ -209,3 +225,4 @@ return null;
 </script>
 </body>
 </html>
+
