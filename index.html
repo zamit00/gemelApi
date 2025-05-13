@@ -12,80 +12,200 @@
 </head>
 <body>
   <h1> הפעלת הוראות קוליות </h1>
-  <div id="mic">🎤</div>
+  <div class="divarea">
+    <textarea id="txtarea"></textarea>
+    <button onclick="handleTxt()">בצע</button>
+    <button onclick="clearTxt()">נקה</button>
+  </div>  
   <div id="result1"></div>
-  <div id="result">המתן לתשובה...</div>
-   
+  
+ <style>
+   .divarea{position:sticky;top:50px;z-index:10000;}
+   #txtarea {width:300px;height:50px;border:1px solid blue;}
+ </style>  
   
 
 <script>eruda.init();</script>
 <script>
-const SYSTEM_PROMPT = `
-אתה מערכת שמזהה כוונות של משתמשים ומחזירה תגובה מובנית בפורמט JSON.
-להלן הכללים:
-- אם המשתמש מתכוון לעבור למחשבונים פיננסיים, החזר {"target": 1}
-- להשוואת חברות {"target": 2}
-- למידע מקצועי {"target": 3}
-- לקרנות פנסיה {"target": 4}
-- לגמל להשקעה {"target": 5}
-- לקרנות השתלמות {"target": 6}
-- לחיסכון לילד {"target": 7}
-- לקופות גמל {"target": 8}
-- לפוליסות חיסכון {"target": 9}
-- אם מדובר על הלוואות – בדוק אם נמסרו סכום, תקופה, ריבית
-- אם מדובר בערך עתידי – בדוק אם נמסרו סכום, הפקדה חודשית, ריבית ותקופה
-- אם מדובר בהשוואת חברות – בדוק אם נמסרו שמות החברות: הראל, מנורה, מגדל, כלל, הפניקס, ילין לפידות, אלטשולר שחם, אנליסט, מור, מיטב
-- אם מדובר בהשוואת מסלולים – חובה לזהות: חברה, מוצר, מסלול. מוצרים אפשריים: קרן השתלמות, קופת גמל, קרן פנסיה, חיסכון לילד, גמל להשקעה, פוליסת חיסכון
-- אם חסר מידע קריטי – החזר גם {"missing": "ריבית"} או {"missing": ["ריבית", "תקופה"]}
-- החזר תמיד בפורמט JSON תקין בלבד
-`;
+ function handleTxt(){
+    const.pianoach=handleInput(document.getElementById("txtarea").value); 
+   console.log(pianoach)
+    document.getElementById("result1").textContent=pianoach;
+ } 
+  function clearTxt(){
+   document.getElementById("txtarea").value='';
+ } 
+function handleInput(text) {
+ document.getElementById("result1").textContent='';
+// חילוץ ממוקד לפי הקשר ולא לפי סדר בטקסט
+const hadMatch = text.match(/(?:סכום\s+)?חד\s*פעמי\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
+const hodshiMatch = text.match(/(?:סכום\s+)?חודשי\s+(.*?)(?=(סכום|חד\s*פעמי|ריבית||בצע|חשב|תקופה|שיעור|$))/);
+const amountMatch = text.match(/(?:סכום\s+)(?!חודשי)(?!חד\s*פעמי)(.*?)(?=(חד\s*פעמי|חודשי|ריבית|בצע|חשב|תקופה|גרייס|$))/);
+const interestMatch = text.match(/(?:ריבית\s*(של)?\s*)(.*?)(?=(סכום|בצע|חשב|תקופה|גרייס|$))/);
+const termMatch = text.match(/(?:תקופ[ה|ת]\s*(של)?\s*)(.*?)(?=(ריבית|סכום|בצע|חשב|חודשים|גרייס|$))/);
+const graceMatch = text.match(/(?:גרייס\s*(של)?\s*)(.*?)(?=(ריבית|חודשים|בצע|חשב|תקופה|סכום|$))/);
+const dmeyMatch = text.match(/(?:ניהול\s*(של)?\s*)(.*?)(?=(ריבית|בצע|חשב|תקופה|סכום|$))/);
+const zvirakayammatch = text.match(/(?:ניהול\s+)?קיים\s*צבירה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/); 
+const zvirahadashmatch = text.match(/(?:ניהול\s+)?חדש\s*צבירה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/); 
+const hafkadakayammatch = text.match(/(?:ניהול\s+)?קיים\s*הפקדה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/); 
+const hafkadahadashmatch = text.match(/(?:ניהול\s+)?חדש\s*הפקדה\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);   
+  
+//const tesuaMatch = text.match(/(?:תשוא[אה]?|תשועה)\s*(של)?\s*(.*?)(?=(ריבית|תקופה|סכום|$))/);
 
-const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-recognition.lang = "he-IL";
-recognition.continuous = false;
-recognition.interimResults = false;
+  // טקסטים
+const hadText = hadMatch ? hadMatch[1] : '';
+const hodshiText = hodshiMatch ? hodshiMatch[1] : '';
+const amountText = amountMatch ? amountMatch[1] : '';
+const interestText = interestMatch ? interestMatch[2] : '';
+const dmeyText = dmeyMatch ? dmeyMatch[2] : '';
+const termText = termMatch ? termMatch[2] : '';
+const graceText = graceMatch ? graceMatch[2] : '';  
+const zvirakayamText = zvirakayammatch ? zvirakayammatch[2] : '';
+const zvirahadashText = zvirahadashmatch ? zvirahadashmatch[2] : '';
+const hafkadakayamText = hafkadakayammatch ? hafkadakayammatch[2] : '';
+const hafkadahadashText = hafkadahadashmatch ? hafkadahadashmatch[2] : '';
 
-document.getElementById("mic").onclick = () => {
-  console.log("האזנה התחילה");
-  recognition.start();
+
+// המרות
+const had = extractAmounta(hadText);
+const hodshi = extractAmounta(hodshiText);
+const amount = extractAmounta(amountText);
+const interest = extractInterestRatea(interestText);
+const term = extractAmounta(termText);
+const grace = extractAmounta(graceText);
+const dmey = extractInterestRatea(dmeyText);
+const zvirakayam = extractInterestRatea(zvirakayamText);
+const zvirahadash = extractInterestRatea(zvirahadashText);
+const hafkadakayam = extractInterestRatea(hafkadakayamText);
+const hafkadahadash = extractInterestRatea(hafkadahadashText);
+  
+
+
+  return {
+  had: had,
+  hodshi: hodshi,
+  amount: amount,
+  interest: interest,
+  term: term,
+  grace: grace,
+  dmey: dmey,
+  zvirakayam:zvirakayam,
+  zvirahadash:zvirahadash,  
+  hafkadakayam:hafkadakayam,
+  hafkadahadash:hafkadahadash    
 };
+}
 
-recognition.onresult = async (event) => {
-  const transcript = event.results[0][0].transcript;
-  console.log("קלט מהמשתמש:", transcript);
-  document.getElementById("result1").textContent = "המשתמש אמר: " + transcript + "\nממתין לתשובת OpenAI...";
-  const response = await sendToOpenAI(transcript,'https://financinet-95f193c98057.herokuapp.com/api/openai');
-  document.getElementById("result").textContent = "תשובת OpenAI:\n" + response;
-};
+  function extractAmounta(text) {
+    const units = {
+      "אפס": 0, "אפסים": 0,
+      "אחד": 1, "אחת": 1,
+      "שתיים": 2, "שניים": 2, "שתי": 2,"שני": 2,"שניי": 2,
+      "שלוש": 3, "שלושה": 3, "שלושת": 3,
+      "ארבע": 4, "ארבעה": 4, "ארבעת": 4,
+      "חמש": 5, "חמישה": 5, "חמשת": 5,
+      "שש": 6, "שישה": 6, "ששת": 6,
+      "שבע": 7, "שבעה": 7, "שבעת": 7,
+      "שמונה": 8, "שמונת": 8,
+      "תשע": 9, "תשעה": 9, "תשעת": 9,
+      "עשר": 10, "עשרה": 10, "עשרת": 10,
+      "אלפיים": 2000
+    };
+    const teens = {
+      "אחת עשרה": 11, "אחד עשר": 11, "שתים עשרה": 12, "שניים עשר": 12,
+      "שלוש עשרה": 13, "שלושה עשר": 13, "ארבע עשרה": 14, "ארבעה עשר": 14,
+      "חמש עשרה": 15, "חמישה עשר": 15, "שש עשרה": 16, "שישה עשר": 16,
+      "שבע עשרה": 17, "שבעה עשר": 17, "שמונה עשרה": 18, "שמונה עשר": 18,
+      "תשע עשרה": 19, "תשעה עשר": 19
+    };
+    const tens = {
+      "עשרים": 20, "שלושים": 30, "ארבעים": 40,
+      "חמישים": 50, "שישים": 60, "שבעים": 70,
+      "שמונים": 80, "תשעים": 90
+    };
+    const hundreds = {
+      "מאה": 100, "מאתיים": 200, "שלוש מאות": 300, "ארבע מאות": 400,
+      "חמש מאות": 500, "שש מאות": 600, "שבע מאות": 700,
+      "שמונה מאות": 800, "תשע מאות": 900
+    };
+    const bigNumbers = { "אלף": 1000, "מיליון": 1000000, "אלפים": 1000 };
+    const fractions = { "חצי": 0.5, "שליש": 1/3, "שלושת רבעי": 0.75, "רבע": 0.25 };
+    const multipliers = { "כפול": true, "פי": true };
 
-recognition.onerror = (e) => {
-  console.error("שגיאת זיהוי קולי:", e.error);
-  document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
-};
+    let total = 0, currentGroup = 0, multiplyNext = 1;
+    const cleanedText = text.replace(/[,\-]/g, ' ').replace(/\s+/g, ' ').replace(/(^ו)|(\sו)/g, ' ').trim();
+    const words = cleanedText.split(' ');
 
-async function sendToOpenAI(userInput) {
-  try {
-    const res = await fetch("https://financinet-95f193c98057.herokuapp.com/api/openai", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // אפשר לשלב כאן גם את המפתח אם יש צורך בהעברתו מהלקוח,
-        // אבל עדיף לעבוד עם משתני סביבה (כמו שעשינו ב־Heroku).
-      },
-      body: JSON.stringify({ text: userInput })
-    });
-
-    if (!res.ok) {
-      const errorText = await res.text();
-      return `שגיאה מהשרת: ${res.status}\n${errorText}`;
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i].trim();
+      if (!word) continue;
+      if (multipliers[word]) { multiplyNext = currentGroup || 1; currentGroup = 0; continue; }
+      if (/^\d+$/.test(word)) { currentGroup += parseInt(word); continue; }
+      if (i + 1 < words.length) {
+        const twoWords = word + ' ' + words[i + 1];
+        if (teens[twoWords]) { currentGroup += teens[twoWords]; i++; continue; }
+        if (hundreds[twoWords]) { currentGroup += hundreds[twoWords]; i++; continue; }
+      }
+      if (units[word]) currentGroup += units[word];
+      else if (tens[word]) currentGroup += tens[word];
+      else if (hundreds[word]) currentGroup += hundreds[word];
+      else if (bigNumbers[word]) {
+        if (currentGroup === 0) currentGroup = 1;
+        total += currentGroup * bigNumbers[word];
+        currentGroup = 0;
+      }
+      else if (fractions[word]) {
+        if (currentGroup === 0) currentGroup = 1;
+        total += currentGroup * fractions[word];
+        currentGroup = 0;
+      }
     }
+    total += currentGroup;
+    total *= multiplyNext;
+    return total || null;
+  }
 
-    const data = await res.json();
-    return data.answer;
-  } catch (err) {
-    return "שגיאה כללית: " + err.message;
+function extractInterestRatea(text) {
+  text = text.replaceAll("אחוזים", "אחוז").replaceAll("%", "אחוז").trim();
+
+const wordMap = {
+  "אפס":0,
+  "אחת": 1, "אחד": 1,
+  "שתיים": 2, "שניים": 2, "שני": 2, "שניי": 2,
+  "שלוש": 3, "שלושה": 3, "ארבע": 4, "ארבעה": 4,
+  "חמש": 5, "חמישה": 5, "שש": 6, "שישה": 6,
+  "שבע": 7, "שבעה": 7, "שמונה": 8,
+  "תשע": 9, "תשעה": 9
+};
+
+function getDecimalWord(word) {
+  return wordMap[word] ?? null;
+}
+
+// תבנית: "שלושה נקודה חמש"
+const match = text.match(/(אחת|אחד|שתיים|שניים|שלוש|שלושה|ארבע|ארבעה|חמש|חמישה|שש|שישה|שבע|שבעה|שמונה|תשע|תשעה)\s*נקודה\s*(אחת|אחד|שתיים|שניים|שלוש|שלושה|ארבע|ארבעה|חמש|חמישה|שש|שישה|שבע|שבעה|שמונה|תשע|תשעה)/);
+if (match) {
+  const intPart = getDecimalWord(match[1]);
+  const decimalPart = getDecimalWord(match[2]);
+  if (intPart != null && decimalPart != null) {
+    return parseFloat(`${intPart}.${decimalPart}`);
   }
 }
+
+// תבנית: מספר ספרתי רגיל
+const digitMatch = text.match(/(\d+(?:\.\d+)?)\s*אחוז/);
+if (digitMatch) return parseFloat(digitMatch[1]);
+
+// תבנית: "שישה אחוז"
+const wordOnlyMatch = text.match(/(אחת|אחד|שתיים|שניים|שני|שלוש|שלושה|ארבע|ארבעה|חמש|חמישה|שש|שישה|שבע|שבעה|שמונה|תשע|תשעה)\s*אחוז/);
+if (wordOnlyMatch) {
+  const val = getDecimalWord(wordOnlyMatch[1]);
+  if (val != null) return val;
+}
+
+return null;
+  }
+
 </script>
 </body>
 </html>
