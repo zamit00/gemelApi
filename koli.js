@@ -1,4 +1,4 @@
-var timeToListen=5000;var interval;
+var timeToListen=6000;var interval;
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 recognition.lang = "he-IL";
 recognition.interimResults = false;
