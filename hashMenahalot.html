@@ -572,6 +572,13 @@ padding-right:10px; padding-left: 10px;
     <table id="comparisonTable">
         <tbody></tbody>
     </table>
+        <table id="comparisonTable2">
+        <tbody></tbody>
+    </table>
+     </table>
+        <table id="comparisonTable3">
+        <tbody></tbody>
+    </table>
     <div class="charts" id="charts">
         <div class="chart-container"><canvas id="yearChart"></canvas></div>
         <div class="chart-container"><canvas id="threeYearChart"></canvas></div>
@@ -597,6 +604,8 @@ const gufmosdi = gufmosdix.sort((a, b) => a.localeCompare(b, 'he'));
     const selmenu1 = document.getElementById('selmen1');
     const selmenu2 = document.getElementById('selmen2');
     const tableBody = document.getElementById('comparisonTable')
+    const tableBody2 = document.getElementById('comparisonTable2')
+const tableBody3 = document.getElementById('comparisonTable3')
     const divCompare = document.getElementById('compare');
     constbtnPdf = document.getElementById('compareButton3');
     const form1 = document.getElementById('form1');
@@ -644,6 +653,7 @@ const gufmosdi = gufmosdix.sort((a, b) => a.localeCompare(b, 'he'));
             form2.style.display='flex'
             charts.style.display='none';
             tableBody.style.display='none';
+            tableBody2.style.display='none';
         }
        } 
         function sfira(){
@@ -739,6 +749,8 @@ function changeTheMuzar() {
  async function dohash() {
     document.querySelector('.dropdown-menu').style.display='none';
     document.querySelector('#comparisonTable tbody').style.display = 'block';
+    document.querySelector('#comparisonTable2 tbody').style.display = 'block';
+    document.querySelector('#comparisonTable3 tbody').style.display = 'block';
     document.getElementById('compare').style.display = 'none';
     const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
     const selectedmoz=document.getElementById('sugMMen').value
@@ -749,6 +761,8 @@ function changeTheMuzar() {
         hatraa('לא נבחר מוצר');return;
     }
     document.getElementById('comparisonTable').style.display = 'block';
+    document.getElementById('comparisonTable2').style.display = 'block';
+    document.getElementById('comparisonTable3').style.display = 'block';
     document.getElementById('yearChart').style.display = 'block';
     document.getElementById('threeYearChart').style.display = 'block';
     document.getElementById('fiveYearChart').style.display = 'block';
@@ -820,6 +834,57 @@ function updateTable(data) {
                 `;
                 tableBody.appendChild(row);
             });
+ 
+ const tableBody2 = document.querySelector('#comparisonTable2 tbody');
+            tableBody2.innerHTML = `
+                <thead>
+                <tr>
+                    <th style="width:17vw;">חברה</th>
+                    <th style="width:25vw;">שם המסלול</th>
+                    <th style="width:17vw;">חשיפה למניות</th>
+                    <th style="width:17vw;">חשיפה לחול</th>
+                    <th style="width:17vw;">חשיפה למטח</th>
+                </tr>
+                </thead>
+            `;
+            data.forEach(company => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td  style='text-align:right;paddin-right:5px;width:17vw;white-space:wrap;'>${company.shemkupa.split(" ")[0]}</td>
+                    <td class="tdnamekupa" style='text-align:right;paddin-right:5px;width:25vw;'>${company.shemkupa}</td>
+                    <td style="width:17vw;">${Number(company.kvutzaAhuz4751).toFixed(2)}%</td>
+                    <td  style="width:17vw;">${Number(company.kvutzaAhuz4752).toFixed(2)}%</td>
+                    <td style="width:17vw;">${Number(company.kvutzaAhuz4761).toFixed(2)}%</td>
+                `;
+                tableBody2.appendChild(row);
+            });
+       
+const tableBody3 = document.querySelector('#comparisonTable3 tbody');
+            tableBody3.innerHTML = `
+                <thead>
+                <tr>
+                    <th style="width:17vw;">חברה</th>
+                    <th style="width:25vw;">שם המסלול</th>
+                    <th style="width:17vw;">סטיית תקן 36 חודשים </th>
+                    <th style="width:17vw;">סטיית תקן 60 חודשים </th>
+                    <th style="width:17vw;">שארפ </th>
+                </tr>
+                </thead>
+            `;
+            data.forEach(company => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td  style='text-align:right;paddin-right:5px;width:17vw;white-space:wrap;'>${company.shemkupa.split(" ")[0]}</td>
+                    <td class="tdnamekupa" style='text-align:right;paddin-right:5px;width:25vw;'>${company.shemkupa}</td>
+                    <td style="width:17vw;">${Number(company.stiya36).toFixed(2)}%</td>
+                    <td  style="width:17vw;">${Number(company.stiya60).toFixed(2)}%</td>
+                    <td style="width:17vw;">${Number(company.sharp).toFixed(2)}%</td>
+                `;
+                tableBody3.appendChild(row);
+            });
+ 
+ 
+ 
             addclickMen();
         }
 function addclickMen(){
@@ -1287,4 +1352,5 @@ function pdfDo() {
     </script>
 </body>
 </html>
+
 
