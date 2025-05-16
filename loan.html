@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  
+    <title>סימולטור הלוואות</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --primary-light: #5dade2;
+            --primary-dark: #2980b9;
+            --secondary: #2ecc71;
+            --secondary-light: #58d68d;
+            --secondary-dark: #27ae60;
+            --accent: #9b59b6;
+            --text-dark: #333;
+            --text-light: #777;
+            --background: #f5f5f5;
+            --white: #fff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            color: var(--secondary-dark);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .simulator-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .inputs-section {
+            flex: 1;
+            min-width: 270px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .results-section {
+            flex: 1;
+            min-width: 270px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        input[type="number"], 
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        .result-item {
+            margin-bottom: 15px;
+            padding: 0 15px;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .result-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-dark);
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            color: var(--secondary-dark);
+            font-weight: bold;
+        }
+
+        .chart-container {
+            width: 100%;
+            height:50vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .donut-chart {
+            position: relative;
+            width: 250px;
+            height: 250px;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        .principal-color {
+            background-color: var(--primary);
+        }
+
+        .interest-color {
+            background-color: var(--accent);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .amortization-container {
+            margin-top: 30px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--shadow);
+            display: none;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: right;
+            border-bottom: 1px solid #ddd;
+            white-space: nowrap;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        #amortization-table td, #amortization-table th, tbody th{
+            text-align: center;
+        }
+       
+        @media (max-width: 768px) {
+            label {
+                text-align: center;
+            }
+            .results-section {height: auto;}
+            .simulator-wrapper {
+                align-items: center;
+                flex-direction: column;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .inputs-section, .results-section {
+                width: 100%;
+            }
+
+            .donut-chart {
+                width: 200px;
+                height: 200px;
+            }
+
+            .amortization-container {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+            #amortization-table td, #amortization-table th, tbody th{
+                white-space: normal;
+                max-width: 16.6vw;
+                font-size: 11px;
+                overflow: hidden;
+                text-align: center;
+            }
+        }
+        .containerHal {
+            max-width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	    
+
+        }
+	    
+	.containerHal h2 {
+            color: #0056b3;
+        }
+ 	.containerHal p {
+            text-align: right;
+            line-height: 1.6;
+        }
+       .containerHal ul {
+            text-align: right;
+            padding-right: 20px;
+        }
+        .closewindow{color:black;margin-top: 10px;margin-right: 30px;}
+    </style>
+</head>
+<body>
+    <div class='closewindow' onclick='window.parent.showMachshevonim();'><i class="fa-solid fa-rotate-left"></i>
+    </div>
+    <div class="container">
+       
+        <header>
+            <h1>סימולטור הלוואות</h1>
+            
+        </header>
+
+        <div class="simulator-wrapper">
+            <div id="hechzer" style="width:clamp(200px,60vw,200px);height:70px;border:1px solid blue;
+                position:absolute;z-index: 10000;
+                background-color: azure;text-align: center;margin: 5vh auto;
+                display:none"></div>
+            <section class="inputs-section">
+                <h2 style="text-align: center;">פרטי ההלוואה</h2>
+                
+                <div class="input-group">
+                    <label for="loan-amount">סכום הלוואה</label>
+                    <input type="number" id="loan-amount" min="0" step="5000" placeholder="הכנס סכום">
+                    <input type="range" id="loan-amount-range" min="0" max="1000000" step="5000">
+                    <div class="range-values">
+                        <span>0 ₪</span>
+                        <span>1,000,000 ₪</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="loan-term">תקופת החזר (בחודשים)</label>
+                    <input type="number" id="loan-term" min="0" max="240" step="1" placeholder="הכנס מספר חודשים">
+                    <input type="range" id="loan-term-range" min="0" max="240" step="1">
+                    <div class="range-values">
+                        <span>0</span>
+                        <span>240 חודשים</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="interest-rate">ריבית שנתית (%)</label>
+                    <input type="number" id="interest-rate" min="0" max="15" step="0.1" placeholder="הכנס אחוז ריבית">
+                    <input type="range" id="interest-rate-range" min="0" max="15" step="0.1">
+                    <div class="range-values">
+                        <span>0%</span>
+                        <span>15%</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="payment-delay">תקופת דחיית תשלום ראשון (חודשים)</label>
+                    <input type="number" id="payment-delay" min="0" max="24" step="1" placeholder="הכנס מספר חודשים לדחיה">
+                    <input type="range" id="payment-delay-range" min="0" max="24" step="1">
+                    <div class="range-values">
+                        <span>0 חודשים</span>
+                        <span>24 חודשים</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="results-section">
+                <h2 style="text-align: center;">תוצאות החישוב</h2>
+                
+                <div class="result-item">
+                    <div class="result-label">החזר חודשי קבוע</div>
+                    <div class="result-value" id="monthly-payment">- - -</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">סה"כ לתשלום</div>
+                    <div class="result-value" id="total-payment">- - -</div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-label">סה"כ ריבית</div>
+                    <div class="result-value" id="total-interest">- - -</div>
+                </div>
+
+                <div class="chart-container" style="display: flex;flex-direction: column ;
+                align-items: center;">
+                    <div class="donut-chart" style="display: flex;flex-direction: column ;
+                align-items: center;">
+                        <canvas id="loan-chart" width="250" height="250"></canvas>
+                    </div>
+                </div>
+
+                <button id="toggle-amortization" style="margin-top: 30px;">הצג לוח סילוקין</button>
+                
+            </section>
+            
+        </div>
+
+        <div class="amortization-container" id="amortization-table-container">
+            <h2 style='text-align:center'>לוח סילוקין</h2>
+            <div class="table-wrapper">
+                <table id="amortization-table">
+                    <thead>
+                        <tr>
+                            <th style='max-width:12vw' > מס׳</th>
+                            <th>תשלום</th>
+                            <th>קרן</th>
+                            <th>ריבית</th>
+                            <th>יתרת קרן</th>
+                        </tr>
+                    </thead>
+                    <tbody id="amortization-body">
+                        <!-- יתמלא בג'אווה סקריפט -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="containerHal">
+            <h2>מהו מחשבון הלוואות?</h2>
+            <p>מחשבון הלוואות הוא כלי פיננסי מקוון המסייע לאנשים לחשב את ההחזרים החודשיים של הלוואות שונות בהתבסס <br>על סכום ההלוואה, הריבית ותקופת ההחזר. 
+            הוא משמש ככלי עזר להבנת יכולת ההחזר של הלווה לפני קבלת ההחלטה<br>  על נטילת הלוואה.</p>
+            <p>תכונות עיקריות של מחשבון הלוואות:</p>
+            <ul>
+                <li>חישוב החזר חודשי בהתבסס על סכום ההלוואה, הריבית ומשך ההלוואה.</li>
+                <li>אפשרות להזין פרמטרים שונים ולראות כיצד הם משפיעים על ההחזרים.</li>
+                <li>שימוש קל ונגיש ללא צורך בידע פיננסי מתקדם.</li>
+            </ul><h2>כיצד מחושב ההחזר החודשי?</h2>
+            <p>ההחזר החודשי מחושב באמצעות נוסחה כלכלית המתבססת על ריבית, סכום הקרן ומשך ההלוואה. הנוסחה הנפוצה ביותר היא:</p>
+            <p><strong>M = P[r(1+r)^n] / [(1+r)^n – 1]</strong></p>
+            <ul>
+            <li><strong>M</strong> – ההחזר החודשי.</li>
+            <li><strong>P</strong> – סכום ההלוואה (קרן).</li>
+            <li><strong>r</strong> – הריבית החודשית (ריבית שנתית מחולקת ב-12).</li>
+            <li><strong>n</strong> – מספר חודשי ההלוואה.</li>
+            </ul>
+            <p>באמצעות הנוסחה הזו ניתן לראות כיצד שינוי בריבית או במשך ההלוואה משפיע על גובה ההחזר החודשי.</p>
+        
+            <h2>למי מיועד השימוש במחשבון?</h2>
+            <p>מחשבון הלוואות מתאים לכל מי שמעוניין לקחת הלוואה ורוצה להבין את ההשלכות הפיננסיות של ההחלטה. הוא שימושי עבור:</p>
+            <ul>
+            <li><strong>אנשים פרטיים:</strong> המעוניינים לקחת משכנתא, הלוואה לרכב או הלוואה אישית.</li>
+            <li><strong>בעלי עסקים:</strong> שרוצים לבדוק את תנאי החזר ההלוואה לפני נטילת מימון עסקי.</li>
+            <li><strong>סטודנטים:</strong> השוקלים לקחת הלוואת לימודים ורוצים להבין את ההתחייבויות הכספיות שלהם.</li>
+            <li><strong>משקיעים:</strong> הרוצים לבדוק כיצד הלוואות יכולות להשפיע על ההחזר הכלכלי שלהם.</li>
+            </ul>
+            <p>באמצעות המחשבון ניתן לבצע תכנון פיננסי נכון ולמנוע מצבים של התחייבות גבוהה מדי להחזר חודשי.</p>
+      </div>
+    </div>
+
+    <script>
+        // אתחול הדף
+        document.addEventListener('DOMContentLoaded', function() {
+            // חיבור האירועים לכל שדות הקלט
+            initInputSync('loan-amount', 'loan-amount-range');
+            initInputSync('loan-term', 'loan-term-range');
+            initInputSync('interest-rate', 'interest-rate-range');
+            initInputSync('payment-delay', 'payment-delay-range');
+
+            // אירועים לחישוב מחדש של המשכנתא
+            const inputElements = document.querySelectorAll('input');
+            inputElements.forEach(input => {
+                input.addEventListener('input', calculateLoan);
+            });
+
+            // אירוע לכפתור לוח הסילוקין
+            document.getElementById('toggle-amortization').addEventListener('click', toggleAmortizationTable);
+
+            // אתחול הגרף
+            initChart();
+            
+            // חישוב התוצאות בעת טעינת הדף (אם יש נתונים מוגדרים מראש)
+            calculateLoan();
+        });
+
+        // סינכרון בין שדות טקסט למחוונים
+        function initInputSync(textId, rangeId) {
+            const textInput = document.getElementById(textId);
+            const rangeInput = document.getElementById(rangeId);
+
+            // סינכרון משדה טקסט למחוון
+            textInput.addEventListener('input', function() {
+                if (parseFloat(this.value) > rangeInput.max) {
+                    this.value = rangeInput.max;
+                }
+                if (parseFloat(this.value) < rangeInput.min) {
+                    this.value = "";
+                }
+                rangeInput.value = this.value;
+            });
+
+            // סינכרון ממחוון לשדה טקסט
+            rangeInput.addEventListener('input', function() {
+                textInput.value = this.value;
+            });
+        }
+
+        // חישוב המשכנתא
+        function calculateLoan() {
+            // קבלת הערכים מהמשתמש
+            const loanAmount = parseFloat(document.getElementById('loan-amount').value) || 0;
+            const loanTerm = parseFloat(document.getElementById('loan-term').value) || 0;
+            const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+            const paymentDelay = parseInt(document.getElementById('payment-delay').value) || 0;
+
+            // חישוב רק אם יש את כל הנתונים הנדרשים
+            if (loanAmount > 0 && loanTerm > 0 && interestRate >= 0) {
+                const monthlyInterest = interestRate / 100 / 12;
+                const totalPayments = loanTerm * 1;
+                
+                // חישוב של ההחזר החודשי
+                let monthlyPayment;
+                
+                // אם יש דחיית תשלומים, הריבית נצברת בתקופה זו
+                let adjustedLoanAmount = loanAmount;
+                
+                if (paymentDelay > 0 && interestRate > 0) {
+                    // חישוב ריבית נצברת בתקופת הדחיה
+                    for (let i = 0; i < paymentDelay; i++) {
+                        adjustedLoanAmount += adjustedLoanAmount * monthlyInterest;
+                    }
+                }
+                
+                if (interestRate === 0) {
+                    // אם אין ריבית, ההחזר החודשי הוא פשוט חלוקה של סכום ההלוואה בתקופת ההחזר
+                    monthlyPayment = adjustedLoanAmount / totalPayments;
+                } else {
+                    // נוסחת שפיצר לחישוב החזר חודשי
+                    monthlyPayment = (adjustedLoanAmount * monthlyInterest * Math.pow(1 + monthlyInterest, totalPayments)) / 
+                                     (Math.pow(1 + monthlyInterest, totalPayments) - 1);
+                }
+                
+                const totalPayment = monthlyPayment * totalPayments;
+                const totalInterest = totalPayment - loanAmount;
+                
+                // עדכון התוצאות בממשק
+                document.getElementById('monthly-payment').textContent = formatCurrency(monthlyPayment);
+                document.getElementById('total-payment').textContent = formatCurrency(totalPayment);
+                document.getElementById('total-interest').textContent = formatCurrency(totalInterest);
+               
+                if(window.innerWidth<400){
+                    document.getElementById("hechzer").style.display="block";
+                    document.getElementById("hechzer").innerText=`החזר חודשי: ${monthlyPayment.toLocaleString('he-IL', { style: 'currency', currency: 'ILS' })}`;
+                    document.getElementById("hechzer").style.fontSize="20px";
+                    setTimeout(function() {
+                        document.getElementById("hechzer").style.display="none";
+                    }, 1500);
+                }
+
+                // עדכון הגרף
+                updateChart(loanAmount, totalInterest);
+                
+                // יצירת לוח סילוקין
+                createAmortizationSchedule(adjustedLoanAmount, monthlyPayment, monthlyInterest, totalPayments);
+            } else {
+                // אם אין נתונים מספיקים, מאפס את התצוגה
+                document.getElementById('monthly-payment').textContent = "- - -";
+                document.getElementById('total-payment').textContent = "- - -";
+                document.getElementById('total-interest').textContent = "- - -";
+                
+                // מאפס את הגרף
+                updateChart(0, 0);
+                
+                // מאפס את לוח הסילוקין
+                document.getElementById('amortization-body').innerHTML = '';
+            }
+        }
+
+        // אתחול הגרף
+        function initChart() {
+            const canvas = document.getElementById('loan-chart');
+            const ctx = canvas.getContext('2d');
+            
+            // ציור רקע לגרף
+            ctx.fillStyle = "#f5f5f5";
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
+            ctx.fill();
+        }
+
+        // עדכון הגרף
+        function updateChart(principal, interest) {
+            const canvas = document.getElementById('loan-chart');
+            const ctx = canvas.getContext('2d');
+            
+            // נקה את הקנבס
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // ציור רקע
+            ctx.fillStyle = "#f5f5f5";
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // כסף שווה לקרן + ריבית
+            const total = principal + interest;
+            
+            if (total > 0) {
+                // מידות הגרף
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = canvas.width * 0.4; // 80% מרוחב הקנבס
+                const innerRadius = canvas.width * 0.2; // 40% מרוחב הקנבס לחור הפנימי
+                
+                // צייר את החלק של הקרן
+                const principalRatio = principal / total;
+                const principalEndAngle = principalRatio * 2 * Math.PI;
+                
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, -Math.PI / 2, -Math.PI / 2 + principalEndAngle);
+                
+                // חור באמצע
+                ctx.arc(centerX, centerY, innerRadius, -Math.PI / 2 + principalEndAngle, -Math.PI / 2, true);
+                ctx.closePath();
+                
+                ctx.fillStyle = '#3498db'; // כחול לקרן
+                ctx.fill();
+                
+                // צייר את החלק של הריבית
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, -Math.PI / 2 + principalEndAngle, -Math.PI / 2 + 2 * Math.PI);
+                
+                // חור באמצע
+                ctx.arc(centerX, centerY, innerRadius, -Math.PI / 2 + 2 * Math.PI, -Math.PI / 2 + principalEndAngle, true);
+                ctx.closePath();
+                
+                ctx.fillStyle = '#9b59b6'; // סגול לריבית
+                ctx.fill();
+                
+                // הוסף אחוזים למרכז הגרף
+                ctx.fillStyle = '#333';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                const principalPercent = Math.round(principalRatio * 100);
+                const interestPercent = 100 - principalPercent;
+                ctx.fillText(`קרן: ${principalPercent}%`, centerX, centerY - 10);
+                ctx.fillText(`ריבית: ${interestPercent}%`, centerX, centerY + 10);
+            }
+        }
+
+        // יצירת לוח סילוקין
+        function createAmortizationSchedule(loanAmount, monthlyPayment, monthlyInterest, totalPayments) {
+            const tableBody = document.getElementById('amortization-body');
+            tableBody.innerHTML = '';
+            
+            let balance = loanAmount;
+            const today = new Date();
+            
+            for (let i = 1; i <= totalPayments; i++) {
+                // חישוב תאריך התשלום
+                const paymentDate = new Date(today);
+                paymentDate.setMonth(today.getMonth() + i);
+                
+                // חישוב הריבית לתשלום הנוכחי
+                const interestPayment = balance * monthlyInterest;
+                
+                // חישוב הקרן לתשלום הנוכחי
+                const principalPayment = monthlyPayment - interestPayment;
+                
+                // עדכון היתרה
+                balance -= principalPayment;
+                
+                // יצירת שורה חדשה בטבלה
+                const row = document.createElement('tr');
+                
+                // תאריך התשלום בפורמט עברי
+                const dateString = paymentDate.toLocaleDateString('he-IL', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric'
+                });
+                
+                // מילוי השורה בנתונים
+                row.innerHTML = `
+                    <td style='max-width:12vw'>${i}</td>
+                    <td>${formatCurrency(monthlyPayment)}</td>
+                    <td>${formatCurrency(principalPayment)}</td>
+                    <td>${formatCurrency(interestPayment)}</td>
+                    <td>${formatCurrency(Math.max(0, balance))}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            }
+        }
+
+        // פורמט של מספר למטבע בפורמט עברי
+        function formatCurrency(number) {
+            return new Intl.NumberFormat('he-IL', {
+                style: 'currency',
+                currency: 'ILS',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
+        // הצגה/הסתרה של לוח הסילוקין
+        function toggleAmortizationTable() {
+            const table = document.getElementById('amortization-table-container');
+            const button = document.getElementById('toggle-amortization');
+            
+            if (table.style.display === 'none' || table.style.display === '') {
+                table.style.display = 'block';
+                button.textContent = 'הסתר לוח סילוקין';
+                // גלילה אל הטבלה
+                table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                table.style.display = 'none';
+                button.textContent = 'הצג לוח סילוקין';
+            }
+        }
+    </script>
+</body>
+</html>

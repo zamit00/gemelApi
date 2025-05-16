@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-41JX3YK216"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-41JX3YK216');
+</script>
+    <meta property="og:title" content="פיננסי-נט">
+    <meta property="og:description" content="אתר השוואה לנתוני קופות גמל, קרנות השתלמות, קרנות פנסיה ופוליסות חסכון ">
+    <meta property="og:image" content="https://i.postimg.cc/L4YLr22D/logoxnew.png">
+    <meta property="og:url" content="https://zamit00.github.io">
+    <meta property="og:type" content="website">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="כאן תמצאו מידע מקיף על קופות גמל, קרנות השתלמות, קרנות פנסיה ופוליסות חסכון פרט, כולל השוואת נתונים, מחשבונים פיננסיים מתקדמים ותוכן מקצועי שיעזור לכם לקבל החלטות
+	    חכמות בנוגע לחיסכון הפנסיוני שלכם.">
+	<title> פיננסי-נט</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script> 
+	<link rel="stylesheet" href="KupaInfoStyle.css">
+	<link rel="stylesheet" href="mainstyle.css">
+	<link rel="stylesheet" href="hasifotHesber.css">
+	<script src="koli.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>    
+	eruda.init();
+</script>
+<script>
+var startStop;	
+function showmehasifot(x){
+  createForm(x)
+}
+function hideframe(){
+  if(document.getElementById('ifrm'))	{
+  if(document.getElementById('ifrm').style.display==='flex'){
+	document.getElementById('ifrm').src='';
+	document.getElementById('ifrm').style.display='none';
+}
+}
+	document.getElementById('backtop').style.display='block';
+	document.getElementById('allTheTables').style.display="flex";
+	document.getElementById('tkufatdivuach').style.display='block';
+	showkot();
+	window.scrollTo({ top: 0, behavior: "smooth" }); 
+  }
+function hidekupainfo(){
+	document.getElementById('kupaInfo').style.display='none';
+	document.getElementById('pieChartkupa').style.display='none';
+	document.getElementById('allTheTables').style.display="flex";
+	document.getElementById('tkufatdivuach').style.display='block';
+	document.getElementById('footer').style.display='flex';
+	showkot();
+}
+	</script>
+<style>
+    #mic { font-size: 2em; cursor: pointer; }
+    #result { margin-top: 2em; white-space: pre-line; direction: rtl; }
+    .tblMic td{text-align: center;padding: 5px 12px;}
+  </style>
+</head>
+<body>
+<header class="header">
+ 	<img src="logoxnew.png" class="logo" id="logo" onclick='hideframe();showAllimages();' >
+	<span onclick="showSearch()" class="search-icon"><svg class="svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<circle cx="20" cy="20" r="12" stroke="black" stroke-width="1" fill="none" />
+		<line x1="27" y1="27" x2="40" y2="40" stroke="black" stroke-width="1" stroke-linecap="round" />
+	  </svg>
+	  </span>
+</header>
+ <div id="timerDisplay" style="position:fixed; top:100px; left:20px; font-size:24px; display:none;z-index:10000"></div>
+<div id='odotH' >
+ 	<div onclick="toggleMenu(); closeOdot()" style="text-align:center;font-size:16px;color:blue;
+	 margin-top:15px;">X</div>
+    <img src="profile.avif"  class="zach img-fluid" id="img3" width="30%" height="30%"
+	style="margin-right: 35%;">  
+    <p class="tzevet">
+                     חגי זך, רו"ח ובעל רישיון פנסיוני <br> מעל 20 שנות ניסיון בענף 
+    </p> 
+    <p name="hatar" id="hatar">
+		שמי חגי זך, ואני מביא עמי מעל 20 שנות ניסיון מקצועי ותפעולי בתחום הפנסיוני. אני בעל רישיון פנסיוני ורישיון רואה חשבון.  
+ 		במהלך השנים צברתי ידע מעמיק והבנה רחבה בתהליכים, רגולציה, ושירותים פיננסיים הקשורים לתחום זה.
+		האתר נבנה מתוך מטרה להעניק מידע מקצועי, כלים שימושיים,  ומחשבונים שיעזרו 
+		לכם להבין את האפשרויות הקיימות ולתכנן את עתידכם הפיננסי בצורה מיטבית. אני 
+		מאמין שלכל אחד ואחת מגיע לקבל את הידע והכלים לקבלת החלטות מושכלות, והאתר הזה 
+		הוא הדרך שלי לחלוק את הידע שלי ולהנגיש אותו בצורה פשוטה לכל אחד ואחת.
+		אני מזמין את המשתמשים לגלות את המידע,להיעזר במחשבונים, ולפנות אליי בכל שאלה 
+		או צורך נוסף.  יחד נוכל להפוך את המידע לכלי מעשי לתכנון פיננסי חכם .
+    </p>
+</div>
+<div id="overlay">
+	<div id="alert-box">
+		<h2>תנאי שימוש</h2>
+		<p>בשימוש באתר זה, אתה מסכים לתנאי השימוש והפרטיות שלנו.</p>
+  		<button id="accept-btn">הבנתי</button>
+	</div>
+</div>
+<div id="content">
+	<div class="allmenu" id="allmenu" >  
+		<div id='hamb' class="menu-btn"  ><!--onclick =' toggleMenu()'-->
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+        <!-- תפריט צד -->
+		<nav class="menu-container" id="menu">
+			<h3 onclick="toggleMenu();showMikzoei()">✍ מידע מקצועי</h3>
+			<h3 onclick="toggleMenu();showMachshevonim()">📈 מחשבונים פיננסיים </h3>
+			<h3 onclick="toggleMenu();showHashvaa()">📊 השוואת חברות</h3>
+			<h3 onclick="toggleMenu();showTikrot()">📊 תקרות מס הכנסה </h3>  
+			<h3 onclick='openOdot()'>👬 אודותינו</h3>
+			<h3 onclick="toggleMenu();yossi();">📞 צור קשר</h3>
+		    <h3 onclick="toggleMenu();showIframe('tnaiyShimosh.html'); "> 📝 תנאי שימוש</h3>
+		</nav>
+	</div>
+	<div class="search-container" id="search-container">
+    	<input type="text" id="searchBox" placeholder="חפש באתר...">
+    	<ul id="searchResults"></ul>
+	</div>
+	<div class="meidaMuzar" id="mabaatar"
+		style=" width:clamp(300px,90%,1000px);height:200px;position:relative;
+	background-color:aliceblue;margin-left:auto;margin-right:auto;margin-top:30px;margin-bottom:20px;">
+		<div  style="width:100%;position:absolute;top:0;right:0;height:100%;
+			background-color:aliceblue;">
+			<p class="pMuzarSmall" style="text-align:right;padding:5px 10px 5px 10px;margin:0;width:100%;">
+				אתר <span style="color:darkgreen;font-size:larger;font-weight:bolder;">פיננסי</span>
+				<span style="color:darkblue;font-size:larger;font-weight:bolder;">-נט</span>
+				הוא אתר ידידותי ונוח לביצוע השוואות בין מוצרים פנסיונים ופיננסיים. האתר
+				מספק מחוללי השוואה, מחוללי איתור מוצרים לפי סיכון וכלים פיננסיים.
+				 הנתונים באתר מבוססים על פירסומי  רשות שוק ההון באתרים גמל נט, ביטוח נט ופנסיה נט.
+			</p>
+		</div>
+	</div>
+	<table  class="tblMic" style="max-width: 90vw; display: block;margin: 10px auto;overflow:hidden;
+		box-sizing:border-box;margin:0;padding:0;border:1px solid rgb(0,148,255);margin-bottom:10px;">
+		<tr style="max-width: 100%; display: block;margin: 10px auto;overflow:hidden;
+		box-sizing:border-box;margin:0;padding:0;">
+			<td><label style="font-size:12px;">   להפעלת ניווט קולי  לחץ</label></td>
+			<td><div id="mic" onclick="micClick()">🎤</div></td>
+			<td><div id="resultMic">לא מאזין</div></td>
+			<td><div style="color:green;font-size:14px;
+			float:left;" onclick="showIframe('koliHes.html');">הסבר </div></td>
+		</tr>	
+	</table>
+	<h3 id='kategorut' style="text-align: center; font-family: 'David Bril', sans-serif;
+	box-sizing: border-box;max-width: 100%;font-weight:bold;overflow-x: hidden;color:darkblue;margin-bottom:15px;"
+	>קטגוריות ראשיות</h3>
+	<div id="tnaiyShimoshB" onclick="showIframe('tnaiyShimosh.html');">תנאי שימוש באתר</div>  
+<div class="Imgcontainer" id='allImages'>
+	<div class="boxImg boxcalc" onclick="showMachshevonim()" ><div class="stripe" style="text-align:center;">מחשבונים פיננסים</div></div>
+	<div class="boxImg boxdata" onclick="showHashvaa();" ><div class="stripe" style="text-align:center;">השוואת חברות</div></div>
+	<div class="boxImg boxstud" onclick="showMikzoei()" ><div class="stripe" style="text-align:center;">מידע מקצועי</div></div>
+        <div class="boxImg boxpension" onclick="showKupaMeida('pPensia'); hideMaBaatar();maslulimP(30,'קרנות חדשות',0)" ><div class="stripe" style="text-align:center;" onclick=" maslulimP(30,'קרנות חדשות',0)">קרנות פנסיה</div></div>
+        <div class="boxImg boxinvest" onclick="showKupaMeida('pHash'); hideMaBaatar();maslulim(30,'קופת גמל להשקעה',0)" ><div class="stripe" style="text-align:center;"> גמל להשקעה</div></div>
+        <div class="boxImg boxeducation" onclick="showKupaMeida('pHish');hideMaBaatar();maslulim(30,'קרנות השתלמות',0)" ><div class="stripe" style="text-align:center;">קרנות השתלמות</div></div>
+        <div class="boxImg boxyeled" onclick="showKupaMeida('pYeled'); hideMaBaatar();maslulim(30,'קופת גמל להשקעה - חסכון לילד',0)" ><div class="stripe"style="text-align:center;">חסכון לילד</div></div>
+        <div class="boxImg boxgemel" onclick=" showKupaMeida('pGemel');hideMaBaatar();maslulim(30,'תגמולים ואישית לפיצויים',0)"  ><div class="stripe" style="text-align:center;">קופות גמל</div></div>
+        <div class="boxImg boxsaving" onclick=" showKupaMeida('pPolisa');hideMaBaatar();maslulim(30,'פוליסות חסכון',0)" ><div class="stripe" style="text-align:center;">פוליסות חסכון</div></div>
+</div>
+<div class="meidaMuzarSpecific" id="mabaatarSpecific">
+	<p class="pMuzarBigSpecific pMuzarBig" style="padding:10px;"></p>
+	<p class="pMuzarSmallSpecific pMuzarSmall" style="padding:10px;"></p>
+	<div class="baalrishayon" onclick="yossi()">צור קשר עם סוכן פנסיוני
+		&nbsp;<i class="fa fa-phone"></i></div>
+</div>
+	<h6 id="tkufatdivuach"></h6>
+	<div style="width: 100%;margin-bottom: 10px;" id="searchmh">
+		<div class="search-mh" id="search-mh">
+			<label  style="margin-left: 15px;">חפש לפי מ"ה</label>
+			<input type="text" id="searchBoxmh" placeholder="הקלד מספר..." style="max-height: 30px;
+			max-width: 100px;">
+			<input type="button"  value="חפש" onclick="searchMh(0)" style="max-height: 30px;
+				background-color:aliceblue;color:rgb(0,154,255);
+				font-weight:bold;"></input>
+		</div>
+	</div>
+	<h1 id="kothasifot" style="width: 100%;text-align: center;">⚖️ חשיפות מרכזיות בהשקעות</h1>
+	<div id="filter">
+		<form id="productForm" style="overflow-y: hidden;">
+			<div class="product">
+				<div class="baalrishayon" onclick="window.parent.yossi()"
+        style="width: 100%;
+        box-sizing: border-box;
+        margin: 0%;
+        padding: 10px;
+        height: 30px;
+        font-size: 16px;
+        text-align: center;
+        background-color: blue;
+        position: relative;
+        top: 0%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;overflow-y: hidden;">צור קשר עם סוכן פנסיוני
+		&nbsp;<i class="fa fa-phone"></i></div>
+		<div class='closewindow' onclick='hideproductForm(); showHashvaa();'
+		style="margin-top: 15px;margin-right: 10px;"><i class="fa-solid fa-rotate-left"></i>
+		</div>
+				<h3 id="meholelhasifot">⚖️ השוואה לפי מדד שארפ</h3>
+				<label class="hsf"  for="selectProduct" >בחר מוצר</label>
+				<select class="hsf"  id="sugM"onchange='changehasifa()' >
+					<option value='קרנות השתלמות'>קרנות השתלמות</option>
+					<option value='תגמולים ואישית לפיצויים'>קופות גמל</option>
+					<option value='קופת גמל להשקעה'>קופת גמל להשקעה</option>
+					<option value='פוליסות חסכון'>פוליסות חסכון</option>
+					<option value='קרנות פנסיה - מקיפה'>קרנות פנסיה</option>
+				</select>
+			</div>
+			<button  id='btnHas' class="sbmitbutton hsf" onclick="tablhasifot(event)">בצע</button>
+		</form>
+	</div>
+	<div class="filterChoose" id="filterChoose">
+		<h2 class="phasifot" style="text-align:center; color:#444;margin-top: 50px;">💡 איך לבחור?</h2>
+    	<p class="phasifot" style="text-align:center;">בחירת רמת החשיפה תלויה בפרופיל הסיכון האישי שלך,
+		 ביעדים הפיננסיים ובאופק ההשקעה. פיזור נכון בין החשיפות השונות יכול למקסם את התשואה ולנהל את הסיכונים בצורה חכמה! 🚀</p>
+	</div>
+		<input id='leloMifaliut'  type="checkbox" checked onchange='maslulim(1,0,0);'>&nbsp;&nbsp;<span id="spanMif" style='color:#0073e6;font-size: 12px;'>ללא מפעליות</span>
+		<br><input id='hadashim'    type="checkbox" onchange='maslulim(1,0,0);'>&nbsp;&nbsp;<span id="spanHad" style='color:#0073e6;font-size: 12px;'>מסלולים חדשים</span>
+	<div style="justify-content: right;" id="sanenMosdy">
+		<label for="sinon" style="font-size: 12px;margin-top: 10px;" >סנן לפי חברה</label>
+		<select id="sinonHevra" style="transform: scaleY(0.6);max-width: 150px;
+		margin-right: 10px;" onchange="maslulimSanen()"></select>
+	</div>
+	<div class="centertables">
+		<div class="allTheTables" id="allTheTables"></div>	
+	</div>
+</div>
+<div id='iframeContainer' style></div>
+<div class='kupaInfo' id='kupaInfo'>
+	<div class="pdf" id="pdf"style="float: left;margin-left: 10px;font-size: 15px;color:blue;
+	text-decoration: underline;" onclick="exportToPDF()">קובץ pdf</div>
+	<div class='closekupainfo' id="closeinfo" onclick='hidekupainfo(); showAllimages();showMabaatar()'
+		style="margin-right:10px"><i class="fa-solid fa-rotate-left"></i>
+	</div>
+  	<h3 id="kupa" class=" h3kupa" style="color: darkblue;padding-top:15px;"></h3>
+  	<table class="tblmeida" id='tblmeida'>
+      <tr class='trkupa'>
+          <td  class='tdkupa' id="sugmuzar"></td>
+      </tr>
+      <tr class='trkupa'>
+          <td  class='tdkupa' id="sugmaslul"></td>
+      </tr>
+      <tr class='trkupa'>
+        	<td class='tdkupa'  id="mhkupa"></td>
+    	</tr>
+    	<tr class='trkupa'>
+      		<td class='tdkupa'  id="miztaberet"></td>
+    	</tr>
+    	<tr class='trkupa'>
+      		<td class='tdkupa'  id="shana"></td>
+    	</tr>
+    	<tr class='trkupa'>
+      		<td class='tdkupa'  id="shalosh"></td>
+    	</tr>
+    	<tr class='trkupa'>
+      		<td class='tdkupa'  id="stiya36"></td>
+    	</tr>
+    	<tr class='trkupa'>
+      		<td class='tdkupa'  id="ramatsikon"></td>
+    	</tr>
+	<tr class='trkupa'>
+      		<td class='tdkupa'  id="menayot"></td>
+    	</tr>	
+	<tr class='trkupa'>
+      		<td class='tdkupa'  id="baaretz"></td>
+    	</tr>	
+    	<tr class='trkupa'>
+      		<td class='tdkupa'  id="behul"></td>
+    	</tr>	
+	<tr class='trkupa'>
+      		<td class='tdkupa'  id="derog"></td>
+    	</tr>	
+      	<tr class='trkupa'>
+          	<td class='tdkupa'  id="ofi"></td>
+      	</tr>
+    </table>
+  	<h4 id="kupatypeinfo"></h4>
+  	<canvas id="myChartkupa" style="width:100%;max-width:1000px;max-height: 200px;"></canvas>
+  	<canvas id="myChart"  style="width:100%;max-width: 1000px;
+ 		 max-height: 200px;margin:30px auto;"></canvas>
+  	<div id="nehasimkot" class="nehasimkot" style="color:orangered;"></div>
+  	<div id="tblnehasim" class="tblnehasim">
+    <table id="nehasim"></table>
+	<canvas id="pieChartkupa" 
+		style="width:clamp(250px,80vw,300px);
+	   max-height: 400px;"></canvas> 
+</div> 
+</div>
+<div  id="backtop" class="backtop" onclick="backtop()">⬆️</div>
+	<footer id="footer">
+		<p style="margin-top:10px;text-align:center;width:100%;box-sizing:border-box;overflow-x:hidden;color:green;"> 
+			<i class="fas fa-copyright"></i> כל הזכויות שמורות לחגי זך
+		</p>
+	</footer>			
+	<script src="mainscript.js" defer></script>
+	<script src="kochavimscript.js" defer></script>
+	<script src="PensiaScript.js" defer></script>
+	<script src="dataMenahelet.js" defer></script>
+	<script src="data.js" defer></script>
+	<script src="hasifot.js" defer></script>
+	<script src="kupaInfoScript.js" defer></script> 
+	<script src="searchScript.js" defer></script> 
+	<script src="HasifotMeshulav.js" defer></script> 
+ <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdn.userway.org/widget.js" data-account="rylh57CLUH"></script>
+</body>
+</html>

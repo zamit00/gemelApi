@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>פיננסינט</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: min(90vw, 600px);
+        }
+        .box {
+            
+            padding: 20px;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0073e6;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .closewindow {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #333;
+            transition: 0.2s;
+        }
+        .closewindow:hover {
+            color: #333;
+        }
+        h1 {
+            color: #01579b;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .books{width:200px;height:200px}
+        @media screen and (max-width: 600px) {
+            .closewindow {
+                font-size: 16px;
+                top: 5px;
+                right: 5px;
+
+            }
+            .box {
+                font-size: 1.5rem;
+                padding: 15px;
+            }
+        }
+        @media screen and (max-width: 400px) {
+            .books{width:150px;height:150px}
+            .box {
+                font-size: 1.3rem;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class='closewindow' onclick='hideIframe()'><div class='closewindow' onclick='hideIframe()'><i class="fa-solid fa-rotate-left"></i>
+    </div></div>
+     <img  class="books" src='books.png' style="margin-top:20px;";/>
+    <h1>מידע מקצועי</h1>
+    <div class="container">
+        <div style='display: grid;
+        grid-template-columns: repeat(2, 1fr); 
+        grid-auto-rows: auto;
+        gap: 5%;'>
+            <div class="box" onclick="navigate('hishtalmotMikzoei.html')">קרנות השתלמות</div>
+            <div class="box" onclick="navigate('pensiaMikzoei.html')">קרנות פנסיה </div>
+            <div class="box" onclick="navigate('hashkaaMikzoei.html')">קופות גמל להשקעה</div>
+            <div class="box" onclick="navigate('kupatgemelmikzoei.html')">קופות גמל לקצבה</div>
+            <div class="box" onclick="navigate('polisotMikzoei.html')"> פוליסת חסכון </div>
+            <div class="box" onclick="navigate('hisyeled.html')">קופות גמל חסכון לילד</div>
+        </div>
+     </div>
+    <script>
+        function navigate(page) {
+            hideIframe();
+            window.parent.hideAllimages();
+            window.parent.hideTkufa();
+            window.parent.showIframe(page);
+        }
+        function hideIframe(){
+            window.parent.hideframe();
+            window.parent.showAllimages();
+        }
+    </script>
+</body>
+</html>
+

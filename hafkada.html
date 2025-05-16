@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>פיננסי-נט</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #27ae60;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --error-color: #e74c3c;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            color:#333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .calculator {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 1.8rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .input-group {
+            background-color: #f9f9f9;
+            padding: 5px 10px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 500;
+            color: var(--primary-color);
+            font-size: 1.05rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        input[type="number"] , input[type="text"] {
+            width: 100%;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+            -webkit-appearance: none;
+            height: 6px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .range-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .range-value {
+            text-align: center;
+            font-weight: 500;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 16px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #219653;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .error {
+            color: var(--error-color);
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            background-color: rgba(231, 76, 60, 0.1);
+            display: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(to right, rgba(39, 174, 96, 0.1), rgba(39, 174, 96, 0.2));
+            border-radius: var(--border-radius);
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.5s;
+            border-right: 4px solid var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .result-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 10px 0;
+        }
+
+        .result-details {
+            font-size: 1rem;
+            color: var(--dark-color);
+        }
+
+        .input-suffix {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-weight: 500;
+        }
+
+        .credits {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-right: 5px;
+        }
+
+        .tooltip-icon {
+            background-color: #ddd;
+            color: #666;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark-color);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            right: 50%;
+            margin-right: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .closewindow{color:black;margin-top: 10px;margin-right: 30px;}
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="calculator">
+            <div class='closewindow' onclick='window.parent.showMachshevonim();'><i class="fa-solid fa-rotate-left"></i>
+            </div>
+            <h3 style="color:rgba(0,148,254);"> הפקדה חודשית לסכום יעד</h3>
+            
+            <div class="form-grid">
+                <div class="input-group">
+                    <label for="targetAmount" style="color:var(--main-color);" >
+                        <div class="tooltip" >
+                            <span  class="tooltip-text">סכום היעד בסוף התקופה</span>
+                        </div>
+                        סכום יעד
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="targetAmount" onchange="hideresult()"
+                         value="" required>
+                        <span class="input-suffix">₪</span>
+                    </div>
+                    <div class="range-display">
+                        <span>0 ₪</span>
+                        <span>5,000,000 ₪</span>
+                    </div>
+                    <input type="range" id="targetAmount_slider" min="0" max="5000000" step="10000" value="0" 
+                        onchange="hideresult()">
+                    <div class="range-value" id="targetAmount_value">1,000,000 ₪</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="initialAmount" style="color:var(--main-color);">
+                        <div class="tooltip" >
+                            <span class="tooltip-text">סכום התחלתי קיים</span>
+                        </div>
+                        סכום התחלתי קיים
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="initialAmount"  value="" onchange="hideresult()">
+                        <span class="input-suffix">₪</span>
+                    </div>
+                    <div class="range-display">
+                        <span>0 ₪</span>
+                        <span>1,000,000 ₪</span>
+                    </div>
+                    <input type="range" id="initialAmount_slider" min="0" max="1000000" step="5000" value="0"
+                         onchange="hideresult()">
+                    <div class="range-value" id="initialAmount_value">0 ₪</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="interestRate" style="color: var(--main-color);">
+                        <div class="tooltip">
+                            <span class="tooltip-text">שיעור הריבית השנתית </span>
+                        </div>
+                         ריבית שנתית   (%)
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="interestRate" onchange="hideresult()"  value="">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <div class="range-display">
+                        <span>0%</span>
+                        <span>15%</span>
+                    </div>
+                    <input type="range" id="interestRate_slider" min="0" max="20" step="0.1" value="0"
+                         onchange="hideresult()">
+                    <div class="range-value" id="interestRate_value">0%</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="managementFee" style="color:var(--main-color);">
+                        <div class="tooltip">
+                            <span class="tooltip-text">שיעור דמי הניהול מהחיסכון</span>
+                        </div>
+                       דמי ניהול שנתיים (%)
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="managementFee" onchange="hideresult()"  value="">
+                        <span class="input-suffix">%</span>
+                    </div>
+                    <div class="range-display">
+                        <span>0%</span>
+                        <span>2%</span>
+                    </div>
+                    <input type="range" id="managementFee_slider" min="0" max="2" step="0.05" value="0"
+                         onchange="hideresult()">
+                    <div class="range-value" id="managementFee_value">0.5%</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="years" style="color:var(--main-color);">
+                        <div class="tooltip">
+                            <span class="tooltip-text">משך זמן החיסכון בשנים</span>
+                        </div>
+                        תקופת החיסכון
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="text" id="years"  onchange="hideresult()" value="">
+                        <span class="input-suffix">שנים</span>
+                    </div>
+                    <div class="range-display">
+                        <span>1 שנה</span>
+                        <span>30 שנים</span>
+                    </div>
+                    <input type="range" id="years_slider" min="1" max="50" step="1" value="0"
+                         onchange="hideresult()">
+                    <div class="range-value" id="years_value">10 שנים</div>
+                </div>
+            </div>
+            
+            <button onclick="calculateMonthlyDeposit()">חשב הפקדה חודשית</button>
+            <div id="errorMsg" class="error"></div>
+            
+            <div id="result" class="result">
+                <div class="result-title">סכום ההפקדה החודשית הנדרש:</div>
+                <div id="monthlyAmount" class="result-amount">0 ₪</div>
+                <div id="resultDetails" class="result-details"></div>
+            </div>
+        </div>
+        
+        <div class="credits">
+            מחשבון חיסכון והשקעות © 2025
+        </div>
+    </div>
+
+    <script>
+        // קישור בין מחוונים לשדות קלט
+        const inputFields = ['targetAmount', 'initialAmount', 'interestRate', 'managementFee', 'years'];
+        
+        // הגדרת אירועים לסנכרון בין המחוונים והשדות
+        inputFields.forEach(field => {
+            const input = document.getElementById(field);
+            const slider = document.getElementById(`${field}_slider`);
+            const valueDisplay = document.getElementById(`${field}_value`);
+            
+            // עדכון המחוון כאשר הערך בשדה משתנה
+            input.addEventListener('input', function() {
+                slider.value = this.value;
+                updateValueDisplay(field, this.value);
+            });
+            
+            // עדכון השדה כאשר המחוון זז
+            slider.addEventListener('input', function() {
+                input.value = this.value;
+                updateValueDisplay(field, this.value);
+            });
+            
+            // עדכון ראשוני של תצוגת הערך
+            updateValueDisplay(field, input.value);
+        });
+
+        function hideresult() {
+            const resultElement = document.getElementById('result');
+            resultElement.style.display = "none";
+        }
+        // פונקציה לעדכון תצוגת הערך של המחוון
+        function updateValueDisplay(field, value) {
+            const valueDisplay = document.getElementById(`${field}_value`);
+            
+            if (field === 'targetAmount' || field === 'initialAmount') {
+                valueDisplay.textContent = `${numberWithCommas(value)} ₪`;
+            } else if (field === 'interestRate' || field === 'managementFee') {
+                valueDisplay.textContent = `${value}%`;
+            } else if (field === 'years') {
+                valueDisplay.textContent = value == 1 ? `שנה אחת` : `${value} שנים`;
+            }
+        }
+        
+        function calculateMonthlyDeposit() {
+            // קלט מהמשתמש
+            const targetAmount = parseFloat(document.getElementById('targetAmount').value);
+            const initialAmount = parseFloat(document.getElementById('initialAmount').value);
+            const annualInterestRate = parseFloat(document.getElementById('interestRate').value) / 100;
+            const annualManagementFee = parseFloat(document.getElementById('managementFee').value) / 100;
+            const years = parseInt(document.getElementById('years').value);
+            
+            const errorMsg = document.getElementById('errorMsg');
+            const resultElement = document.getElementById('result');
+            
+            // בדיקת תקינות קלט
+            if (isNaN(targetAmount) || isNaN(initialAmount) || isNaN(annualInterestRate) || 
+                isNaN(annualManagementFee) || isNaN(years)) {
+                errorMsg.textContent = "אנא מלא את כל השדות בערכים מספריים תקינים";
+                errorMsg.style.display = "block";
+                resultElement.style.display = "none";
+                return;
+            }
+            
+            if (targetAmount <= 0) {
+                errorMsg.textContent = "סכום היעד חייב להיות גדול מאפס";
+                errorMsg.style.display = "block";
+                resultElement.style.display = "none";
+                return;
+            }
+            
+            if (initialAmount < 0) {
+                errorMsg.textContent = "הסכום הראשוני לא יכול להיות שלילי";
+                errorMsg.style.display = "block";
+                resultElement.style.display = "none";
+                return;
+            }
+            
+            if (years <= 0) {
+                errorMsg.textContent = "מספר השנים חייב להיות גדול מאפס";
+                errorMsg.style.display = "block";
+                resultElement.style.display = "none";
+                return;
+            }
+            
+            // מחיקת הודעות שגיאה קודמות
+            errorMsg.style.display = "none";
+            
+            // חישוב ההפקדה החודשית הנדרשת
+            const monthlyInterestRate = annualInterestRate / 12;
+            const monthlyManagementFee = annualManagementFee / 12;
+            const totalMonths = years * 12;
+            
+            let amount = initialAmount;
+            let ribit=monthlyInterestRate-monthlyManagementFee;
+            let monthlyDepositx=0;
+            let machpil=Math.pow((1+ribit),totalMonths);
+            let fvamount=initialAmount*machpil;
+            
+
+            while (amount < targetAmount) {
+                amount=fvamount+monthlyDepositx*(Math.pow((1+ribit),totalMonths)-1)/ribit;
+                monthlyDepositx+=1;
+            }
+            
+
+
+
+            
+            
+            // עיגול התוצאה כלפי מעלה לשקל הקרוב
+            monthlyDeposit = Math.ceil(monthlyDepositx);
+            
+            // הצגת התוצאה
+            document.getElementById('monthlyAmount').textContent = `${numberWithCommas(monthlyDeposit)} ₪`;
+            
+            // התאמת הניסוח לפי מספר השנים
+            let yearsText = years == 1 ? "שנה" : "שנים";
+            document.getElementById('resultDetails').textContent = 
+                `כדי להגיע ל-${numberWithCommas(targetAmount)} ₪ בתוך ${years} ${yearsText}`;
+            resultElement.style.display = "block";
+            
+            // אנימציה לאזור התוצאה
+            resultElement.style.animation = 'none';
+            resultElement.offsetHeight; // גורם לדפדפן לעדכן את ה-DOM
+            resultElement.style.animation = 'fadeIn 0.5s';
+        }
+        
+        
+        
+        function numberWithCommas(x) {
+            return Math.round(x).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</body>
+</html>

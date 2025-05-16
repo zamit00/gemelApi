@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>סימולטור השוואת קופות</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-4">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">סימולטור השוואת קופות</h1>
+
+    <!-- טופס סינון -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div>
+        <label class="block mb-1 font-semibold">בחר מוצר:</label>
+        <select id="mozarSelect" class="w-full p-2 rounded border border-gray-300"></select>
+      </div>
+      <div>
+        <label class="block mb-1 font-semibold">בחר מסלול/גיל:</label>
+        <select id="masmishniSelect" class="w-full p-2 rounded border border-gray-300"></select>
+      </div>
+    </div>
+
+    <!-- טבלה -->
+    <div class="overflow-x-auto mb-8">
+      <table class="min-w-full table-auto bg-white shadow rounded-lg">
+        <thead class="bg-gray-200">
+          <tr>
+            <th class="p-2">שם הקופה</th>
+            <th class="p-2">תשואה חודשית</th>
+            <th class="p-2">תשואה שנתית</th>
+            <th class="p-2">3 שנים</th>
+            <th class="p-2">5 שנים</th>
+            <th class="p-2">סטיית תקן</th>
+            <th class="p-2">שארפ</th>
+            <th class="p-2">דמי ניהול</th>
+          </tr>
+        </thead>
+        <tbody id="resultsTable" class="text-center"></tbody>
+      </table>
+    </div>
+
+    <!-- גרפים -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div>
+        <h2 class="text-xl font-semibold mb-2">השוואת תשואות</h2>
+        <canvas id="barChart"></canvas>
+      </div>
+      <div>
+        <h2 class="text-xl font-semibold mb-2">התפלגות נכסים</h2>
+        <canvas id="pieChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const mozarim = ['קרנות השתלמות', 'תגמולים ואישית לפיצויים', 'קופת גמל להשקעה', 'קופת גמל להשקעה - חסכון לילד', 'פוליסות חסכון'];
+    const masmishni = ['כללי', 'עוקב מדד s&p 500', 'מניות', 'אשראי ואג\"ח', 'אשראי ואג\"ח עם מניות', 'כספי (שקלי)', 'עוקב מדדים - גמיש', 'אג\"ח ממשלות', 'הלכה יהודית', 'משולב סחיר', 'עוקב מדדי אג\"ח', 'עוקב מדדי מניות', 'אג\"ח סחיר', 'מניות סחיר', 'עוקב מדדי אג\"ח עם מניות', 'אג\"ח סחיר עם מניות', 'עד 50', '50-60', '60 ומעלה', 'סיכון מועט', 'סיכון בינוני', 'סיכון מוגבר'];
+
+    const mozarSelect = document.getElementById('mozarSelect');
+    const masmishniSelect = document.getElementById('masmishniSelect');
+
+    mozarim.forEach(m => mozarSelect.innerHTML += `<option value="${m}">${m}</option>`);
+    masmishni.forEach(m => masmishniSelect.innerHTML += `<option value="${m}">${m}</option>`);
+
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+
+    let barChart, pieChart;
+
+    function loadData() {
+      fetch('dataJasonM.json')
+        .then(res => res.json())
+        .then(data => {
+          const mozar = mozarSelect.value;
+          const masm = masmishniSelect.value;
+          const filtered = data.filter(x => x.mozar === mozar && x.masmishni === masm);
+          renderTable(filtered);
+          renderCharts(filtered);
+        });
+    }
+
+    function renderTable(data) {
+      const tbody = document.getElementById('resultsTable');
+      tbody.innerHTML = '';
+      data.forEach(row => {
+        tbody.innerHTML += `
+          <tr class="border-b">
+            <td class="p-2">${row.name}</td>
+            <td class="p-2">${row.tesuam}%</td>
+            <td class="p-2">${row.tesuay}%</td>
+            <td class="p-2">${row.tesuam36}%</td>
+            <td class="p-2">${row.tesuam60}%</td>
+            <td class="p-2">${row.stdev}</td>
+            <td class="p-2">${row.sharp}</td>
+            <td class="p-2">${row.dm}</td>
+          </tr>
+        `;
+      });
+    }
+
+    function renderCharts(data) {
+      const labels = data.map(x => x.name);
+      const barData = {
+        labels,
+        datasets: [
+          {
+            label: 'תשואה 12 חודשים',
+            data: data.map(x => x.tesuay),
+            backgroundColor: 'rgba(59, 130, 246, 0.7)'
+          }
+        ]
+      };
+      const pieData = {
+        labels: ['אג"ח', 'מניות', 'מזומן', 'אחר'],
+        datasets: [
+          {
+            data: [
+              data[0]?.kvutzaAhuz4701 || 0,
+              data[0]?.kvutzaAhuz4702 || 0,
+              data[0]?.kvutzaAhuz4705 || 0,
+              data[0]?.kvutzaAhuz4710 || 0
+            ],
+            backgroundColor: ['#2563eb', '#f59e0b', '#10b981', '#6b7280']
+          }
+        ]
+      };
+
+      if (barChart) barChart.destroy();
+      if (pieChart) pieChart.destroy();
+
+      barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: barData,
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      pieChart = new Chart(pieCtx, {
+        type: 'pie',
+        data: pieData,
+        options: { responsive: true }
+      });
+    }
+
+    mozarSelect.addEventListener('change', loadData);
+    masmishniSelect.addEventListener('change', loadData);
+    window.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>

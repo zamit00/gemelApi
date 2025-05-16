@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>פיננסינט</title>
+  <link rel="stylesheet" href="mainstyle.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">  <style>
+    .closewindow{
+      color:#333;position:absolute;
+        right:5px;top:5px;
+    } 
+  </style>
+  <script>
+
+function hideIframe(){
+       window.parent.hideframe();
+       window.parent.showAllimages();
+       }
+</script>
+
+</head>
+
+<body dir="rtl">
+
+<div class='closewindow' onclick='hideIframe()'><div class='closewindow' onclick='hideIframe()'
+   style="color: #333;"><i class="fa-solid fa-rotate-left"></i>
+</div></div>
+
+  <main class="mainMadadSherut" style="display: flex;flex-direction:column;align-items: center;">
+    <h3 class="madadSherutKot" style="color:var(--main-color);margin-top: 35px;">נתוני מדד השירות לגופים מוסדיים</h3>
+    <img src="rechiveymadadSherut.png" style="margin-bottom: 30px;" class="imgMadad">
+    <img src="gemelMadadSherut.png" style="margin-bottom: 30px;width: (300px,90vw,600px);" class="imgMadad">
+    <img src="gemelMadadShinuy.png" style="margin-bottom: 30px;width:clamp(300px,90vw,600px);" class="imgMadad">
+    
+</main>
+</body>
+</html>   

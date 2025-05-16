@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+   <title>פיננסינט</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9ff;
+            color: #004d99;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 77, 153, 0.2);
+            width:95vw;
+            max-width: 400px;
+            margin-bottom: 20px;
+            margin-top: 20px;
+            box-sizing: border-box;
+            
+        }
+        h2 {
+            text-align: center;
+            color: #007acc;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #007acc;
+            border-radius: 5px;
+        }
+        
+    
+        .exposure {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .slct{width:150px;
+          text-align: center;
+          margin: 5px;
+        }
+        
+        .tblHsifot{margin-bottom: 35px;
+          max-width: 100%;
+          box-sizing: border-box;
+          
+        }
+        .tblHsifot .tdsmall{width: 11.6vw;}
+        .tblHsifot .tdbig{width: 25vw;}
+        .tblHsifot,.tblHsifot tr {width: 95vw;margin-left: 2.5vw;}
+        .tblHsifot tr:nth-child(even) {background-color: rgb(237, 229, 229)!important;}
+       @media screen and (
+         max-width:600px
+       ) {
+         .tblHasifot{font-size: 9px;
+       }
+       }
+       .circular-progress {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.inner-circle {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.percentage {
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    z-index: 1;
+}
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="baalrishayon" onclick="window.parent.yossi()"
+        style="width: 100%;
+        box-sizing: border-box;
+        margin: 0%;
+        margin-top: 30px;
+        padding: 10px;
+        height: 30px;
+        font-size: 16px;
+        text-align: center;
+        background-color: blue;
+        position: relative;
+        top: 0%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;overflow-y: hidden;">צור קשר עם סוכן פנסיוני
+		&nbsp;<i class="fa fa-phone"></i></div>
+        <div class='closewindow' onclick='window.parent.showHashvaa();'
+         style="margin-top: 15px;margin-right: 10px;"><i class="fa-solid fa-rotate-left"></i>
+        </div>
+        <h2>מחולל חשיפות מרובה</h2>
+
+        <label for="product">בחר מוצר:</label>
+        <select id="product" class="product" onchange="submitForm(this)">
+              <option value="" disabled selected>בחר מוצר</option>
+            <option value="קרנות השתלמות">קרן השתלמות</option>
+            <option value='תגמולים ואישית לפיצויים'>קופת גמל </option>
+            <option value='קרנות חדשות'>קרן פנסיה</option>
+            <option value='פוליסות חסכון'>פוליסת חיסכון</option> 
+            <option value='קופת גמל להשקעה'>קופת גמל להשקעה</option>
+                        <option value='קופת גמל להשקעה - חסכון לילד'>קופת חיסכון לילד</option>
+        </select>
+
+        <label>בחר חשיפות:</label>
+
+     <div class="exposure">
+       מניות
+            <select id="stocks" class='slct' onchange="hasifch(this);submitForm(this);doTheCircle(this)" disabled>
+               <option value="">לא נבחר</option>
+                <option value=15>15%-0%</option>
+                <option value=30>30%-15%</option>
+                <option value=50>50%-30%</option>
+                <option value=70>70%-50%</option>
+                <option value=100>70% ומעלה</option>
+            </select>
+        
+        <div class="circular-progress" id="stockscircle"
+                data-inner-circle-color="white" 
+                data-percentage="0" 
+                data-progress-color="#362FD9" 
+                data-bg-color="#EFEFEF">
+                <div class="inner-circle" style="border-radius: 50%;background: white;z-index: 50000;"></div>
+                <p class="percentage" style="z-index: 100000;">לא נבחר</p>
+        </div>
+    </div>
+
+        <div class="exposure">חו"ל
+            <select id="abroad" class='slct'  onchange="hasifch(this);submitForm(this);doTheCircle(this)" disabled>
+                <option value="">לא נבחר</option>
+                <option value=15>15%-0%</option>
+                <option value=30>30%-15%</option>
+                <option value=50>50%-30%</option>
+                <option value=70>70%-50%</option>
+                <option value=100>70% ומעלה</option>
+            </select>
+            <div class="circular-progress" id="abroadcircle"
+                data-inner-circle-color="white" 
+                data-percentage="0" 
+                data-progress-color="#362FD9" 
+                data-bg-color="#EFEFEF">
+                <div class="inner-circle" style="border-radius: 50%;background: white;z-index: 50000;"></div>
+                <p class="percentage" style="z-index: 100000;">לא נבחר</p>
+            </div>
+        </div>
+
+        <div class="exposure" >
+           מט"ח
+            <select id="currency" class='slct'  onchange="hasifch(this);submitForm(this);doTheCircle(this)" disabled>
+                <option value="">לא נבחר</option>
+                <option value=15>15%-0%</option>
+                <option value=30>30%-15%</option>
+                <option value=50>50%-30%</option>
+                <option value=70>70%-50%</option>
+                <option value=100>70% ומעלה</option>
+            </select>
+            <div class="circular-progress" id="currencycircle"
+                data-inner-circle-color="white" 
+                data-percentage="0" 
+                data-progress-color="#362FD9" 
+                data-bg-color="#EFEFEF">
+                <div class="inner-circle" style="border-radius: 50%;background: white;z-index: 50000;"></div>
+                <p class="percentage" style="z-index: 100000;">לא נבחר</p>
+            </div>
+        </div>
+    </div>
+    <table id="tblHasifot" class="tblHasifot"></table>
+
+    <script src='HasifotMeshulav.js'></script>
+        
+    
+
+</body>
+</html>

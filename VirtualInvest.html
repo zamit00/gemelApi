@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>פיננסינט</title>
+    <script src="data.js"></script>
+    <script src="kochavimscript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        *{
+            box-sizing: border-box;
+            max-width: 100%;
+            margin:0%;
+            padding:0%;
+            overflow-x: hidden;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            width: 100%;
+            overflow-x: hidden;
+
+        }
+        #ex{display:none}
+        .container {
+            background: aliceblue;
+            border-radius: 10px;
+            box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+            width:100%;
+            max-width: clamp(310px,100%,800px);
+            border-radius: 10px;
+            margin:0%;padding: 5px;
+            margin-top: 30px;
+            min-height:600px;
+            box-sizing: border-box;
+           
+        }
+        
+        .row {
+           
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            margin-right:25%;
+        }
+        
+        select, input {
+            flex: 1;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+            width: clamp(200px,85%,300px);
+            max-width: 300px;
+            margin-top: 10px;
+        }
+        .closewindow{color:black;position: relative;right:20px;top:5px;}
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+            color: white;
+        }
+    .percentage {   max-width: 150px; box-sizing: border-box;text-align: center;}
+    .btn-add {  width: 30px; height: 30px;background-color: green; font-size: 20px; }
+    
+    .btn:hover { opacity: 0.8; }
+    .error { color: red; font-size: 20px; text-align: center; }
+    .btndo{width:clamp(150px,50%,150px);height: 30px;margin-top: 30px;
+    background: #3498db;color: white;font-weight: bold;border-radius: 5px;
+    font-size: 16px;}
+    .tblData{margin-top: 15px;}
+    .tblCenter{display:none;justify-content: center;}
+    .tblData,.tblData tr{width: clamp(300px,60%,800px);border-collapse: collapse;}
+    .tblData,.tblData tr,.tblData th,.tblData td{border:1px solid #333;text-align: center;}
+    .tdmaslul,#men{width:60%;}
+    .tdshiur{width:25%;}
+    .tdbitul{width:15%;display:flex;align-items:center;justify-content:center;}
+    .klalikoch,.klalikoch tr{width:clamp(300px,95%,800px) ;}
+    .klalikoch,.klalikoch tr, .klalikoch td{
+        border: 1px solid black;border-collapse: collapse;font-size: 10px;
+      }
+      .tdbig{text-align:right;padding-right: 5px;}
+      .tdsmall{text-align: center;}
+      #shana,#shalosh,#hamesh{display:flex;flex-direction: column;
+        align-items: center;
+
+      }
+      .klalikoch .tdbig{width: 55%;color:rgb(37, 60, 255);font-weight: bold;}
+      .klalikoch .tdsmall{width: 16%;}
+      .chart-container {
+            max-width: 100%;
+            height: 300px;
+            box-sizing: border-box;
+            margin: 0%;padding: 0%;
+            overflow: visible;
+        }
+        #barchart{
+            height: 400px;  
+        }
+        #centerTbl{display:none;}
+        
+        @media screen and (max-width:600px){
+            .centerTbl,#shana,.chart-container{min-width:100%;max-width: 100%;}
+           .percentage {width: clamp(150px,80%,200px);}
+           .container{min-height:600px;overflow-x: hidden;}
+           .row {margin-right: 15%;}
+          
+           
+        }
+        @media screen and (max-width:450px){
+            .row {margin-right: 3%;margin-left: 3%;}
+        }
+        @media screen and (min-width:600px){
+            .centerTbl,#shana,.chart-container,.klalikoch{width: clamp(550px,90%,750px)}}
+    </style>
+</head>
+<body dir="rtl">
+    <div class="container" id="container">
+        <div class="baalrishayon" onclick="window.parent.yossi()"
+        style="width: 100%;
+        box-sizing: border-box;
+        margin: 0%;
+        margin-top: 30px;
+        padding: 10px;
+        height: 30px;
+        font-size: 16px;
+        text-align: center;
+        background-color: blue;
+        position: relative;
+        top: 0%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;overflow-y: hidden;">צור קשר עם סוכן פנסיוני
+		&nbsp;<i class="fa fa-phone"></i></div>
+        <div class='closewindow' onclick='window.parent.showHashvaa();'><i class="fa-solid fa-rotate-left"></i></div>
+        <h3 style="text-align: center;color:rgb(0,148,254);">בנה תיק משולב מסלולים</h3>
+         <div id='mas'  style='width:clamp(300px,90vw,600px);height:100vh;z-index:1000;background-color:white;display:none;' ></div> 
+        <div class="row">
+            <label>בחר מוצר:</label>
+            <select id="sugMMen" style="margin-right: 7px;text-align: center;" onchange="chngTik();addMaslulim()">
+                <option value="" disabled selected>בחר מוצר</option>
+                <option value='קרנות השתלמות'>קרנות השתלמות</option>
+				<option value='תגמולים ואישית לפיצויים'>קופות גמל</option>
+                <option value='קופת גמל להשקעה'>קופת גמל להשקעה</option>
+                <option value='פוליסות חסכון'>פוליסות חסכון</option>
+                <option value='קרנות חדשות'>קרנות פנסיה</option> 
+            </select>
+        </div>
+        <div id="track-container">
+            <div class="row track-row">
+                <label >בחר מסלול:</label>
+                <select id="selectShemkupa" class="selectShemkupa" ></select>        
+            </div>
+        </div>
+        <div  class="row">
+            <label >שיעור:</label>
+                <div style="display: flex; width: 60px;margin-right: 33px;">
+                    <input id="percentage" type="number" class="percentage" min="0" max="100" 
+                     style="width: 100%;">
+                </div>
+                <button  style="margin-right: 50px;" class="btn btn-add" id='btnDo'  onclick="addRow(this)">+</button>
+                <label >הוסף</label>
+        </div>
+        <div class="error" id="error-msg"></div>
+        
+        <div class="tblCenter" id="tblCenter">
+            <table id="tblData" class="tblData">
+                <tr>
+                    <th class="tdmaslul">מסלול</th>
+                    <th class="tdshiur">שיעור</th>
+                    <th class="tdbitul"></th>
+                </tr>
+            </table>
+        </div>
+        <div id="notar" style="margin-top: 10px;width: 100%;text-align: center;"></div>
+        <div id="divBtn" style="display:flex;justify-content: center;width:100%;">
+            <button class="btndo" id="btndo" onclick="submitForm()">הפעל</button>
+        </div>
+        <div class="centerTbl" id="centerTbl" style="flex-direction: column;
+    align-items: center;">
+        <div id="shana" style="margin-top: 10px;"></div>
+        <div style="width: 100%;box-sizing: border-box;max-width: 100%;
+    margin: 0%;padding: 0%;text-align: center;">* נתון ריק או 0 - לא משתתף בהשוואה</div>
+        <div id="shalosh" style="margin-top: 10px;"></div>
+        <div id="hamesh" style="margin-top: 10px;"></div>
+        
+    
+    
+        <div id="chartKot" style="width: 100%;box-sizing: border-box;max-width: 100%;
+        margin: 0%;padding: 0%;text-align: center;"></div>
+        <div style="width: 100%;box-sizing: border-box;max-width: 100%;
+        margin: 0%;padding: 0%;text-align: center;">(שנה גרף באמצעות המיון בטבלה) </div>
+        <div class="chart-container" id="chart-container">
+            <canvas id="barChart"></canvas>
+        </div> 
+</div>
+        
+    </div>
+
+
+    <script>
+  const gufmosdixA = [
+    'הראל פנסיה וגמל', 'כלל פנסיה וגמל',
+    'מגדל מקפת קרנות פנסיה וקופות גמל', 'מנורה מבטחים פנסיה וגמל',
+    'הפניקס פנסיה וגמל', 'אלטשולר שחם גמל ופנסיה',
+    'אנליסט קופות גמל', 'ילין לפידות ניהול קופות גמל', 'מור גמל ופנסיה',
+    'מיטב גמל ופנסיה', 'אינפיניטי השתלמות, גמל ופנסיה '
+];  
+
+ 
+ function addMaslulim () {
+        const selectedProduct = document.getElementById('sugMMen').value;
+        let table = document.getElementById("tblData");
+        table.innerHTML=`
+                <tr>
+                    <th class="tdmaslul">מסלול</th>
+                    <th class="tdshiur">שיעור</th>
+                    <th class="tdbitul"></th>
+                </tr>
+        `
+        const allSelects = document.querySelectorAll('.selectShemkupa');
+        let relevantList;
+        if (selectedProduct === "קרנות השתלמות" || selectedProduct === "קופת גמל להשקעה" 
+        || selectedProduct === 'פוליסות חסכון') {
+            relevantList = hishtalmot;
+        } else if (selectedProduct === "תגמולים ואישית לפיצויים"  || selectedProduct==='קרנות חדשות' ) {
+            relevantList = gemel;
+        } else if (selectedProduct.includes('לילד' )){relevantList = layeled; }
+
+        allSelects.forEach(select => {
+            select.innerHTML = '';
+        for(let i=0;i<relevantList.length;i++){
+            const option = document.createElement('option');
+            option.value = relevantList[i];
+            option.textContent = relevantList[i];
+            select.appendChild(option);
+        }
+
+        });
+
+        
+};
+
+function chngTik(){
+  
+    document.getElementById('shana').innerHTML='';
+    document.getElementById('shalosh').innerHTML='';
+    document.getElementById('hamesh').innerHTML='';
+    document.getElementById('centerTbl').style.display='none'
+    document.querySelectorAll('.row').forEach(el => el.style.display = 'flex');
+    let table = document.getElementById("tblData");
+    let tblCenter= document.getElementById("tblCenter");
+    document.getElementById('btnDo').innerHTML==='הפעל';
+    tblCenter.style.display='none';
+    table.innerHTML=`
+    <tr>
+        <th class="tdmaslul">מסלול</th>
+        <th class="tdshiur">שיעור</th>
+        <th class="tdbitul"></th>
+    </tr>
+`
+    document.getElementById('notar').innerHTML='';
+}
+
+async function addRow(x) {
+
+    const selectedProduct = document.getElementById('sugMMen').value;
+    if(!selectedProduct){Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>לא נבחר מוצר  </span>",
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+}).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+	    
+});;return}
+    const inp = document.getElementById('percentage');
+    if(inp.value>100){Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>סך השיעורים לא יכול לעלות על 100</span>",
+    width: "90vw", 
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+}).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+});;inp.value='';return}
+    var Select = document.getElementById('selectShemkupa');
+
+    var rtn;
+        if(inp.value<=0 || inp.value===''){Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>יש להקליד אחוזים תקינים</span>",
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+}).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+});rtn="back"
+            ;inp.value='';
+        }
+
+    if(rtn==="back"){rtn="";return}
+    
+    let table = document.getElementById("tblData");
+    let tblCenter= document.getElementById("tblCenter");
+    
+    tblCenter.style.display='flex';
+    const rows=table.querySelectorAll("tr")
+    var accum=0
+
+    rows.forEach((row,index)=>{
+        if(row.children[0].innerText===Select.value){
+            Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>מסלול  כבר קיים</span>",
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+}).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+});rtn="back";inp.value='';return;
+        }
+        
+        if(index!==0){
+            accum =accum+ Number(row.children[1].innerText.replace('%', ''));
+        
+            if(accum+ Number(inp.value)>100){Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>סך השיעורים לא יכול לעלות על 100</span>",
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+}).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+});inp.value='';accum=0; rtn="back"}}
+            
+        });
+        accum=0;
+    if(rtn==="back"){rtn="";return}
+    
+    table.innerHTML+= `
+        <tr>
+            <td>${Select.value}</td>
+            <td>${inp.value}%</td> 
+                <td style="background-color: red;font-size: 16px;" onclick="removeRow(this)">-</td>  
+        </tr>      
+    `;
+    updateNotar()
+    inp.value='';return;
+
+
+}
+function updateNotar(){
+    let table = document.getElementById("tblData");
+    const rows=table.querySelectorAll("tr")
+    var accum=0
+
+    rows.forEach((row,index)=>{
+        if(index!==0){
+            accum =accum+ Number(row.children[1].innerText.replace('%', ''));
+        }     
+        });
+        document.getElementById('notar').innerHTML='';
+        document.getElementById('notar').innerHTML=`נותר לנצל: ${100-accum}%`;
+        
+}
+
+
+function removeRow(btn) {
+    const btnr=document.getElementById('btndo')
+    if(btnr.innerHTML==='הפעל'){
+    btn.parentElement.remove();
+    updateNotar();
+    document.getElementById('shana').innerHTML='';
+    document.getElementById('shalosh').innerHTML='';
+    document.getElementById('hamesh').innerHTML='';}
+}
+function validateSum() {
+            let table = document.getElementById("tblData");
+            const rows=table.querySelectorAll("tr")
+            var accum=0;var bt=0;
+            rows.forEach((row,index)=>{
+               
+                if(index!==0){
+                    accum =accum+ Number(row.children[1].innerText.replace('%', ''));
+                    }
+                    
+                });
+           if(accum<100) {bt=1}   
+           return bt;
+        }
+async function submitForm() {
+    const btn=document.getElementById('btndo')
+if(btn.innerHTML==='הפעל'){   
+    var bt=0;var abc;  
+    const selectedProduct = document.getElementById('sugMMen').value;
+    if(!selectedProduct){Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>יש לבחור מוצר</span>",
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+    }).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+});return}
+    const checkSum=validateSum();
+    if(checkSum===1){Swal.fire({
+    title: "<span style='color: green; font-size: 16px;'>נדרש להשלים ל 100%</span>",
+    icon: "warning",
+    width: "clamp(300px, 90vw, 600px)",
+          position: "center", 
+          timer: 2000, 
+          timerProgressBar: true, 
+          background: "#fff",
+}).then((result) => {
+    if (result) {
+        Array.from(expo).forEach(exp=>{
+          exp.style.display='flex';
+          submitForm(x);doTheCircle(x);
+        })
+    } 
+});return}
+    btn.innerHTML='נקה' ;
+
+    document.getElementById('centerTbl').style.display='flex';
+    if (selectedProduct === "קרנות השתלמות" || selectedProduct === "קופת גמל להשקעה" 
+            || selectedProduct === "תגמולים ואישית לפיצויים" || selectedProduct.includes('לילד' )
+            ) {
+            
+    abc= await fetchdataJasonMA()
+
+    } else if (selectedProduct === "פוליסות חסכון"  ) {
+        abc= await fetchdataJasonBA()
+    } else if (selectedProduct==='קרנות חדשות' ){
+        
+    abc= await fetchdataJasonPA(); }
+
+    abc=abc.filter(item=>item.mozar===selectedProduct)
+    
+    let table = document.getElementById("tblData");
+    const rows=table.querySelectorAll("tr")
+
+
+    var accum=0;var abc1; var accum36=0;var accum60=0;
+    var accumW=0; var accum36W=0;var accum60W=0
+    var collection=[];var abc2;const mySet = new Set();
+
+for(let i=0;i<gufmosdixA.length;i++){
+    for (const row of Array.from(rows).slice(1)) {
+        
+        abc2 = await filterMaslulA(String(row.children[0].innerText), abc,selectedProduct);
+       
+        if(selectedProduct !== "פוליסות חסכון"){ 
+        abc2 =abc2.filter(item=>item.menahelet.includes(gufmosdixA[i]) && item.tesuam!==0
+        && item.tesuam!==undefined)}
+        else{abc2 =abc2.filter(item=>item.shemkupa.includes(gufmosdixA[i].split(" ")[0]) && item.tesuam!==0
+            && item.tesuam!==undefined)}
+        if(abc2.length===0){accum=1};
+        
+    }
+    
+    if(Number(accum)===0){
+        mySet.add(gufmosdixA[i])   
+    }
+    else{accum=0}
+}
+for (var value of Array.from(mySet)) {
+    if(selectedProduct !== "פוליסות חסכון"){
+    abc1=abc.filter(item=>item.menahelet.includes(value) && item.tesuam!==0
+    && item.tesuam!==undefined)}
+    else{
+        abc1=abc.filter(item=>item.shemkupa.includes(value.split(" ")[0]) && item.tesuam!==0
+    && item.tesuam!==undefined)
+    }
+    for (const row of Array.from(rows).slice(1)) {
+        abc2 = await filterMaslulA(String(row.children[0].innerText), abc1,selectedProduct);
+        abc2 =  abc2.filter(item=>item.tesuam!==undefined && item.tesuam!==0);
+        if(abc2.length!==0 && accumW===0){
+            accum=accum+Math.round(Number(row.children[1].innerText.replace('%', ''))*100)/10000* 
+            Math.round(Number(abc2[0].tesuam)*100)/100}
+        else{
+            accumW=1;
+            accum='';
+        }
+        
+        abc2 = await filterMaslulA(String(row.children[0].innerText), abc1,selectedProduct);
+        abc2 = abc2.filter(item=>item.tesuam36!==undefined && item.tesuam36!==0)
+
+        if(abc2.length!==0 && accum36W===0){
+        accum36=accum36+Math.round(Number(row.children[1].innerText.replace('%', ''))*100)/10000* 
+        Math.round(Number(abc2[0].tesuam36)*100)/100}
+        else{
+            accum36W=1;
+            accum36='';
+        }
+        
+        abc2 = await filterMaslulA(String(row.children[0].innerText), abc1,selectedProduct);
+        abc2 = abc2.filter(item=>item.tesuam60!==undefined && item.tesuam60!==0)
+
+        if(abc2.length!==0 && accum60W===0){
+        accum60=accum60+Math.round(Number(row.children[1].innerText.replace('%', ''))*100)/10000* 
+        Math.round(Number(abc2[0].tesuam60)*100)/100}
+        else{
+            accum60W=1;
+            accum60='';
+        } 
+    }
+    collection.push({
+        menah:value,
+        accum:Math.round(accum*100)/100,
+        accum36:Math.round(accum36*100)/100,
+        accum60:Math.round(accum60*100)/100
+    })
+    accum=0; accum36=0; accum60=0;
+	accumW=0; accum36W=0; accum60W=0;
+}
+
+    
+   
+
+const shanaTable= document.getElementById('shana');
+document.querySelectorAll('.row').forEach(el => el.style.display = 'none');
+let selectedProductA;
+if(selectedProduct==='תגמולים ואישית לפיצויים'){selectedProductA='קופות גמל'}
+else{selectedProductA=selectedProduct}
+shanaTable.innerHTML=
+`
+    <h4 style='color:rgb(0,148,254);margin-top:10px;'>תשואת התיק במוצר ${selectedProductA}</h4>	
+    <table class="klalikoch" id="tblshana">
+        <tr>
+            <td class="tdbig" style="background:rgb(0,148,254);color:white;">שם גוף מוסדי</td>
+            <td class="tdsmall" 
+            id="miyunshana"
+            style="background:rgb(0,148,254);color:white;"  onclick='sortTableX(this)'>שנה <i class="fa fa-sort"></i></td>
+            <td class="tdsmall" 
+            id="miyunshalosh"
+            style="background:rgb(0,148,254);color:white;" onclick='sortTableX(this)'>3 שנים <i class="fa fa-sort"></i></td>
+            <td class="tdsmall" 
+            id="miyunhamesh"
+            style="background:rgb(0,148,254);color:white;" onclick='sortTableX(this)'>5 שנים <i class="fa fa-sort"></i></td>
+        </tr> 
+    </table>	
+    
+`;
+
+
+var td;var tr;
+collection.sort((a, b) => b.accum - a.accum);
+for(let i=0;i<collection.length;i++){
+    tr=document.createElement('tr')
+    td=document.createElement('td')
+    td.className='tdbig'
+    td.textContent=collection[i].menah
+    tr.appendChild(td)
+    td=document.createElement('td')
+    td.className='tdsmall'
+    if(collection[i].accum){td.textContent=collection[i].accum.toFixed(2)+"%"}
+    else{td.textContent=''}
+    tr.appendChild(td)
+    td=document.createElement('td')
+    td.className='tdsmall'
+    if(collection[i].accum36){td.textContent=collection[i].accum36.toFixed(2)+"%"}
+    else{td.textContent=''}
+    tr.appendChild(td)
+    td=document.createElement('td')
+    td.className='tdsmall'
+    if(collection[i].accum60){td.textContent=collection[i].accum60.toFixed(2)+"%"}
+    else{td.textContent=''}
+    tr.appendChild(td)
+    document.getElementById('tblshana').appendChild(tr)
+
+}
+let lbl=[];let dt=[]
+for(let i=0;i<collection.length;i++){
+    lbl.push(collection[i].menah.split(" ")[0])
+    dt.push(collection[i].accum)           
+}
+document.getElementById('chartKot').innerHTML="גרף תשואת התיק ל - 12 חודשים"
+createChart(lbl, dt);
+}
+else{btn.innerHTML='הפעל';chngTik()}
+}
+async function fetchdataJasonMA() {
+    try {
+        const response = await fetch('dataJasonM.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        var data = await response.json(); 
+       
+        data=  data.filter(item=>!item.menahelet.includes('סלייס') &&
+        !item.ochlosiyayaad.includes('עובדי מפעל/גוף מסויים'));    
+        return data;  // חובה להחזיר נתונים כדי שהפונקציה תחכה באמת
+    } catch (error) {
+        console.error('שגיאה בשליפת הנתונים:', error);
+        throw error;  // נזרוק את השגיאה כדי ש-Promise.all יוכל לטפל בה
+    }
+}
+async function fetchdataJasonBA() {
+    try {
+        const response = await fetch('dataJasonB.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        var data = await response.json(); 
+        return data;  // החזרת הנתונים כדי ש-`await` יעבוד נכון
+    } catch (error) {
+        console.error('שגיאה בשליפת הנתונים:', error);
+        throw error;  // זורק את השגיאה כדי ש-Promise.all יוכל לטפל בה
+    }
+}
+async function fetchdataJasonPA() {
+    try {
+        const response = await fetch('dataJasonP.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        var data = await response.json(); 
+        return data;  // מחזיר את הנתונים כדי שהפונקציה תהיה באמת אסינכרונית
+    } catch (error) {
+        console.error('שגיאה בשליפת הנתונים:', error);
+        throw error;  // זורק את השגיאה כדי ש-Promise.all יוכל לטפל בה
+    }
+}
+    
+async function filterMaslulA(mas,datax,moza){
+    var data;
+    var dataforfilter=datax.filter(item=>
+        item.tesuam !== undefined &&
+        Number(item.tesuam)!==0
+    );
+
+         if (mas==='כללי'){
+             data = dataforfilter.filter(item => 
+                item.shemkupa.includes(mas) && !item.shemkupa.includes('כללי ב'));
+         data.sort((a, b) => b.tesuam - a.tesuam); 
+         return data;
+         }
+
+         else if(mas.includes('500') && moza!=="פוליסות חסכון"){
+             data = dataforfilter.filter(item =>       
+                 item.shemkupa.includes('500')  
+             
+             
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==='עוקב מדד s&p 500' && moza==="פוליסות חסכון"){
+             data = dataforfilter.filter(item => 
+                
+                
+                 item.shemkupa.includes('500')
+                
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="מניות"){
+             data = dataforfilter.filter(item => 
+                  item.shemkupa.includes('מניות') &&
+                 !item.shemkupa.includes('מדד') &&
+                 !item.shemkupa.includes('עוקב') &&
+                 !item.shemkupa.includes('סחיר') &&
+                 !item.shemkupa.includes('משולב') &&
+                 !item.shemkupa.includes('25') &&
+                 !item.shemkupa.includes('"אג\"ח"') && 
+                 !item.shemkupa.includes('פאסיבי')
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="אשראי ואג\"ח"){
+                 data = dataforfilter.filter(item => 
+                 item.shemkupa.includes('אשראי') &&
+                 !item.shemkupa.includes('מניות') &&
+                 !item.shemkupa.includes('עוקב') &&
+                 !item.shemkupa.includes('סחיר')
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="אשראי ואג\"ח עם מניות"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes('אשראי') &&
+                 item.shemkupa.includes('25') 
+               );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="כספי (שקלי)"){
+             data = dataforfilter.filter(item =>                
+                 item.shemkupa.includes('כספי (שקלי)') 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="עוקב מדדים - גמיש"){
+             data = dataforfilter.filter(item => 
+                
+                  item.shemkupa.includes('עוקב') &&
+                 item.shemkupa.includes('גמיש')
+            );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="אג\"ח ממשלות"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes('ממשלות')
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="הלכה יהודית"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes('הלכה')
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="משולב סחיר"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("משולב סחיר")
+              );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="עוקב מדדי אג\"ח"){
+             data = dataforfilter.filter(item => 
+                item.shemkupa.includes("עוקב") &&
+                 item.shemkupa.includes("אג\"ח") &&
+                 !item.shemkupa.includes("מניות") 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="עוקב מדדי מניות"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("מניות") &&
+                 !item.shemkupa.includes("אג\"ח") &&
+                 item.shemkupa.includes("עוקב") &&
+                 !item.shemkupa.includes("25") 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="מניות סחיר"){
+             data = dataforfilter.filter(item => 
+                item.shemkupa.includes("מניות") &&
+                 item.shemkupa.includes("סחיר") && 
+                 !item.shemkupa.includes("25")  
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="אג\"ח סחיר"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("סחיר") &&
+                 item.shemkupa.includes("אג\"ח") &&
+                 !item.shemkupa.includes("מניות") 
+              );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="אג\"ח סחיר עם מניות"){
+             data = dataforfilter.filter(item => 
+                
+                 item.shemkupa.includes("סחיר") &&
+                 item.shemkupa.includes("אג\"ח") &&
+                 item.shemkupa.includes("מניות") 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="עוקב מדדי אג\"ח עם מניות"){
+             data = dataforfilter.filter(item => 
+                 !item.shemkupa.includes("סחיר") &&
+                 item.shemkupa.includes("אג\"ח") &&
+                 item.shemkupa.includes("מניות") &&
+                 item.shemkupa.includes("עוקב")
+              );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="50-60"){
+             data = dataforfilter.filter(item => 
+                  item.shemkupa.includes("50") &&
+                 item.shemkupa.includes("60") 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="עד 50"){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("50") &&
+                 !item.shemkupa.includes('עוקב') &&
+                 !item.shemkupa.includes("60") 
+  
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==="60 ומעלה"){
+             data = dataforfilter.filter(item => 
+                 !item.shemkupa.includes("50") &&
+                 item.shemkupa.includes("60") 
+              );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+         }
+         else if(mas==='סיכון מוגבר'){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("מוגבר")                
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+          }
+          else if(mas==='סיכון מועט'){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("מועט") 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+          }
+          else if(mas==='סיכון בינוני'){
+             data = dataforfilter.filter(item => 
+                 item.shemkupa.includes("בינוני") 
+             );
+         data.sort((a, b) => b.tesuam - a.tesuam);    
+         return data;
+          }
+ }   
+ 
+ function sortTableX(x) {
+    var data = [];
+    const table = x.closest('table');
+    
+    if (!table) {
+        console.error('לא נמצאה טבלה.');
+        return;
+    }
+
+    const rows = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        const tds = rows[i].getElementsByTagName('td');
+
+        if (tds.length >= 4) {
+            data.push({
+                shemkupa: tds[0].textContent.trim() || '',
+                tesuam: cleanNumberX(tds[1].textContent),
+                tesuam36: cleanNumberX(tds[2].textContent),
+                tesuam60: cleanNumberX(tds[3].textContent)
+            });
+        } else {
+            console.warn(`שורה ${i} אינה מכילה מספיק עמודות.`);
+        }
+    }
+
+    // מיון לפי הכותרת שנלחצה
+    const options = [ 'שנה', '3 שנים', '5 שנים'];
+    const selectedKey = options.find(opt => x.innerHTML.includes(opt));
+   
+    const sortKey = selectedKey ? {
+        'שנה': 'tesuam',
+        '3 שנים': 'tesuam36',
+        '5 שנים': 'tesuam60'
+    }[selectedKey] : null;
+
+    if (sortKey) {
+        data.sort((a, b) => b[sortKey] - a[sortKey]);
+    }
+
+
+    // עדכון הנתונים בטבלה
+    for (let i = 1; i < rows.length; i++) {
+        const tds = rows[i].children;
+        if (data[i - 1]) {
+            tds[0].textContent = data[i - 1].shemkupa;            
+            tds[1].textContent = formatNumberX(data[i - 1].tesuam);
+            tds[2].textContent = formatNumberX(data[i - 1].tesuam36);
+            tds[3].textContent = formatNumberX(data[i - 1].tesuam60);
+        }
+    }
+    let coll=[];let lbl=[];
+    
+        for (let i = 0; i < data.length; i++) {
+            lbl.push(data[i].shemkupa.split(" ")[0])
+            if(selectedKey==='שנה'){document.getElementById('chartKot').innerHTML="גרף תשואת התיק ל - 12 חודשים"
+            ;coll.push(data[i].tesuam)}
+            if(selectedKey==='3 שנים'){coll.push(data[i].tesuam36);document.getElementById('chartKot')
+            .innerHTML="גרף תשואת התיק ל - 3 שנים"}
+            if(selectedKey==='5 שנים'){coll.push(data[i].tesuam60);document.getElementById('chartKot').
+            innerHTML="גרף תשואת התיק ל - 5 שנים"}
+}
+createChart(lbl, coll)
+ }
+// פונקציה שמנקה את הערכים וממירה אותם למספרים
+function cleanNumberX(value) {
+    let num = parseFloat(value.replace(/[^0-9.-]/g, ''));
+    return isNaN(num) ? 0 : num;
+}
+
+// פונקציה שמחזירה מספר בפורמט הנכון
+function formatNumberX(value) {
+    return value.toFixed(2) + '%';
+}
+let myChart = null;
+
+
+
+function createChart(lbl, dt) {
+    let chrt=document.getElementById("chart-container")
+    chrt.innerHTML='';
+    chrt.innerHTML=`<canvas id="barChart"></canvas> `
+    const ctx = document.getElementById('barChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: lbl,
+                datasets: [{
+                    data:dt,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                       
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeInOutQuart'
+                }
+            }
+        });
+   
+}
+ 
+ </script>
+ 
+</body>
+</html>
