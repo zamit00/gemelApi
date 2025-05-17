@@ -1,4 +1,103 @@
-var timeToListen=6000;var interval;
+var timeToListen = 6000;
+var interval;
+var startStop = 0;
+var finalTranscript = "";
+var forcedStop = false;
+
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.lang = "he-IL";
+recognition.interimResults = true;
+recognition.maxAlternatives = 1;
+recognition.continuous = false;
+
+function micClick() {
+  startStop = 0;
+  forcedStop = false;
+  finalTranscript = "";
+  document.getElementById('resultMic').textContent = " מאזין קבוע - לעצירה אמור עצור או לחץ שוב";
+  recognition.start();
+}
+
+recognition.onstart = function () {
+  const timerDisplay = document.getElementById('timerDisplay');
+  let secondsPassed = 0;
+  timerDisplay.style.display = 'block';
+
+  interval = setInterval(() => {
+    secondsPassed++;
+    timerDisplay.textContent = secondsPassed;
+    if (secondsPassed * 1000 >= timeToListen) {
+      clearInterval(interval);
+      timerDisplay.style.display = 'none';
+      recognition.stop();
+    }
+  }, 1000);
+};
+
+function appendUniqueText(base, addition) {
+  const baseWords = base.trim().split(" ");
+  const addWords = addition.trim().split(" ");
+  let overlap = 0;
+  for (let i = 1; i <= Math.min(baseWords.length, addWords.length); i++) {
+    const end = baseWords.slice(-i).join(" ");
+    const start = addWords.slice(0, i).join(" ");
+    if (end === start) overlap = i;
+  }
+  const uniquePart = addWords.slice(overlap).join(" ");
+  return (base + " " + uniquePart).trim();
+}
+
+const stopWords = ["גו","קדימה"];
+
+recognition.onresult = (event) => {
+  let interimTranscript = "";
+
+  for (let i = event.resultIndex; i < event.results.length; i++) {
+    const transcriptPiece = event.results[i][0].transcript.trim();
+    if (event.results[i].isFinal) {
+      finalTranscript = appendUniqueText(finalTranscript, transcriptPiece);
+    } else {
+      interimTranscript = transcriptPiece;
+    }
+  }
+
+  const combinedText = appendUniqueText(finalTranscript, interimTranscript);
+
+  if (stopWords.some(word => combinedText.includes(word)) && startStop === 0) {
+    forcedStop = true;
+  }
+
+  if (forcedStop) {
+    recognition.stop(); // נעצור רק אחרי שבטוח שהטקסט נקלט
+  }
+};
+
+recognition.onend = () => {
+  clearInterval(interval);
+  document.getElementById('timerDisplay').style.display = 'none';
+
+  if (startStop === 0) {
+    handleSearchFromVoice(cleanText);
+    recognition.start();
+    
+  } else {
+    // אם הופעלה עצירה, ננקה את מילת הקוד מהטקסט ונשלח
+    const cleanText = finalTranscript.replace(/(עצור|תעצור|הפסק|סיים)/g, "").trim();
+    if (cleanText) {
+      handleSearchFromVoice(cleanText);
+    }
+    document.getElementById('resultMic').textContent = "לא מאזין";
+  }
+};
+
+recognition.onerror = (e) => {
+  document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
+};
+
+
+
+
+/*var timeToListen=6000;var interval;
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 recognition.lang = "he-IL";
 recognition.interimResults = false;
@@ -41,6 +140,8 @@ else{document.getElementById('resultMic').textContent ="לא מאזין"}
 recognition.onerror = (e) => {
    document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
 };
+*/
+
 function toggleMenux() {
   if(document.getElementById("hamb").className.includes('open')){
         document.getElementById("hamb").classList.remove("open");
