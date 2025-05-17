@@ -579,10 +579,8 @@ padding-right:10px; padding-left: 10px;
         <table class='tbltbody' id="comparisonTable3">
         <tbody></tbody>
     </table>
-     <label class='yit' style="margin-top:20px;display:none;"> יתרות ודמי ניהול</label>
-       <table class='tbltbody' id="comparisonTable4">
-        <tbody></tbody>
-    </table>
+    
+     
     <div class="charts" id="charts">
         <div class="chart-container"><canvas id="yearChart"></canvas></div>
         <div class="chart-container"><canvas id="threeYearChart"></canvas></div>
@@ -610,7 +608,7 @@ const gufmosdi = gufmosdix.sort((a, b) => a.localeCompare(b, 'he'));
     const tableBody = document.getElementById('comparisonTable')
     const tableBody2 = document.getElementById('comparisonTable2')
 const tableBody3 = document.getElementById('comparisonTable3')
-const tableBody4 = document.getElementById('comparisonTable4')
+
     const divCompare = document.getElementById('compare');
     constbtnPdf = document.getElementById('compareButton3');
     const form1 = document.getElementById('form1');
@@ -756,11 +754,11 @@ function changeTheMuzar() {
     document.querySelector('#comparisonTable tbody').style.display = 'block';
     document.querySelector('.tes').style.display = 'block';
     document.querySelector('.has').style.display = 'block';
-    document.querySelector('.yit').style.display = 'block';
+    
     document.querySelector('.sik').style.display = 'block';
     document.querySelector('#comparisonTable2 tbody').style.display = 'block';
     document.querySelector('#comparisonTable3 tbody').style.display = 'block';
-    document.querySelector('#comparisonTable4 tbody').style.display = 'block';
+    
     document.getElementById('compare').style.display = 'none';
     const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
     const selectedmoz=document.getElementById('sugMMen').value
@@ -773,7 +771,7 @@ function changeTheMuzar() {
     document.getElementById('comparisonTable').style.display = 'block';
     document.getElementById('comparisonTable2').style.display = 'block';
     document.getElementById('comparisonTable3').style.display = 'block';
-    document.getElementById('comparisonTable4').style.display = 'block';
+    
     document.getElementById('yearChart').style.display = 'block';
     document.getElementById('threeYearChart').style.display = 'block';
     document.getElementById('fiveYearChart').style.display = 'block';
@@ -894,29 +892,8 @@ const tableBody3 = document.querySelector('#comparisonTable3 tbody');
                 `;
                 tableBody3.appendChild(row);
             });
- const tableBody4 = document.querySelector('#comparisonTable4 tbody');
-            tableBody4.innerHTML = `
-                <thead>
-                <tr>
-                    <th style="width:17vw;">חברה</th>
-                    <th style="width:25vw;">שם המסלול</th>
-                    <th style="width:17vw;">דמי ניהול </th>
-                    <th style="width:17vw;">יתרת נכסים  </th>
-                    <th style="width:17vw;">צבירה נטו </th>
-                </tr>
-                </thead>
-            `;
-            data.forEach(company => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td  style='text-align:right;paddin-right:5px;width:17vw;white-space:wrap;'>${company.shemkupa.split(" ")[0]}</td>
-                    <td class="tdnamekupa" style='text-align:right;paddin-right:5px;width:25vw;'>${company.shemkupa}</td>
-                    <td style="width:17vw;">${Number(company.dmeyNihul).toFixed(2)}%</td>
-                    <td  style="width:17vw;">${Number(company.yitratNechasim).toFixed(2)}</td>
-                    <td style="width:17vw;">${Number(company.zviraNeto).toFixed(2)}</td>
-                `;
-                tableBody4.appendChild(row);
-            });
+ 
+            
  
  document.querySelectorAll('[class^="tbltbody"] td').forEach(td => {
       let text = td.textContent.trim();
