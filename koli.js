@@ -78,7 +78,7 @@ recognition.onend = () => {
     recognition.start();
   } else {
     const cleanText = finalTranscript.trim();
-    if (cleanText && !cleanText.includes("עצור")) {
+    if (cleanText && !cleanText.includes("קדימה")) {
       handleSearchFromVoice(cleanText);
     }
     document.getElementById('resultMic').textContent = "לא מאזין";
