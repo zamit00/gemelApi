@@ -226,12 +226,7 @@ if (((transcript.includes("חזור") || transcript.includes("הבית")))
   }
 
     // פקודות זמן
-  if (transcript.includes("קצר") && transcript.includes('מאוד')) {timeToListen=3000;}
-  else if (transcript.includes("קצר") && !transcript.includes('מאוד')) {timeToListen=6000;}
-  else if (transcript.includes("בינוני") || transcript.includes("בנוני"))
-    {timeToListen=10000;}
-  else if (transcript.includes("ארוך") && transcript.includes('מאוד')) {timeToListen=20000;}
-  else if (transcript.includes("ארוך") && !transcript.includes('מאוד')) {timeToListen=15000;}
+  
 
 // הפניה לסוכן
 	if ((transcript.includes("קשר") || transcript.includes("סוכן"))) {yossi(); return;
