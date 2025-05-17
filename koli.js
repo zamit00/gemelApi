@@ -1,4 +1,4 @@
-var timeToListen=6000;var interval;
+/*var timeToListen=6000;var interval;
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 recognition.lang = "he-IL";
 recognition.interimResults = false;
@@ -41,8 +41,72 @@ else{document.getElementById('resultMic').textContent ="לא מאזין"}
 recognition.onerror = (e) => {
    document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
 };
+*/
+let startStop = 0;
+const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+recognition.lang = "he-IL";
+recognition.interimResults = true;
+recognition.maxAlternatives = 1;
+recognition.continuous = true;
+
+function micClick() {
+  startStop = 0;
+  bufferText = "";
+  const mictext = document.getElementById('resultMic').textContent;
+
+  if (mictext.includes("עצור")) {
+    startStop = 1;
+    recognition.stop();
+  } else {
+    document.getElementById('resultMic').textContent = " מאזין - אמור 'קדימה או שלח' כדי לשלוח, או 'עצור' כדי להפסיק";
+    recognition.start();
+  }
+}
 
 
+let handledFinals = new Set();
+
+recognition.onresult = (event) => {
+  const result = event.results[event.resultIndex];
+  if (!result.isFinal) return;
+
+  const transcript = result[0].transcript.trim();
+
+  if (transcript.includes("עצור")) {
+    startStop = 1;
+    recognition.stop();
+    return;
+  }
+
+  if (transcript.includes("קדימה") || transcript.includes('שלח')) {
+    recognition.stop();
+    const cleaned =
+transcript.replace(/שלח/g, "").replace(/קדימה/g, "").replace(/עצור/g, "").trim();
+    handleSearchFromVoice(cleaned);
+  }
+};
+
+
+recognition.onend = () => {
+  if (startStop === 0) {
+    recognition.start();
+  } else {
+    document.getElementById('resultMic').textContent = "לא מאזין";
+  }
+};
+
+recognition.onerror = (e) => {
+  console.error("שגיאת זיהוי קולי:", e.error);
+  document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
+};
+
+function normalize(text) {
+  return text
+    .replace(/קדימ[אה]?/g, "קדימה")
+    .replace(/עצור[.]?/g, "עצור")
+    .replace(/[.,]/g, "") // מנקה פסיקים ונקודות
+    .trim();
+}
 function toggleMenux() {
   if(document.getElementById("hamb").className.includes('open')){
         document.getElementById("hamb").classList.remove("open");
@@ -627,8 +691,9 @@ if(transcript.includes("מול")){
     var match1 = gufmosdixA.find(name => name.includes(input));
     if(match1){
       rd2.checked=true; 
-      selmenu1.value = match1;
       menahalotWindow.selchange();
+      selmenu1.value = match1;
+      
     
       input=matchHevra(matchtext[1].trim());
       var match2 = gufmosdixA.find(name => name.includes(input));
@@ -836,6 +901,7 @@ function handleHashDmeyNihul(transcript) {
    if (transcript.includes("צבירה") && !transcript.includes("חודשי")) {rd1.checked=true;
    }
     else if ((transcript.includes("חודשי") || transcript.includes('הפקדה')) && !transcript.includes("צבירה")) {rd2.checked=true;
+    
     }
     else if (transcript.includes("חודשי") && transcript.includes("צבירה")) {rd3.checked=true;
     }
@@ -1463,3 +1529,4 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
+
