@@ -59,7 +59,7 @@ else if(finalTranscript.includes('עבור')){
     }
       
 else if(transcript){
-document.getElementById('txtarea').value=finalTranscript;
+//document.getElementById('txtarea').value=finalTranscript;
      if(finalTranscript && finalTranscript!==finalTranscript1){ handleSearchFromVoice(finalTranscript);
       finalTranscript1=finalTranscript 
       finalTranscript='';
