@@ -38,7 +38,6 @@ recognition.onresult = (event) => {
     }
   }
 
-document.getElementById('txtarea').value=finalTranscript;
      if(finalTranscript!==finalTranscript1){ handleSearchFromVoice(finalTranscript);
       finalTranscript1=finalTranscript 
       finalTranscript='';}
@@ -64,7 +63,6 @@ for (let i = event.resultIndex; i < event.results.length; ++i) {
     }
   }
 
-document.getElementById('txtarea').value=finalTranscript.replace('קדימה','');
  if(finalTranscript!==finalTranscript1){ handleSearchFromVoice(finalTranscript);
       finalTranscript1=finalTranscript 
       finalTranscript='';
