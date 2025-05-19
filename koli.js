@@ -1,47 +1,3 @@
-/*var timeToListen=6000;var interval;
-const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
-recognition.lang = "he-IL";
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
-recognition.continuous = false;
-function micClick() {
-   startStop=0;
-  const mictext=document.getElementById('resultMic').textContent;
-  if(mictext.includes("עצור") ){
-	startStop=1;  recognition.stop();
-  
-}
-else{
-  document.getElementById('resultMic').textContent = " מאזין קבוע - לעצירה אמור עצור או לחץ שוב";
-  recognition.start();}
-}
-recognition.onstart = function () {
-   const timerDisplay = document.getElementById('timerDisplay');
-  let secondsPassed = 0;
-  timerDisplay.style.display = 'block';
-  interval = setInterval(() => {
-    secondsPassed++;
-    timerDisplay.textContent = secondsPassed;
-    if (secondsPassed * 1000 >= timeToListen) {
-      clearInterval(interval);
-      timerDisplay.style.display = 'none';
-      recognition.stop(); 
-    }
-  }, 1000);
-};
-recognition.onresult = (event) => {
-  const transcript = event.results[0][0].transcript;
-  handleSearchFromVoice(transcript);
-};
-recognition.onend = () => {
-clearInterval(interval);
-if(startStop===0) {recognition.start();}
-else{document.getElementById('resultMic').textContent ="לא מאזין"}
-};
-recognition.onerror = (e) => {
-   document.getElementById("result").textContent = "שגיאה בזיהוי קולי: " + e.error;
-};
-*/
 let startStop = 0;
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 recognition.lang = "he-IL";
@@ -65,25 +21,58 @@ function micClick() {
 
 
 let handledFinals = new Set();
-
+let finalTranscript = '';
+let finalTranscript1 = '';
 recognition.onresult = (event) => {
   const result = event.results[event.resultIndex];
   if (!result.isFinal) return;
+  var transcript = result[0].transcript.trim();
+  var iframe=document.getElementById('ifrm');
+  if(iframe && iframe.style.display!=='none'){
+    if(iframe.src.includes('html') && !iframe.src.includes('index')){
+      if(transcript){
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+    const result = event.results[i];
+    if (result.isFinal) {
+      finalTranscript = result[0].transcript.trim();
+    }
+  }
 
-  const transcript = result[0].transcript.trim();
+document.getElementById('txtarea').value=finalTranscript;
+     if(finalTranscript!==finalTranscript1){ handleSearchFromVoice(finalTranscript);
+      finalTranscript1=finalTranscript 
+      finalTranscript='';}
+      
+      }
+      
+    }
+  }
+    else {
+      
 
   if (transcript.includes("עצור")) {
     startStop = 1;
     recognition.stop();
     return;
   }
-
-  if (transcript.includes("קדימה") || transcript.includes('שלח')) {
-    recognition.stop();
-    const cleaned =
-transcript.replace(/שלח/g, "").replace(/קדימה/g, "").replace(/עצור/g, "").trim();
-    handleSearchFromVoice(cleaned);
+var matchKlali = transcript.match(/(הסבר|קולי|חזור|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|הפעל|נקה|הפאל|הבית|קדימה)/);
+if(matchKlali){recognition.stop();
+for (let i = event.resultIndex; i < event.results.length; ++i) {
+    const result = event.results[i];
+    if (result.isFinal) {
+      finalTranscript = result[0].transcript.trim();
+    }
   }
+
+document.getElementById('txtarea').value=finalTranscript.replace('קדימה','');
+ if(finalTranscript!==finalTranscript1){ handleSearchFromVoice(finalTranscript);
+      finalTranscript1=finalTranscript 
+      finalTranscript='';
+   matchKlali='';
+ }
+    
+    }
+    }
 };
 
 
