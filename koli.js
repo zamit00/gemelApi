@@ -1,5 +1,5 @@
 let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';
-var timeToListen=10000;var interval;
+var timeToListen=5000;var interval;
 
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
@@ -54,11 +54,13 @@ if (!result.isFinal) return;
     recognition.stop();
     return;
   }
-console.log(transcript)
-  if (transcript.includes("ארוך")) {
+
+  const matchTimer=transcript.match(/(ארוך|בינוני|קצר)/)
+  if (matchTimer) {
     chngContinuous = false;
     recognition.stop();
     recognition.continuous = false;
+    handleSearchFromVoice(matchTimer[0])
     return;
   }
 
@@ -73,11 +75,12 @@ console.log(transcript)
     handleSearchFromVoice(transcript);
   } else {
    
-    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור)/);
+    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלוואה|דמי ניהול)/);
     if (matchKlali) {
       recognition.stop();
       handleSearchFromVoice(matchKlali[0]);
     }
+    
   }
 };
 
@@ -134,7 +137,14 @@ function hideformic() {
   hideTkufa();
 }
 function handleSearchFromVoice(transcript) {
-var iframe = document.getElementById('ifrm');
+  var iframe = document.getElementById('ifrm');
+  console.log(transcript)
+if (transcript.includes("קצר")) {timeToListen=4000;return;}
+else if (transcript.includes("בינוני") || transcript.includes("בנוני"))
+  {timeToListen=8000;return;}
+else if (transcript.includes("ארוך")) {timeToListen=12000;return;}
+
+
 if(iframe && iframe.src.includes("html") && !iframe.src.includes("index")) {ifrmValue=1;}
 else {ifrmValue=0;}
 if(!transcript){return}
@@ -904,8 +914,6 @@ function handleSharp(transcript) {
       }
 
 function handleHashDmeyNihul(transcript) {
-  console.log('ok3')
-  console.log(transcript)
   const iframex = document.getElementById('ifrm');
   const dmeyNihultDoc = iframex.contentWindow.document;
   const dmeyNihulWindow = iframex.contentWindow;
@@ -944,7 +952,7 @@ function handleHashDmeyNihul(transcript) {
     dmeyNihulWindow.hashev(0.04);dmeyNihulWindow.scrollBy(0, 300);
     transcript='';
   }
- if (!pianoach) transcript='';return;
+ if (!pianoach) {transcript='';return;}
   if(pianoach.amount){
       savingAmount.value=pianoach.amount;
       alltoz.style.display="none";
@@ -1562,5 +1570,4 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
-
 
