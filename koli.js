@@ -45,6 +45,7 @@ recognition.onstart = function () {
 recognition.onresult = (event) => {
   const result = event.results[event.resultIndex];
   transcript = result[0].transcript.trim();
+if (!result.isFinal) return;
 
   if (!transcript) return;
 
