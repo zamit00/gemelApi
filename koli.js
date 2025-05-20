@@ -1,6 +1,6 @@
 
-let startStop = 0;
-let ifrmValue=0;
+let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';
+var timeToListen=5000;var interval;
 const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
 recognition.lang = "he-IL";
 recognition.interimResults = true;
@@ -22,74 +22,45 @@ function micClick() {
 }
 
 
-let finalTranscript = '';
-let finalTranscript1 = '';
+recognition.onstart = function () {
+  if(!chngContinuous){
+    const timerDisplay = document.getElementById('timerDisplay');
+    let secondsPassed = 0;
+    timerDisplay.style.display = 'block';
+    interval = setInterval(() => {
+      secondsPassed++;
+      timerDisplay.textContent = secondsPassed;
+      if (secondsPassed * 1000 >= timeToListen) {
+        clearInterval(interval);
+        timerDisplay.style.display = 'none';
+        recognition.stop(); 
+      }
+    }, 1000);
+}
+};
 
 recognition.onresult = (event) => {
-//  document.getElementById('txtarea').value='';
-  const result = event.results[event.resultIndex];
-  if (!result.isFinal) return;
-  var transcript = result[0].transcript.trim();
+  if(!transcript) return;
   if (transcript.includes("עצור")) {
     startStop = 1;
     recognition.stop();
     return;
   }
-  for (let i = event.resultIndex; i < event.results.length; ++i) {
-    const result = event.results[i];
-    if (result.isFinal) {
-      finalTranscript = result[0].transcript.trim();
-    }
-  }
-  
-  var iframe=document.getElementById('ifrm');
-  if(iframe && iframe.style.display!=='none' && transcript){
-      ifrmValue=1;
- var matchKlali = transcript.match(/(ראש|תחתית)/)
- if(matchKlali){
-  recognition.stop(); handleSearchFromVoice(matchKlali);
-    matchKlali='';return;}
-    
-else if(finalTranscript.includes('עבור')){
-//  document.getElementById('txtarea').value=finalTranscript.replace('עבור','');
-    handleSearchFromVoice(finalTranscript.replace('עבור',''));
-     finalTranscript1=finalTranscript
-     finalTranscript='';
-      transcript='';
-    }
-      
-else if(transcript){
-//document.getElementById('txtarea').value=finalTranscript;
-     if(finalTranscript && finalTranscript!==finalTranscript1){ handleSearchFromVoice(finalTranscript);
-      finalTranscript1=finalTranscript 
-      finalTranscript='';
-       transcript='';
-     }
-      
+  if(transcript.includ("ארוך")){chngContinuous=false;}
+  else if(transcript.includ("רגיל")){chngContinuous=true;}
+  if(!chngContinuous && transcript.includes("עצור")){
+      transcript = event.results[0][0].transcript;
+      handleSearchFromVoice(transcript);}
+  else if(chngContinuous && transcript.includes("עצור")){
+      const result = event.results[event.resultIndex];
+      transcript = result[0].transcript.trim();
+      var matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור)/);
+      if(matchKlali){
+        recognition.stop();
+         handleSearchFromVoice(matchKlali);
       }
-  }
-else if(transcript){
-var matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור)/);
-if(matchKlali){recognition.stop();
-for (let i = event.resultIndex; i < event.results.length; ++i) {
-    const result = event.results[i];
-    if (result.isFinal) {
-      finalTranscript = result[0].transcript.trim();
     }
-  }
-
-//document.getElementById('txtarea').value=finalTranscript.replace('עבור','');
- if(finalTranscript!==finalTranscript1){
-   handleSearchFromVoice(finalTranscript.replace('עבור',''));
-      finalTranscript1=finalTranscript 
-      finalTranscript='';
-   matchKlali='';
-   transcript='';
- }
-    
-    }
-    }
-};
+}
 
 recognition.onend = () => {
   if (startStop === 0) {
