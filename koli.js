@@ -984,7 +984,7 @@ function handleHashDmeyNihul(transcript) {
     if(pianoach.interest){
       selecttoz.value=pianoach.interest/100;
       if(!alltoz.style.display==="none"){
-        dmeyNihulWindow.othribit(match.interest/100);
+        dmeyNihulWindow.othribit(pianoac.interest/100);
 	dmeyNihultDoc.getElementById("kottoz").textContent = `לפי ריבית ${match.interest}% שנתי:`;
         if(window.innerWidth<400){ dmeyNihulWindow.scrollBy(0, 350);}}
     }
