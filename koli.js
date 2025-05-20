@@ -1,7 +1,9 @@
-
 let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';
-var timeToListen=5000;var interval;
-const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+var timeToListen=10000;var interval;
+
+const recognition = typeof webkitSpeechRecognition !== "undefined"
+  ? new webkitSpeechRecognition()
+  : new SpeechRecognition();
 recognition.lang = "he-IL";
 recognition.interimResults = true;
 recognition.maxAlternatives = 1;
@@ -9,7 +11,6 @@ recognition.continuous = true;
 
 function micClick() {
   startStop = 0;
-  bufferText = "";
   const mictext = document.getElementById('resultMic').textContent;
 
   if (mictext.includes("עצור")) {
@@ -23,10 +24,13 @@ function micClick() {
 
 
 recognition.onstart = function () {
-  if(!chngContinuous){
+  if (chngContinuous === false) {
     const timerDisplay = document.getElementById('timerDisplay');
     let secondsPassed = 0;
     timerDisplay.style.display = 'block';
+
+    clearInterval(interval); // מניעת הצטברות אינטרוולים קודמים
+
     interval = setInterval(() => {
       secondsPassed++;
       timerDisplay.textContent = secondsPassed;
@@ -36,38 +40,74 @@ recognition.onstart = function () {
         recognition.stop(); 
       }
     }, 1000);
-}
+  }
 };
-
 recognition.onresult = (event) => {
-  if(!transcript) return;
+  const result = event.results[event.resultIndex];
+  transcript = result[0].transcript.trim();
+
+  if (!transcript) return;
+
   if (transcript.includes("עצור")) {
     startStop = 1;
     recognition.stop();
     return;
   }
-  if(transcript.includ("ארוך")){chngContinuous=false;}
-  else if(transcript.includ("רגיל")){chngContinuous=true;}
-  if(!chngContinuous && transcript.includes("עצור")){
-      transcript = event.results[0][0].transcript;
-      handleSearchFromVoice(transcript);}
-  else if(chngContinuous && transcript.includes("עצור")){
-      const result = event.results[event.resultIndex];
-      transcript = result[0].transcript.trim();
-      var matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור)/);
-      if(matchKlali){
-        recognition.stop();
-         handleSearchFromVoice(matchKlali);
-      }
+console.log(transcript)
+  if (transcript.includes("ארוך")) {
+    chngContinuous = false;
+    recognition.stop();
+    recognition.continuous = false;
+    return;
+  }
+
+  if (transcript.includes("רגיל")) {
+    chngContinuous = true;
+    recognition.stop();
+    recognition.continuous = true;
+    return;
+  }
+
+  if (chngContinuous === false) {
+    handleSearchFromVoice(transcript);
+  } else {
+   
+    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור)/);
+    if (matchKlali) {
+      recognition.stop();
+      handleSearchFromVoice(matchKlali[0]);
     }
-}
+  }
+};
 
 recognition.onend = () => {
   if (startStop === 0) {
+    recognition.continuous = chngContinuous === true;
     recognition.start();
+
+    // אם המצב הוא "ארוך", אז צריך להפעיל את הטיימר מחדש בכל סוף זיהוי
+    if (chngContinuous === false) {
+      const timerDisplay = document.getElementById('timerDisplay');
+      let secondsPassed = 0;
+      timerDisplay.style.display = 'block';
+
+      clearInterval(interval); // לניקוי קודם
+
+      interval = setInterval(() => {
+        secondsPassed++;
+        timerDisplay.textContent = secondsPassed;
+        if (secondsPassed * 1000 >= timeToListen) {
+          clearInterval(interval);
+          timerDisplay.style.display = 'none';
+          recognition.stop();
+        }
+      }, 1000);
+    }
   } else {
     document.getElementById('resultMic').textContent = "לא מאזין";
   }
+
+  transcript = '';
 };
 
 recognition.onerror = (e) => {
