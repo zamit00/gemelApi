@@ -1,5 +1,5 @@
-let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';
-var timeToListen=5000;var interval;
+let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';var matchKlaliLast;
+var timeToListen=5000;var interval;let lastTranscript = '';
 
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
@@ -42,12 +42,17 @@ recognition.onstart = function () {
     }, 1000);
   }
 };
+
+
 recognition.onresult = (event) => {
   const result = event.results[event.resultIndex];
   transcript = result[0].transcript.trim();
-if (!result.isFinal) return;
 
+  if (!result.isFinal) return;
   if (!transcript) return;
+
+  if (transcript === lastTranscript) return; // מניע כפילויות
+  lastTranscript = transcript;
 
   if (transcript.includes("עצור")) {
     startStop = 1;
@@ -55,12 +60,12 @@ if (!result.isFinal) return;
     return;
   }
 
-  const matchTimer=transcript.match(/(ארוך|בינוני|קצר)/)
+  const matchTimer = transcript.match(/(ארוך|בינוני|קצר)/);
   if (matchTimer) {
     chngContinuous = false;
     recognition.stop();
     recognition.continuous = false;
-    handleSearchFromVoice(matchTimer[0])
+    handleSearchFromVoice(matchTimer[0]);
     return;
   }
 
@@ -72,17 +77,19 @@ if (!result.isFinal) return;
   }
 
   if (chngContinuous === false) {
+    console.log(transcript);
     handleSearchFromVoice(transcript);
   } else {
-   
     const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלוואה|דמי ניהול)/);
-    if (matchKlali) {
+    if (matchKlali && matchKlali[0] !== matchKlaliLast) {
+      console.log(matchKlali[0] + ':' + matchKlaliLast);
       recognition.stop();
       handleSearchFromVoice(matchKlali[0]);
+      matchKlaliLast = matchKlali[0];
     }
-    
   }
 };
+
 
 recognition.onend = () => {
   if (startStop === 0) {
@@ -138,7 +145,6 @@ function hideformic() {
 }
 function handleSearchFromVoice(transcript) {
   var iframe = document.getElementById('ifrm');
-  console.log(transcript)
 if (transcript.includes("קצר")) {timeToListen=4000;return;}
 else if (transcript.includes("בינוני") || transcript.includes("בנוני"))
   {timeToListen=8000;return;}
@@ -983,10 +989,12 @@ function handleHashDmeyNihul(transcript) {
     }
     if(pianoach.interest){
       selecttoz.value=pianoach.interest/100;
-      if(!alltoz.style.display==="none"){
-        dmeyNihulWindow.othribit(pianoac.interest/100);
+ //     if(!alltoz.style.display==="none"){
+        dmeyNihulWindow.othribit(pianoach.interest/100);
 	dmeyNihultDoc.getElementById("kottoz").textContent = `לפי ריבית ${match.interest}% שנתי:`;
-        if(window.innerWidth<400){ dmeyNihulWindow.scrollBy(0, 350);}}
+        if(window.innerWidth<400){ dmeyNihulWindow.scrollBy(0, 350);}
+        
+     // }
     }
     
   
