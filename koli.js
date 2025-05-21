@@ -80,7 +80,7 @@ recognition.onresult = (event) => {
     
     handleSearchFromVoice(transcript);
   } else {
-    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלוואה|דמי ניהול)/);
+    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול)/);
     const matchKlali1 = transcript.match(/(חברות|מחשבונים|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+))/)
     if (matchKlali && matchKlali[0] !== matchKlaliLast) {
       recognition.stop();
@@ -298,7 +298,7 @@ if(ifrmValue===1){
   
   if (iframe.src.includes("Machshevonim")) {
     hideformic();
-    if (transcript.includes("הלוואות") || transcript.includes("הלוואה") || 
+    if (transcript.includes("הלווא") || 
     transcript.includes("שפיצר")){
       showIframe("loan.html");
       const iframe = document.getElementById("ifrm");iframe.onload = function() {
@@ -342,7 +342,7 @@ if(ifrmValue===1){
   
 }
 // פקודות הפניה למחשבונים ישירות
-if ((transcript.includes("הלוואות") || transcript.includes("הלוואה") || transcript.includes("שפיצר")) && ifrmValue === 0) {
+if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && ifrmValue === 0) {
     hideformic();
     showIframe("loan.html");
     const iframe = document.getElementById("ifrm");
