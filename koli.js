@@ -17,7 +17,7 @@ function micClick() {
     startStop = 1;
     recognition.stop();
   } else {
-    document.getElementById('resultMic').textContent = " מאזין - אמור 'עצור' כדי להפסיק";
+    document.getElementById('resultMic').textContent = " מאזין - אמור 'עבור' לביצוע או 'עצור' כדי להפסיק";
     recognition.start();
   }
 }
@@ -49,7 +49,6 @@ recognition.onresult = (event) => {
   transcript = result[0].transcript.trim();
 
   if (!result.isFinal) return;
-  
   if (!transcript) return;
 
   if (transcript === lastTranscript) return; // מניע כפילויות
@@ -76,23 +75,25 @@ recognition.onresult = (event) => {
     recognition.continuous = true;
     return;
   }
-
+  
   if (chngContinuous === false) {
-    console.log(transcript);
+    
     handleSearchFromVoice(transcript);
   } else {
     const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלוואה|דמי ניהול)/);
- if (transcript.includes("השווא") && transcript.includes("חברות") && ifrmValue===0)
-  {
-    recognition.stop();
-      handleSearchFromVoice(transcript);
-  }
-  
+    const matchKlali1 = transcript.match(/(חברות|מחשבונים|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+))/)
     if (matchKlali && matchKlali[0] !== matchKlaliLast) {
       recognition.stop();
       handleSearchFromVoice(matchKlali[0]);
       matchKlaliLast = matchKlali[0];
     }
+    else if(matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
+      if(transcript.includes('השקעה') && !transcript.includes('מקצועי')){matchKlali1[0]='השקעה'};
+      recognition.stop();
+      handleSearchFromVoice(matchKlali1[0]);
+      matchKlaliLast = matchKlali1[0];
+    }
+    
   }
 };
 
@@ -171,7 +172,7 @@ if (transcript.includes("שימוש") || transcript.includes("תנאי")) {
   transcript='';
   return;
 }
-else if (transcript.includes("הסבר") || transcript.includes("קולי")) {
+else if (transcript.includes("הסבר") || transcript.includes(" קולי")) {
   showIframe('koliHes.html'); 
   transcript='';return;
   }
@@ -385,7 +386,7 @@ if ((transcript.includes("הלוואות") || transcript.includes("הלוואה"
   }
   
   //  פקודות הפניה להשוואות 
-  if (transcript.includes("השווא") && transcript.includes("חברות") && ifrmValue===0
+  if (transcript.includes("חברות") && ifrmValue===0
     && !transcript.includes("ניהול") && !transcript.includes("משולב") && !transcript.includes("מנהלות")) {
     hideformic(); showIframe("hashvaotRikuz.html");transcript='';return;
   }
@@ -454,7 +455,7 @@ if(transcript.includes("מנהלות") || transcript.includes("מנהלת")) {
 if(transcript.includes("מקצועי")  && ifrmValue===0
 && !transcript.includes("השתלמות") && !transcript.includes("פנסיה") && 
 !transcript.includes("גמל") && !transcript.includes("השקעה") && !transcript.includes("חסכון")
-&& !transcript.includes("ילד") && !transcript.includes("פוליסות")) {
+&& !transcript.includes("ילד") && !transcript.includes("פוליס")) {
     hideformic(); showIframe("meidaMikzoei.html");transcript='';return;
   }
 if(iframe && ifrmValue===1){
@@ -475,7 +476,7 @@ if(iframe && ifrmValue===1){
       hideformic(); showIframe("hisyeled.html");
     transcript='';return;
     }
-    else if (transcript.includes("פוליסות")) {
+    else if (transcript.includes("פוליס")) {
       hideformic(); showIframe("polisotMikzoei.html");
       transcript='';return;
     }
@@ -503,7 +504,7 @@ if(iframe && ifrmValue===1){
       hideformic(); showIframe("hisyeled.html");
    transcript='';return;
     }
-    else if (transcript.includes("פוליסות")) {
+    else if (transcript.includes("פוליס")) {
       hideformic(); showIframe("polisotMikzoei.html");
       transcript='';return;
     }
@@ -513,11 +514,11 @@ if(iframe && ifrmValue===1){
     }
   }
   // פקודות הפניה למידע מסלולים
-  else if (transcript.includes(" השתלמות") && !transcript.includes("מקצועי")
+  else if (transcript.includes("השתלמות") && !transcript.includes("מקצועי")
 	  && ifrmValue === 0 && document.getElementById('filter').style.display==='none') {
     showKupaMeida('pHish'); hideMaBaatar(); maslulim(30,'קרנות השתלמות',0);transcript='';return; 
   }
-  else if (transcript.includes(" פנסיה") && !transcript.includes("מקצועי") && ifrmValue === 0   && document.getElementById('filter').style.display==='none') {
+  else if (transcript.includes("פנסיה") && !transcript.includes("מקצועי") && ifrmValue === 0   && document.getElementById('filter').style.display==='none') {
     showKupaMeida('pPensia'); hideMaBaatar(); maslulimP(30,'קרנות חדשות',0);transcript='';return; 
   }
   else if (transcript.includes("השקעה") && !transcript.includes("מקצועי")
@@ -527,7 +528,7 @@ if(iframe && ifrmValue===1){
   else if (transcript.includes("ילד") && !transcript.includes("מקצועי") && ifrmValue === 0  && document.getElementById('filter').style.display==='none') {
     showKupaMeida('pYeled'); hideMaBaatar(); maslulim(30,'קופת גמל להשקעה - חסכון לילד',0);transcript='';return; 
   }
-  else if (transcript.includes("פוליסות") && !transcript.includes("מקצועי") && ifrmValue === 0  && document.getElementById('filter').style.display==='none') {
+  else if (transcript.includes("פוליס") && !transcript.includes("מקצועי") && ifrmValue === 0  && document.getElementById('filter').style.display==='none') {
     showKupaMeida('pPolisa'); hideMaBaatar(); maslulim(30,'פוליסות חסכון',0);transcript='';return; 
   }
   else if (transcript.includes("גמל") && !transcript.includes("השקעה") && !transcript.includes("מקצועי")
@@ -843,8 +844,8 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
 
     
    
-     if((matchHev ||  transcript.includes("כול") || transcript.includes("כל") 
-    || transcript.includes("קול")) && !transcript.includes("כלל")){
+     if(matchHev ||  transcript.includes("כול") || transcript.includes("כל") 
+    || transcript.includes("קול") && !transcript.includes("כלל")){
       
        const checkboxes = menahalotDoc.querySelectorAll('.dropdown-menu input[type="checkbox"]');
        checkboxes.forEach((checkbox) => {
@@ -1582,4 +1583,3 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
-
