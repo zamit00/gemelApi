@@ -81,17 +81,19 @@ recognition.onresult = (event) => {
     handleSearchFromVoice(transcript);
   } else {
     const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול)/);
-    const matchKlali1 = transcript.match(/(חברות|מחשבונים|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+))/)
-    if (matchKlali && matchKlali[0] !== matchKlaliLast) {
+    const matchKlali1 = transcript.match(/(חברות|מחשבונים|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+)|הרבה\s+(\S+)|קצת\s+(\S+))/)
+    
+
+   if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
       recognition.stop();
-      handleSearchFromVoice(matchKlali[0]);
-      matchKlaliLast = matchKlali[0];
+      handleSearchFromVoice(transcript);
+      matchKlaliLast = transcript;
     }
-    else if(matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
-      if(transcript.includes('השקעה') && !transcript.includes('מקצועי')){matchKlali1[0]='השקעה'};
+    else if(matchKlali && matchKlali[0] !== matchKlaliLast) {
+      if(transcript.includes('השקעה') && !transcript.includes('מקצועי')){matchKlali[0]='השקעה'};
       recognition.stop();
-      handleSearchFromVoice(matchKlali1[0]);
-      matchKlaliLast = matchKlali1[0];
+      handleSearchFromVoice(transcript);
+      matchKlaliLast = transcript;
     }
     
   }
@@ -306,22 +308,21 @@ if(ifrmValue===1){
       }
       transcript='';return;
     }
-    else if (transcript.includes("דריבית") || transcript.includes("ערך עתידי")) {
+    else if (transcript.includes("דריבית") || transcript.includes("עתידי")) {
       showIframe("ribitderibit.html");
       const iframe = document.getElementById("ifrm");iframe.onload = function() {
         handleCompoundInterest(transcript);
       }
       transcript='';return;
     }
-    else if (transcript.includes("דמי ניהול") || transcript.includes("ניהול")) {  
+    else if (transcript.includes("ניהול")) {
       showIframe("hashDmeyNihul.html");
       const iframe = document.getElementById("ifrm");iframe.onload = function() {
         handleHashDmeyNihul(transcript);
       }
       transcript='';return;
     } 
-    else if (transcript.includes("הפקדה חודשית") || transcript.includes("יעד")
-      || transcript.includes("סכום יעד")) {
+    else if (transcript.includes("הפקדה חודשית") || transcript.includes("יעד")) {
         hideformic(); showIframe("hafkada.html");
         document.getElementById('ifrm').onload = function() {
           handleYaad(transcript);
@@ -351,7 +352,7 @@ if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && 
     };
     transcript='';return;
 }
-  else if ((transcript.includes("דריבית") || transcript.includes("ערך עתידי"))
+  else if ((transcript.includes("דריבית") || transcript.includes("עתידי"))
   && ifrmValue === 0) {
     hideformic(); showIframe("ribitderibit.html");
 	const iframe = document.getElementById("ifrm");
@@ -360,7 +361,7 @@ if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && 
     };
     transcript='';return;
   }
-  else if ((transcript.includes("דמי ניהול") || transcript.includes("ניהול")) && ifrmValue===0) {
+  else if (transcript.includes("ניהול") && ifrmValue===0) {
     hideformic(); showIframe("hashDmeyNihul.html");
        document.getElementById('ifrm').onload = function() {
       handleHashDmeyNihul(transcript);
@@ -368,8 +369,7 @@ if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && 
     transcript='';return;
   }
   
-  else if ((transcript.includes("הפקדה חודשית") || transcript.includes("יעד")
-  || transcript.includes("סכום יעד")) && ifrmValue===0) {
+  else if ((transcript.includes("הפקדה חודשית") || transcript.includes("יעד")) && ifrmValue===0) {
     hideformic(); showIframe("hafkada.html");
     document.getElementById('ifrm').onload = function() {
       handleYaad(transcript);
