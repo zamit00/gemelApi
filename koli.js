@@ -81,8 +81,13 @@ recognition.onresult = (event) => {
     handleSearchFromVoice(transcript);
   } else {
     const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלוואה|דמי ניהול)/);
+ if (transcript.includes("השווא") && transcript.includes("חברות") && ifrmValue===0)
+  {
+    recognition.stop();
+      handleSearchFromVoice(transcript);
+  }
+  
     if (matchKlali && matchKlali[0] !== matchKlaliLast) {
-      console.log(matchKlali[0] + ':' + matchKlaliLast);
       recognition.stop();
       handleSearchFromVoice(matchKlali[0]);
       matchKlaliLast = matchKlali[0];
@@ -255,8 +260,6 @@ else	if (transcript.includes("ראש")  && ifrmValue===0) {window.scrollTo(0, 0)
     transcript='';return;
   }
 
-    // פקודות זמן
-  
 
 // הפניה לסוכן
 	if ((transcript.includes("קשר") || transcript.includes("סוכן"))) {yossi();  transcript='';return;
@@ -381,7 +384,7 @@ if ((transcript.includes("הלוואות") || transcript.includes("הלוואה"
   }
   
   //  פקודות הפניה להשוואות 
-  if ((transcript.includes("השווא") || transcript.includes("חברות")) && ifrmValue===0
+  if (transcript.includes("השווא") && transcript.includes("חברות") && ifrmValue===0
     && !transcript.includes("ניהול") && !transcript.includes("משולב") && !transcript.includes("מנהלות")) {
     hideformic(); showIframe("hashvaotRikuz.html");transcript='';return;
   }
