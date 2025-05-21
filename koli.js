@@ -1022,7 +1022,7 @@ function handleYaad(transcript) {
       const match=handleInput(transcript)
       managementFee.value = match.dmey;
       managementFeeSlider.value = match.dmey;
-      if(window.innerWidth<400){
+      if(window.innerWidth<400 && match.dmey){
         managementFeeSlider.scrollIntoView({ behavior: "smooth", block: "start" })};
     }
     if((transcript.includes("יעד") || transcript.includes("יד")) && transcript.includes("סכום")){
@@ -1034,14 +1034,14 @@ function handleYaad(transcript) {
       const match=handleInput(transcript)
       initialAmount.value = match.amount;
       initialAmountSlider.value = match.amount;
-      if(window.innerWidth<400){
+      if(window.innerWidth<400 && match.amount){
         initialAmount.scrollIntoView({ behavior: "smooth", block: "start" })};
     }
     if(transcript.includes("ריבית") ){
       const match=handleInput(transcript);
       interestRate.value = match.interest;
       interestRateSlider.value = match.interest;
-      if(window.innerWidth<400){
+      if(window.innerWidth<400 && match.interest){
         interestRateSlider.scrollIntoView({ behavior: "smooth", block: "start" })};
     }
     if(transcript.includes("תקופ")){
