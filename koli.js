@@ -17,7 +17,7 @@ function micClick() {
     startStop = 1;
     recognition.stop();
   } else {
-    document.getElementById('resultMic').textContent = " מאזין - אמור 'עבור' לביצוע או 'עצור' כדי להפסיק";
+    document.getElementById('resultMic').textContent = " מאזין - אמור 'עצור' כדי להפסיק";
     recognition.start();
   }
 }
