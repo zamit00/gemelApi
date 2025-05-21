@@ -844,7 +844,7 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
     
    
      if((matchHev ||  transcript.includes("כול") || transcript.includes("כל") 
-    || transcript.includes("קול")) && transcript.includes("כלל")!){
+    || transcript.includes("קול")) && !transcript.includes("כלל")){
       
        const checkboxes = menahalotDoc.querySelectorAll('.dropdown-menu input[type="checkbox"]');
        checkboxes.forEach((checkbox) => {
