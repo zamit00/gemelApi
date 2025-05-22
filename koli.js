@@ -106,35 +106,37 @@ recognition.onresult = (event) => {
           };
           molMatch='';
     }
-   else if(iframe && iframe.src.includes('html') && !iframe.src.includes('index') && (loanMatch || deribitMatch || dmeyNihulMatch || sikonMatch || yaadMatch)){
-      if(iframe.src.includes('loan') && loanMatch){
+   else if(iframe && iframe.src.includes('html') && !iframe.src.includes('index') && (loanMatch || deribitMatch || dmeyNihulMatch || sikonMatch || yaadMatch || menahalotMatch)){
+	if(iframe.src.includes('loan') && loanMatch){
         handleLoan(transcript)
       }
-      else  if(iframe.src.includes('ribitderibit') && deribitMatch){
-        handleCompoundInterest(transcript)
-        
+	else  if(iframe.src.includes('ribitderibit') && deribitMatch){
+        handleCompoundInterest(transcript)     
       }
-     else  if(iframe.src.includes('hashDmeyNihul') && dmeyNihulMatch){
+	else  if(iframe.src.includes('hashDmeyNihul') && dmeyNihulMatch){
       handleHashDmeyNihul(transcript)
       } 
-      else  if(iframe.src.includes('riskQuest') && sikonMatch){
+	else  if(iframe.src.includes('riskQuest') && sikonMatch){
       handleSheelon(transcript)
       } 
-      else  if(iframe.src.includes('hafkada') && yaadMatch){
+	else  if(iframe.src.includes('hafkada') && yaadMatch){
       handleYaad(transcript)
-      }
-     else  if(iframe.src.includes('hashMena') && menahalotMatch){
-	  if(transcript.includes('הסתר') || transcript.includes('אסתר') || transcript.includes('סגור'){
-		  handleMenahalot("הסתר")
-	  }
-	else if(transcript.includes('כל') && !transcript.includes('כלל'){
-		 handleMenahalot("כל")
-	}
-	else{
-      		 handleMenahalot(transcript)
-	}
       } 
-  }
+	else  if(iframe.src.includes('hashMena') && menahalotMatch){
+		 if(transcript.includes('הסתר') || transcript.includes('אסתר') || transcript.includes('סגור'){
+		  handleMenahalot("הסתר")
+	  	}
+		else if(transcript.includes('כל') && !transcript.includes('כלל'){
+		 handleMenahalot("כל")
+		}
+		else{
+      		 handleMenahalot(transcript)
+		}	
+	}   
+   }
+
+
+
   else if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
       recognition.stop();
       handleSearchFromVoice(transcript);
