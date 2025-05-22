@@ -1,6 +1,39 @@
 let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';var matchKlaliLast;
 var timeToListen=5000;var interval;let lastTranscript = '';
 
+function regexAllLoan(transcript){ 
+const loanWordsFull = ["הלווא", "סכום", "ריבית", "תקופ", "גרייס"];
+const loanExistFull = loanWordsFull.every(word => new RegExp(word, "i").test(transcript));
+const loanWordsFour = ["הלווא", "סכום", "ריבית", "תקופ"];
+const loanExistFour = loanWordsFour.every(word => new RegExp(word, "i").test(transcript));
+const loanWordsThree = ["הלווא", "סכום"];
+const loanExistThree = loanWordsThree.every(word => new RegExp(word, "i").test(transcript));
+const loanWordsTwo = ["הלווא", "סכום"];
+const loanExistTwo = loanWordsTwo.every(word => new RegExp(word, "i").test(transcript));
+
+return{
+  loanExistFull:loanExistFull,
+  loanExistFour:loanExistFour,
+  loanExistThree:loanExistThree,
+  loanExistTwo:loanExistTwo,
+}
+
+}
+
+function regexAllDribit(transcript){ 
+  const DribitWordsFull = ["פעמי", "סכום", "תשלומים", "תקופ", "ניהול","עתידי","חשב"];
+  const DribitExistFull = DribitWordsFull.every(word => new RegExp(word, "i").test(transcript));
+  const DribitWordsFour = ["פעמי", "סכום", "תשלומים", "תקופ", "עתידי"];
+  const DribitExistFour = DribitWordsFour.every(word => new RegExp(word, "i").test(transcript));
+  
+  
+  return{
+    DribitExistFull:DribitExistFull,
+    DribitExistFour:DribitExistFour,
+  }
+  
+  }
+
 
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
@@ -45,6 +78,7 @@ recognition.onstart = function () {
 };
 
 recognition.onresult = (event) => {
+
   var iframe = document.getElementById('ifrm');
   const result = event.results[event.resultIndex];
   transcript = result[0].transcript.trim();
@@ -54,6 +88,8 @@ recognition.onresult = (event) => {
 
   if (transcript === lastTranscript) return; // מניע כפילויות
   lastTranscript = transcript;
+
+  
 
   if (transcript.includes("עצור")) {
     startStop = 1;
@@ -77,6 +113,33 @@ recognition.onresult = (event) => {
     return;
   }
 
+  const loanMatchx=regexAllLoan(transcript);
+  if(loanMatchx.loanExistFull || loanMatchx.loanExistFour || loanMatchx.loanExistTwo
+     || loanMatchx.loanExistThree 
+  ){
+
+    hideformic();window.hideframe();
+    showIframe("loan.html");
+    const iframe = document.getElementById("ifrm");
+    iframe.onload = function() {
+        handleLoan(transcript);
+    };
+    return;
+  }
+  const DribitMatchx=regexAllDribit(transcript);
+  if(DribitMatchx.DribitExistFull || DribitMatchx.DribitExistFour 
+  ){
+
+    hideformic();window.hideframe();
+    showIframe("ribitderibit.html");
+    const iframe = document.getElementById("ifrm");
+    iframe.onload = function() {
+        handleCompoundInterest(transcript);
+    };
+    return;
+  }
+
+  
   if (chngContinuous === false) {
     handleSearchFromVoice(transcript);
   } else {
@@ -102,7 +165,6 @@ recognition.onresult = (event) => {
       iframex.onload = function () {
         handleMenahalot(transcript);
       };
-      molMatch = '';
     }
 
     else if (
