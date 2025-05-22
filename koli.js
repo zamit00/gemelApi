@@ -90,7 +90,7 @@ recognition.onresult = (event) => {
     
     const yaadMatch=transcript.match(/(יעד\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|סוג\s+(\S+)|ניהול\s+(\S+)|חשב|התחלתי\s+(\S+)|תקופת\s+(\S+))/);
     const dmeyNihulMatch=transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|גיל\s+(\S+)|סוג\s+(\S+)|(\S+)\s+קיים|ניהול\s+(\S+)|חשב|בצע|(\S+)\s+חדש)/);
-    
+    const menahalotMatch=transcript.match(/(שתי\s+(\S+)|מובילה\s+(\S+)|מול\s+(\S+)|הצג\s+(\S+)|בצק\s+(\S+)|הסתר|אסתר|סגור|כל|כול|קול|מוצר\s+(\S+)|הדפס|pdf|בצע|בצא|הפעל|חשב)/);
     const sikonMatch=transcript.match(/(שאלה\s+ראשונה\s+(\S+)|שאלה\s+שניה\s+(\S+)|שאלה\s+שלישית\s+(\S+)|שאלה\s+רביעית\s+(\S+)|שאלה\s+חמישית\s+(\S+)|שאלה\s+שישית\s+(\S+)|חשב\s+(\S+)|עבור\s+(\S+))/)
     
     const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול|דריבית|עתידי)/);
@@ -122,6 +122,17 @@ recognition.onresult = (event) => {
       } 
       else  if(iframe.src.includes('hafkada') && yaadMatch){
       handleYaad(transcript)
+      }
+     else  if(iframe.src.includes('hashMena') && menahalotMatch){
+	  if(transcript.includes('הסתר') || transcript.includes('אסתר') || transcript.includes('סגור'){
+		  handleMenahalot("הסתר")
+	  }
+	else if(transcript.includes('כל') && !transcript.includes('כלל'){
+		 handleMenahalot("כל")
+	}
+	else{
+      		 handleMenahalot(transcript)
+	}
       } 
   }
   else if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
