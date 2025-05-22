@@ -93,10 +93,6 @@ recognition.onresult = (event) => {
     
     const sikonMatch=transcript.match(/(שאלה\s+ראשונה\s+(\S+)|שאלה\s+שניה\s+(\S+)|שאלה\s+שלישית\s+(\S+)|שאלה\s+רביעית\s+(\S+)|שאלה\s+חמישית\s+(\S+)|שאלה\s+שישית\s+(\S+)|חשב\s+(\S+)|עבור\s+(\S+))/)
     
-   /* const menahalotMatch=transcript.match(/(הצג\s+(\S+)|הסתר\s+(\S+)|הצג\s+(\S+))/);
-   */
-    
-    
     const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול|דריבית|עתידי)/);
     const matchKlali1 = transcript.match(/(חברות|מחשבונים|יעד|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+)|הרבה\s+(\S+)|קצת\s+(\S+))/)
    
@@ -110,7 +106,7 @@ recognition.onresult = (event) => {
           };
           molMatch='';
     }
-   else if(iframe && iframe.src.includes('html') && !iframe.src.includes('index') && (loanMatch || deribitMatch || dmeyNihulMatch || sikonMatch || yaadMatch || /*menahalotMatch*/)){
+   else if(iframe && iframe.src.includes('html') && !iframe.src.includes('index') && (loanMatch || deribitMatch || dmeyNihulMatch || sikonMatch || yaadMatch)){
       if(iframe.src.includes('loan') && loanMatch){
         handleLoan(transcript)
       }
@@ -127,10 +123,6 @@ recognition.onresult = (event) => {
       else  if(iframe.src.includes('hafkada') && yaadMatch){
       handleYaad(transcript)
       } 
-      
-   /*   else  if(iframe.src.includes('hashMenahalot') && menahalotMatch){
-      handleMenahalot(transcript)
-      } */
   }
   else if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
       recognition.stop();
