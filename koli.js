@@ -1,6 +1,7 @@
 let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';var matchKlaliLast;
 var timeToListen=5000;var interval;let lastTranscript = '';
 
+
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
   : new SpeechRecognition();
@@ -45,6 +46,7 @@ recognition.onstart = function () {
 
 
 recognition.onresult = (event) => {
+  var iframe=document.getElementById('ifrm')
   const result = event.results[event.resultIndex];
   transcript = result[0].transcript.trim();
 
@@ -80,11 +82,37 @@ recognition.onresult = (event) => {
     
     handleSearchFromVoice(transcript);
   } else {
-    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול)/);
-    const matchKlali1 = transcript.match(/(חברות|מחשבונים|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+)|הרבה\s+(\S+)|קצת\s+(\S+))/)
+    const loanMatch=transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|גרייס\s+(\S+)|לוח\s+(\S+))/)
     
-
-   if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
+    const deribitMatch=transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|סוג\s+(\S+)|לוח\s+(\S+)|ניהול\s+(\S+)|חשב)/);
+    
+    const yaadMatch=transcript.match(/(יעד\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|סוג\s+(\S+)|ניהול\s+(\S+)|חשב|התחלתי\s+(\S+)|תקופת\s+(\S+))/);
+    const dmeyNihulMatch=transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|גיל\s+(\S+)|סוג\s+(\S+)|(\S+)\s+קיים|ניהול\s+(\S+)|חשב|בצע|(\S+)\s+חדש)/);
+    
+    const sikonMatch=transcript.match(/(שאלה\s+ראשונה\s+(\S+)|שאלה\s+שניה\s+(\S+)|שאלה\s+שלישית\s+(\S+)|שאלה\s+רביעית\s+(\S+)|שאלה\s+חמישית\s+(\S+)|שאלה\s+שישית\s+(\S+)|חשב\s+(\S+)|עבור\s+(\S+))/)
+    
+    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול|דריבית|עתידי)/);
+    const matchKlali1 = transcript.match(/(חברות|מחשבונים|יעד|מידע מקצועי| מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+)|הרבה\s+(\S+)|קצת\s+(\S+))/)
+    
+    if(iframe && (loanMatch || deribitMatch || dmeyNihulMatch || sikonMatch || yaadMatch)){
+      if(iframe.src.includes('loan') && loanMatch){
+        handleLoan(transcript)
+      }
+      else  if(iframe.src.includes('ribitderibit') && deribitMatch){
+        handleCompoundInterest(transcript)
+        
+      }
+     else  if(iframe.src.includes('hashDmeyNihul') && dmeyNihulMatch){
+      handleHashDmeyNihul(transcript)
+      } 
+      else  if(iframe.src.includes('riskQuest') && sikonMatch){
+      handleSheelon(transcript)
+      } 
+      else  if(iframe.src.includes('hafkada') && yaadMatch){
+      handleYaad(transcript)
+      } 
+  }
+  else if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
       recognition.stop();
       handleSearchFromVoice(transcript);
       matchKlaliLast = transcript;
@@ -1042,7 +1070,7 @@ function handleYaad(transcript) {
       interestRate.value = match.interest;
       interestRateSlider.value = match.interest;
       if(window.innerWidth<400 && match.interest){
-        interestRateSlider.scrollIntoView({ behavior: "smooth", block: "start" })};
+        interestRate.scrollIntoView({ behavior: "smooth", block: "start" })};
     }
     if(transcript.includes("תקופ")){
       const match=handleInput(transcript);
@@ -1327,6 +1355,9 @@ function handleSheelon(transcript){
   if((transcript.includes('חשב') || transcript.includes('בצע')) && !transcript.includes('מחשב') ){
     iframeWindow.calculateRisk();
     iframeWindow.scrollTo(0, 0);
+  }
+  if(transcript.includes('עבור')){
+    iframeWindow.showme();
   }
  }
  function matchSheelon(text){
