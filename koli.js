@@ -67,7 +67,7 @@ function regexAll(transcript){
     "בצע","בצא","מובילה","מול","סגור","הסתר","אסתר","בחר","כל","קול","כל","כלל"];
   const MenahalotExist=MenahalotWords.some(word => new RegExp(word, "i").test(transcript));
   const  gufmosdiMatch =transcript.match(/(כלל|הראל|מנורה|מגדל|אלטשולר|פניקס|מור|ילין|אנליסט|אינפיניטי|מיטב)/)   
-
+  
   const  HasifotWords= ["מוצר", "מניות", "חול", "מטבע", "מטח","פנסיה"
   ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה"];
   const HasifotExist=HasifotWords.some(word => new RegExp(word, "i").test(transcript));
@@ -118,9 +118,14 @@ recognition.onresult = (event) => {
     recognition.stop();
     return;
   }
+  var matchMaslul = transcript.match(/הצג מסלול\s+(\S+)/);
+if (matchMaslul) {
+  searchMh(matchMaslul[1].trim());
+  return;
+}
 
   const matchReg=regexAll(transcript)
-  console.log(transcript+":"+matchReg.nivutExist)
+  console.log('transcript:' + transcript)
 
   // ביצוע ישיר חברה מול חברה
   if (matchReg.molMatch && !matchReg.nivutExist && transcript!==matchKlaliLast) {
@@ -134,7 +139,7 @@ recognition.onresult = (event) => {
     iframex.onload = function () {
       handleMenahalot(transcript);
     };
-    
+    return;
   }
   //מעבר לסימולטור הלוואות בתוספת מילוי שדות
   else if((matchReg.loanExistFull || matchReg.loanExistFour || matchReg.loanExistTwo
@@ -148,6 +153,7 @@ recognition.onresult = (event) => {
     };
    return;
  }
+ 
  // ניווט כללי באתר
  else if (matchReg.nivutExist && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
