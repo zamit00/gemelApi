@@ -29,8 +29,8 @@ function regexAll(transcript){
   const nivutWords=["למעלה","למטה","הרבה למעלה","הרבה למטה","קצת למעלה","קצת למטה",
     "ראש","תחתית","תקרות","הלווא","מידע מקצועי","הסבר","קולי","שימוש","תנאי","פנסיה"
   ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","דמי ניהול","ערך עתידי","שאלון","סיכון",
-  "סכום יעד","לסכום יעד","שרפ","שארפ","מנהלות","חשיפות","תיק משולב","מחשבונים","חזור","הבית",
-  "דריבית","דריביט","דרביט","ניהול","סוכן","קשר","מאשר"] 
+  "סכום יעד","לסכום יעד","שרפ","שארפ","מנהלות","חשיפות","משולב","מחשבונים","חזור","הבית",
+  "דריבית","דריביט","דרביט","ניהול","סוכן","קשר","מאשר","משולם"] 
   const nivutExist= nivutWords.some(word => new RegExp(word, "i").test(transcript));
   
   const loanWordsFull = ["הלווא", "סכום", "ריבית", "תקופ", "גרייס"];
@@ -495,7 +495,7 @@ if(iframe && ifrmValue===1){
      createForm(0);handleSharp(transcript);
       transcript='';return;
     }
-    else if ((transcript.includes("משולב") || transcript.includes("תיק") && ifrmValue===0)) {
+    else if ((transcript.includes("משולב") || transcript.includes("תיק") || transcript.includes('משולם')) && ifrmValue===0) {
       hideformic(); showIframe("VirtualInvest.html");
       const iframe = document.getElementById("ifrm");iframe.onload =function(){
         handleMeshulav(transcript);
@@ -523,7 +523,7 @@ if(transcript.includes("מנהלות") || transcript.includes("מנהלת")) {
       hideAllimages(); createForm(0);handleSharp(transcript);
       transcript='';return;
     }
-    else if(transcript.includes("משולב") || transcript.includes("תיק")) {
+    else if(transcript.includes("משולב") || transcript.includes("תיק") || transcript.includes('משולם')) {
       hideformic(); showIframe("VirtualInvest.html");
       const iframe = document.getElementById("ifrm");iframe.onload = function() {
         handleMeshulav(transcript);
@@ -1677,3 +1677,4 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
+
