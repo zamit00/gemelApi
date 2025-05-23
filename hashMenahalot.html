@@ -523,7 +523,7 @@ padding-right:10px; padding-left: 10px;
     <div class="chooseopt">
     <div class="choose">
    <input  type="radio" id="radio1" name="radio" onchange="selchange()" checked>
-    <label class="rd" for="radio1">מוצר ומסלול - מרובה חברות</label>
+    <label class="rd" for="radio1">מרובה חברות - מוצר ומסלול</label>
             </div>
             <div class="choose">
                 <input  type="radio" id="radio2" name="radio" onchange="selchange()"> 
@@ -658,6 +658,8 @@ const tableBody3 = document.getElementById('comparisonTable3')
             tableBody.style.display='none';
             tableBody2.style.display='none';
         }
+        changmoz();
+        
        } 
         function sfira(){
             var sfiracheck=0;
