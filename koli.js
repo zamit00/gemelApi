@@ -916,9 +916,13 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
       if( transcript.includes('מסלול') && menahalotWindow.document.getElementById('mas').style.display==='none' 
     && sugMMen.value!==''){
         showMaslul();
+        recognition.stop;
+        recognition.start;
       }
       else if((transcript.includes('חבר') || transcript.includes('מנהל')) && menahalotWindow.document.getElementById('mas').style.display==='none'){
         menahalotWindow.toggleDr();
+        recognition.stop;
+        recognition.start;
       }
     }
 
