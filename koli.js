@@ -1,5 +1,6 @@
-let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';var matchKlaliLast;
-var timeToListen=5000;var interval;let lastTranscript = '';
+let startStop = 0; let ifrmValue=0;
+ let finalTranscript = '';  var transcript='';var matchKlaliLast;
+;let lastTranscript = '';
  
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
@@ -21,25 +22,7 @@ function micClick() {
     recognition.start();
   }
 }
-recognition.onstart = function () {
-  if (chngContinuous === false) {
-    const timerDisplay = document.getElementById('timerDisplay');
-    let secondsPassed = 0;
-    timerDisplay.style.display = 'block';
 
-    clearInterval(interval); // מניעת הצטברות אינטרוולים קודמים
-
-    interval = setInterval(() => {
-      secondsPassed++;
-      timerDisplay.textContent = secondsPassed;
-      if (secondsPassed * 1000 >= timeToListen) {
-        clearInterval(interval);
-        timerDisplay.style.display = 'none';
-        recognition.stop(); 
-      }
-    }, 1000);
-  }
-};
 function regexAll(transcript){ 
   const molMatch = transcript.match(/((\S+)\s+מול\s+(\S+))/);
   
@@ -219,27 +202,8 @@ else if (
 
 recognition.onend = () => {
   if (startStop === 0) {
-    recognition.continuous = chngContinuous === true;
     recognition.start();
-
-    // אם המצב הוא "ארוך", אז צריך להפעיל את הטיימר מחדש בכל סוף זיהוי
-    if (chngContinuous === false) {
-      const timerDisplay = document.getElementById('timerDisplay');
-      let secondsPassed = 0;
-      timerDisplay.style.display = 'block';
-
-      clearInterval(interval); // לניקוי קודם
-
-      interval = setInterval(() => {
-        secondsPassed++;
-        timerDisplay.textContent = secondsPassed;
-        if (secondsPassed * 1000 >= timeToListen) {
-          clearInterval(interval);
-          timerDisplay.style.display = 'none';
-          recognition.stop();
-        }
-      }, 1000);
-    }
+    
   } else {
     document.getElementById('resultMic').textContent = "לא מאזין";
   }
@@ -271,12 +235,6 @@ function hideformic() {
 }
 function handleSearchFromVoice(transcript) {
   var iframe = document.getElementById('ifrm');
-if (transcript.includes("קצר")) {timeToListen=4000;return;}
-else if (transcript.includes("בינוני") || transcript.includes("בנוני"))
-  {timeToListen=8000;return;}
-else if (transcript.includes("ארוך")) {timeToListen=12000;return;}
-
-
 if(iframe && iframe.src.includes("html") && !iframe.src.includes("index")) {ifrmValue=1;}
 else {ifrmValue=0;}
 if(!transcript){return}
