@@ -1,40 +1,6 @@
 let startStop = 0; let ifrmValue=0; let finalTranscript = ''; let finalTranscript1 = ''; var chngContinuous=true;var transcript='';var matchKlaliLast;
 var timeToListen=5000;var interval;let lastTranscript = '';
-
-function regexAllLoan(transcript){ 
-const loanWordsFull = ["הלווא", "סכום", "ריבית", "תקופ", "גרייס"];
-const loanExistFull = loanWordsFull.every(word => new RegExp(word, "i").test(transcript));
-const loanWordsFour = ["הלווא", "סכום", "ריבית", "תקופ"];
-const loanExistFour = loanWordsFour.every(word => new RegExp(word, "i").test(transcript));
-const loanWordsThree = ["הלווא", "סכום"];
-const loanExistThree = loanWordsThree.every(word => new RegExp(word, "i").test(transcript));
-const loanWordsTwo = ["הלווא", "סכום"];
-const loanExistTwo = loanWordsTwo.every(word => new RegExp(word, "i").test(transcript));
-
-return{
-  loanExistFull:loanExistFull,
-  loanExistFour:loanExistFour,
-  loanExistThree:loanExistThree,
-  loanExistTwo:loanExistTwo,
-}
-
-}
-
-function regexAllDribit(transcript){ 
-  const DribitWordsFull = ["פעמי", "סכום", "תשלומים", "תקופ", "ניהול","עתידי","חשב"];
-  const DribitExistFull = DribitWordsFull.every(word => new RegExp(word, "i").test(transcript));
-  const DribitWordsFour = ["פעמי", "סכום", "תשלומים", "תקופ", "עתידי"];
-  const DribitExistFour = DribitWordsFour.every(word => new RegExp(word, "i").test(transcript));
-  
-  
-  return{
-    DribitExistFull:DribitExistFull,
-    DribitExistFour:DribitExistFour,
-  }
-  
-  }
-
-
+ 
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
   : new SpeechRecognition();
@@ -51,12 +17,10 @@ function micClick() {
     startStop = 1;
     recognition.stop();
   } else {
-    document.getElementById('resultMic').textContent = " מאזין - אמור 'עבור' לביצוע או 'עצור' כדי להפסיק";
+    document.getElementById('resultMic').textContent = " מאזין - אמור 'עצור' כדי להפסיק";
     recognition.start();
   }
 }
-
-
 recognition.onstart = function () {
   if (chngContinuous === false) {
     const timerDisplay = document.getElementById('timerDisplay');
@@ -76,20 +40,95 @@ recognition.onstart = function () {
     }, 1000);
   }
 };
+function regexAll(transcript){ 
+  const molMatch = transcript.match(/((\S+)\s+מול\s+(\S+))/);
+  
+  const nivutWords=["למעלה","למטה","הרבה למעלה","הרבה למטה","קצת למעלה","קצת למטה",
+    "ראש","תחתית","תקרות","הלווא","מידע מקצועי","הסבר","קולי","שימוש","תנאי","פנסיה"
+  ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","דמי ניהול","ערך עתידי","שאלון","סיכון",
+  "סכום יעד","לסכום יעד","שרפ","שארפ","מנהלות","חשיפות","תיק משולב","מחשבונים","חזור","הבית",
+  "דריבית","דריביט","דרביט","ניהול","סוכן","קשר","מאשר"] 
+  const nivutExist= nivutWords.some(word => new RegExp(word, "i").test(transcript));
+  
+  const loanWordsFull = ["הלווא", "סכום", "ריבית", "תקופ", "גרייס"];
+  const loanExistFull = loanWordsFull.every(word => new RegExp(word, "i").test(transcript));
+  const loanWordsFour = ["הלווא", "סכום", "ריבית", "תקופ"];
+  const loanExistFour = loanWordsFour.every(word => new RegExp(word, "i").test(transcript));
+  const loanWordsThree = ["הלווא", "סכום"];
+  const loanExistThree = loanWordsThree.every(word => new RegExp(word, "i").test(transcript));
+  const loanWordsTwo = ["הלווא", "סכום"];
+  const loanExistTwo = loanWordsTwo.every(word => new RegExp(word, "i").test(transcript));
+  
+  const DribitWordsFull = ["פעמי", "סכום", "תשלומים", "תקופ", "ניהול","עתידי","חשב"];
+  const DribitExistFull = DribitWordsFull.every(word => new RegExp(word, "i").test(transcript));
+  const DribitWordsFour = ["פעמי", "סכום", "תשלומים", "תקופ", "עתידי"];
+  const DribitExistFour = DribitWordsFour.every(word => new RegExp(word, "i").test(transcript));
+  
+  const loanWords= ["לוח", "סכום", "ריבית", "תקופ", "גרייס","סילוקין","סילוקים"];
+  const loanExist=loanWords.some(word => new RegExp(word, "i").test(transcript));
 
+  const DeribitWords= ["חודשי", "חד פעמי", "ריבית", "תקופ", "חשב","שיעור","דמי ניהול","הפעל"];
+  const DeribitExist=DeribitWords.some(word => new RegExp(word, "i").test(transcript));
+  
+  const yaaditWords= ["התחל", "סכום יעד", "ריבית", "תקופ", "חשב","שיעור","דמי ניהול","הפעל","תקופת"];
+  const yaadExist=yaaditWords.some(word => new RegExp(word, "i").test(transcript));
+  
+  const DmeyWords= ["סוג", "סכום צבירה", "ריבית", "גיל", "חשב","סכום חודשי","קיים","הפעל","חדש","צבירה","חודשי"];
+  const DmeyExist=DmeyWords.some(word => new RegExp(word, "i").test(transcript));
+
+  const sikonWords= ["ראשונה", "שניה", "שנייה", "שלישית", "רביעית","חמישית",
+    "שישית","חשב"];
+  const sikonExist=sikonWords.some(word => new RegExp(word, "i").test(transcript));
+
+  const MenahalotWords= ["מרובה", "שתי", "הצג", "מוצר", "מסלול","חברה",
+    "בצע","בצא","מובילה","מול","סגור","הסתר","אסתר","בחר","כל","קול","כל","כלל"];
+  const MenahalotExist=MenahalotWords.some(word => new RegExp(word, "i").test(transcript));
+  const  gufmosdiMatch =transcript.match(/(כלל|הראל|מנורה|מגדל|אלטשולר|פניקס|מור|ילין|אנליסט|אינפיניטי|מיטב)/)   
+
+  const  HasifotWords= ["מוצר", "מניות", "חול", "מטבע", "מטח","פנסיה"
+  ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה"];
+  const HasifotExist=HasifotWords.some(word => new RegExp(word, "i").test(transcript));
+
+  const  sharpWords= ["מוצר","פנסיה"
+    ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","בצע","בצא"];
+  const sharpExist=sharpWords.some(word => new RegExp(word, "i").test(transcript));
+
+  const  MeshulavWords= ["מוצר","פנסיה"
+    ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","הפעל","הוסף","נקה",
+    "שיעור","מסלול","הצג","מיין","מעיין","אוסף"];
+  const MeshulavExist=MeshulavWords.some(word => new RegExp(word, "i").test(transcript));
+ 
+  return{
+      molMatch:molMatch,
+      loanExistFull:loanExistFull,
+      loanExistFour:loanExistFour,
+      loanExistThree:loanExistThree,
+      loanExistTwo:loanExistTwo,
+      nivutExist:nivutExist,
+      DribitExistFull:DribitExistFull,
+      DribitExistFour:DribitExistFour,
+      loanExist:loanExist,
+      DeribitExist:DeribitExist,
+      yaadExist:yaadExist,
+      DmeyExist:DmeyExist,
+      sikonExist:sikonExist,
+      MenahalotExist:MenahalotExist,
+      gufmosdiMatch:gufmosdiMatch,
+      HasifotExist:HasifotExist,
+      sharpExist:sharpExist,
+      MeshulavExist:MeshulavExist
+    }
+  
+  }
 recognition.onresult = (event) => {
 
   var iframe = document.getElementById('ifrm');
   const result = event.results[event.resultIndex];
   transcript = result[0].transcript.trim();
-
   if (!result.isFinal) return;
   if (!transcript) return;
-
   if (transcript === lastTranscript) return; // מניע כפילויות
-  lastTranscript = transcript;
-
-  
+  lastTranscript = transcript; 
 
   if (transcript.includes("עצור")) {
     startStop = 1;
@@ -97,126 +136,85 @@ recognition.onresult = (event) => {
     return;
   }
 
-  const matchTimer = transcript.match(/(ארוך|בינוני|קצר)/);
-  if (matchTimer) {
-    chngContinuous = false;
-    recognition.stop();
-    recognition.continuous = false;
-    handleSearchFromVoice(matchTimer[0]);
-    return;
+  const matchReg=regexAll(transcript)
+  console.log(transcript+":"+matchReg.nivutExist)
+
+  // ביצוע ישיר חברה מול חברה
+  if (matchReg.molMatch && !matchReg.nivutExist && transcript!==matchKlaliLast) {
+    matchKlaliLast=transcript;
+    if (!transcript.includes('מנהלות')) {
+      transcript = 'מנהלות ' + transcript;
+    }
+    hideformic();
+    showIframe("hashMenahalot.html");
+    const iframex = document.getElementById("ifrm");
+    iframex.onload = function () {
+      handleMenahalot(transcript);
+    };
+    
   }
-
-  if (transcript.includes("רגיל")) {
-    chngContinuous = true;
-    recognition.stop();
-    recognition.continuous = true;
-    return;
-  }
-
-  const loanMatchx=regexAllLoan(transcript);
-  if(loanMatchx.loanExistFull || loanMatchx.loanExistFour || loanMatchx.loanExistTwo
-     || loanMatchx.loanExistThree 
-  ){
-
+  //מעבר לסימולטור הלוואות בתוספת מילוי שדות
+  else if((matchReg.loanExistFull || matchReg.loanExistFour || matchReg.loanExistTwo
+    || matchReg.loanExistThree) && transcript!==matchKlaliLast){
+    matchKlaliLast=transcript;
     hideformic();window.hideframe();
     showIframe("loan.html");
     const iframe = document.getElementById("ifrm");
     iframe.onload = function() {
-        handleLoan(transcript);
+       handleLoan(transcript);
     };
-    return;
-  }
-  const DribitMatchx=regexAllDribit(transcript);
-  if(DribitMatchx.DribitExistFull || DribitMatchx.DribitExistFour 
-  ){
-
-    hideformic();window.hideframe();
-    showIframe("ribitderibit.html");
-    const iframe = document.getElementById("ifrm");
-    iframe.onload = function() {
-        handleCompoundInterest(transcript);
-    };
-    return;
-  }
-
-  
-  if (chngContinuous === false) {
-    handleSearchFromVoice(transcript);
-  } else {
-    const molMatch = transcript.match(/((\S+)\s+מול\s+(\S+))/);
-    const loanMatch = transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|גרייס\s+(\S+)|לוח\s+(\S+))/);
-    const deribitMatch = transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|סוג\s+(\S+)|לוח\s+(\S+)|ניהול\s+(\S+)|חשב)/);
-    const yaadMatch = transcript.match(/(יעד\s+(\S+)|ריבית\s+(\S+)|תקופה\s+(\S+)|סוג\s+(\S+)|ניהול\s+(\S+)|חשב|התחלתי\s+(\S+)|תקופת\s+(\S+))/);
-    const dmeyNihulMatch = transcript.match(/(סכום\s+(\S+)|ריבית\s+(\S+)|גיל\s+(\S+)|סוג\s+(\S+)|(\S+)\s+קיים|ניהול\s+(\S+)|חשב|בצע|(\S+)\s+חדש)/);
-    const menahalotMatch = transcript.match(/(שתי\s+(\S+)|מובילה\s+(\S+)|מול\s+(\S+)|הצג\s+(\S+)|בצק\s+(\S+)|הסתר|אסתר|סגור|כל|כול|קול|מוצר\s+(\S+)|הדפס|pdf|בצע|בצא|הפעל|חשב)/);
-    const sikonMatch = transcript.match(/(שאלה\s+ראשונה\s+(\S+)|שאלה\s+שניה\s+(\S+)|שאלה\s+שלישית\s+(\S+)|שאלה\s+רביעית\s+(\S+)|שאלה\s+חמישית\s+(\S+)|שאלה\s+שישית\s+(\S+)|חשב\s+(\S+)|עבור\s+(\S+))/);
-    const  gufmosdiMatch =transcript.match(/(כלל|הראל|מנורה|מגדל|אלטשולר|פניקס|מור|ילין|אנליסט|אינפיניטי|מיטב)/)   
-    
-    const matchKlali = transcript.match(/(הסבר|קולי|חזור|מאשר|שימוש|תנאי|ראש|תחתית|סוכן|קשר|מחשבונים|פיננסים|סיכון|שאלון|שארפ|שרפ|ארוך|רגיל|הפעל|נקה|הפאל|הבית|למעלה|למטה|עבור|הלווא|דמי ניהול|דריבית|עתידי)/);
-    const matchKlali1 = transcript.match(/(חברות|מחשבונים|יעד|מידע מקצועי|מנהלות|השתלמות|פנסיה|השקעה|ילד|פוליס|גמל|מסלול\s+(\S+)|מקצועי\s+(\S+)|הרבה\s+(\S+)|קצת\s+(\S+))/);
-
-    if (molMatch && !matchKlali) {
-      if (!transcript.includes('מנהלות')) {
-        transcript = 'מנהלות ' + transcript;
-      }
-      hideformic();
-      showIframe("hashMenahalot.html");
-      const iframex = document.getElementById("ifrm");
-      iframex.onload = function () {
-        handleMenahalot(transcript);
-      };
+   return;
+ }
+ // ניווט כללי באתר
+ else if (matchReg.nivutExist && transcript !== matchKlaliLast) {
+  matchKlaliLast = transcript;
+  recognition.stop();
+  handleSearchFromVoice(transcript);
+}
+// פעילות בתהליכים
+else if (
+  iframe &&
+  iframe.src.includes('html') &&
+  !iframe.src.includes('index')
+  ) {
+    if((matchReg.loanExist) && iframe.src.includes('loan')){
+      handleLoan(transcript);
+    }
+    else if((matchReg.DeribitExist) && iframe.src.includes('ribit')){
+      handleCompoundInterest(transcript);
+    }
+    else if((matchReg.yaadExist) && iframe.src.includes('hafkada')){
+      handleYaad(transcript);
+    }
+    else if((matchReg.DmeyExist) && iframe.src.includes('hashDmey')){
+      handleHashDmeyNihul(transcript);
+    }
+    else if((matchReg.sikonExist) && iframe.src.includes('riskQ')){
+      handleSheelon(transcript);
+    }
+    else if((matchReg.MenahalotExist || matchReg.gufmosdiMatch) && iframe.src.includes('hashMen')){
+      if (matchReg.MenahalotExist==='כלל') {
+        alert('כלל')
+        handleMenahalot(matchReg.MenahalotExist);}
+      else{
+      handleMenahalot(transcript);}
+    }
+    else if((matchReg.HasifotExist) && iframe.src.includes('hasifotMeshulav')){
+      handleHasifot(transcript);
+    }
+    else if((matchReg.sharpExist) && document.getElementById('filter').style.display==='flex'){
+      handleHasifot(transcript);
+    }
+    else if((matchReg.MeshulavExist) && iframe.src.includes('Virtual')){
+      handleMeshulav(transcript);
     }
 
-    else if (
-      iframe &&
-      iframe.src.includes('html') &&
-      !iframe.src.includes('index') &&
-      (loanMatch || deribitMatch || dmeyNihulMatch || sikonMatch || yaadMatch || menahalotMatch)
-    ) {
-      if (iframe.src.includes('loan') && loanMatch) {
-        handleLoan(transcript);
-      }
-      else if (iframe.src.includes('ribitderibit') && deribitMatch) {
-        handleCompoundInterest(transcript);
-      }
-      else if (iframe.src.includes('hashDmeyNihul') && dmeyNihulMatch) {
-        handleHashDmeyNihul(transcript);
-      }
-      else if (iframe.src.includes('riskQuest') && sikonMatch) {
-        handleSheelon(transcript);
-      }
-      else if (iframe.src.includes('hafkada') && yaadMatch) {
-        handleYaad(transcript);
-      }
-      else if (iframe.src.includes('hashMena') && (menahalotMatch || gufmosdiMatch)) {
-        if (transcript.includes('הסתר') || transcript.includes('אסתר') || transcript.includes('סגור')) {
-          handleMenahalot("הסתר");
-        }
-        else if (transcript.includes('כל') && !transcript.includes('כלל')) {
-          handleMenahalot("כל");
-        }
-	 else if (gufmosdiMatch){ handleMenahalot(gufmosdiMatch)}
-        else {
-          handleMenahalot(transcript);
-        }
-      }
     }
 
-    else if (matchKlali1 && matchKlali1[0] !== matchKlaliLast) {
-      recognition.stop();
-      handleSearchFromVoice(transcript);
-      matchKlaliLast = transcript;
-    }
 
-    else if (matchKlali && matchKlali[0] !== matchKlaliLast) {
-      if (transcript.includes('השקעה') && !transcript.includes('מקצועי')) {
-        matchKlali[0] = 'השקעה';
-      }
-      recognition.stop();
-      handleSearchFromVoice(transcript);
-      matchKlaliLast = transcript;
-    }
-  }
+        
+
+   
 };
 
 recognition.onend = () => {
@@ -297,7 +295,10 @@ else if (transcript.includes("הסבר") || transcript.includes(" קולי")) {
   showIframe('koliHes.html'); 
   transcript='';return;
   }
-
+  else if (transcript.includes("תקרות") || transcript.includes(" מס הכנסה")) {
+    showIframe('.html'); 
+    transcript='';return;
+    }
 
   // פקודות חזרה
 if (((transcript.includes("חזור") || transcript.includes("הבית")))
@@ -427,7 +428,8 @@ if(ifrmValue===1){
       }
       transcript='';return;
     }
-    else if (transcript.includes("דריבית") || transcript.includes("עתידי")) {
+    else if (transcript.includes("דריבית") || transcript.includes("עתידי") ||
+    transcript.includes("דריביט") || transcript.includes("דרביט")) {
       showIframe("ribitderibit.html");
       const iframe = document.getElementById("ifrm");iframe.onload = function() {
         handleCompoundInterest(transcript);
@@ -471,7 +473,8 @@ if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && 
     };
     transcript='';return;
 }
-  else if ((transcript.includes("דריבית") || transcript.includes("עתידי"))
+  else if ((transcript.includes("דריבית") || transcript.includes("עתידי")
+    ||   transcript.includes("דריביט") || transcript.includes("דרביט"))
   && ifrmValue === 0) {
     hideformic(); showIframe("ribitderibit.html");
 	const iframe = document.getElementById("ifrm");
@@ -951,7 +954,7 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
         menahalotWindow.toggleDr();
       }
     }
-    if (transcript.includes('הצג') || transcript.includes('בצק')){
+    if (transcript.includes('הצג') || transcript.includes('בצק') || transcript.includes('בחר')){
       if( transcript.includes('מסלול') && menahalotWindow.document.getElementById('mas').style.display==='none' 
     && sugMMen.value!==''){
         showMaslul();
@@ -968,8 +971,12 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
       
        const checkboxes = menahalotDoc.querySelectorAll('.dropdown-menu input[type="checkbox"]');
        checkboxes.forEach((checkbox) => {
+        if(transcript.includes('כלל') && checkbox.value.includes("all")) {
+          checkbox.checked ===false;
+        }
+        
          if((transcript.includes("כל") || transcript.includes("כול") || transcript.includes("קול"))
-           && checkbox.value.includes("all")){
+           && checkbox.value.includes("all") && !transcript.includes("כלל")){
             
             checkboxes.forEach((checkb) => {
               checkb.checked = false;
@@ -977,8 +984,10 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
             checkbox.checked = true;menahalotWindow.sfira();
          } 
          else if(checkbox.value.includes(matchHev)){
+          
           checkboxes.forEach((checkb) => {
-            if(checkb.value.includes("all") && checkb.checked === false){
+            
+           if(checkb.value.includes("all") && checkb.checked === false){
               checkbox.checked = true;menahalotWindow.sfira();
             }
           });
@@ -1005,7 +1014,7 @@ if (transcript.includes("מרובה") || rd1.checked===true) {
       menahalotWindow.changeTheMuzar();
     }
     
-    if(transcript.includes('מסלול')  && !transcript.includes('הצג')){
+    if(transcript.includes('מסלול')  && (!transcript.includes('הצג') || !transcript.includes('בחר'))){
       const nummatch=matchNumber(transcript.replace('מסלול','').trim());
       if(nummatch && !transcript.includes('אחוז') && !transcript.includes('שיעור')){
         menahalotWindow.document.getElementById('selectShemkupa').selectedIndex=parseInt(nummatch)-1;
@@ -1142,7 +1151,7 @@ function handleYaad(transcript) {
       managementFee.value = match.dmey;
       managementFeeSlider.value = match.dmey;
       if(window.innerWidth<400 && match.dmey){
-        managementFeeSlider.scrollIntoView({ behavior: "smooth", block: "start" })};
+        yaadWindow.scrollBy(0,150)};
     }
     if((transcript.includes("יעד") || transcript.includes("יד")) && transcript.includes("סכום")){
       const match=handleInput(transcript)
@@ -1154,14 +1163,14 @@ function handleYaad(transcript) {
       initialAmount.value = match.amount;
       initialAmountSlider.value = match.amount;
       if(window.innerWidth<400 && match.amount){
-        initialAmount.scrollIntoView({ behavior: "smooth", block: "start" })};
+        yaadWindow.scrollBy(0,150)};
     }
     if(transcript.includes("ריבית") ){
       const match=handleInput(transcript);
       interestRate.value = match.interest;
       interestRateSlider.value = match.interest;
       if(window.innerWidth<400 && match.interest){
-        interestRate.scrollIntoView({ behavior: "smooth", block: "start" })};
+        yaadWindow.scrollBy(0,150)};
     }
     if(transcript.includes("תקופ")){
       const match=handleInput(transcript);
@@ -1184,7 +1193,7 @@ function handleHasifot(transcript) {
   const abroad = hasifotDoc.getElementById('abroad');
   const currency = hasifotDoc.getElementById('currency');
   // בחירת מוצר
-  if (transcript.includes('מוצר')) {
+  
     if (transcript.includes("השתלמות")) {
       sugmM.selectedIndex = 1;
     } else if (transcript.includes("פנסיה")) {
@@ -1201,7 +1210,7 @@ function handleHasifot(transcript) {
     if (sugmM.value !== '') {
       hasifotWindow.submitForm(sugmM);
     }
-  }
+  
   // פונקציה עזר להצבת אחוזים
   function setSelectByPercentage(transcript, element) {
     if (transcript.includes('עד חמש עשרה') || transcript.includes('15')) {
@@ -1355,14 +1364,14 @@ return null;
   }
 function handleInput(text) {
 // חילוץ ממוקד לפי הקשר ולא לפי סדר בטקסט
-const hadMatch = text.match(/(?:סכום\s+)?חד\s*פעמי\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|גרייס|$))/);
-const hodshiMatch = text.match(/(?:סכום\s+)?חודשי\s+(.*?)(?=(סכום|חד\s*פעמי|ריבית|תקופה|גרייס|$))/);
-const amountMatch = text.match(/(?:סכום\s+)(?!חודשי)(?!חד\s*פעמי)(.*?)(?=(חד\s*פעמי|חודשי|ריבית|תקופה|גרייס|$))/);
-const interestMatch = text.match(/(?:ריבית\s*(של)?\s*)(.*?)(?=(סכום|תקופה|גרייס|$))/);
+const hadMatch = text.match(/(?:סכום\s+)?חד\s*פעמי\s+(.*?)(?=(סכום|חודשי|ריבית|תקופ|גרייס|$))/);
+const hodshiMatch = text.match(/(?:סכום\s+)?חודשי\s+(.*?)(?=(סכום|חד\s*פעמי|ריבית|תקופ|גרייס|$))/);
+const amountMatch = text.match(/(?:סכום\s+)(?!חודשי)(?!חד\s*פעמי)(.*?)(?=(חד\s*פעמי|חודשי|ריבית|תקופ|גרייס|$))/);
+const interestMatch = text.match(/(?:ריבית\s*(של)?\s*)(.*?)(?=(סכום|תקופ|גרייס|$))/);
 const termMatch = text.match(/(?:תקופ[ה|ת]\s*(של)?\s*)(.*?)(?=(ריבית|סכום|גרייס|$))/);
-const graceMatch = text.match(/(?:גרייס\s*(של)?\s*)(.*?)(?=(ריבית|תקופה|סכום|$))/);
-const dmeyMatch = text.match(/(?:ניהול\s*(של)?\s*)(.*?)(?=(ריבית|תקופה|סכום|$))/);
-//const tesuaMatch = text.match(/(?:תשוא[אה]?|תשועה)\s*(של)?\s*(.*?)(?=(ריבית|תקופה|סכום|$))/);
+const graceMatch = text.match(/(?:גרייס\s*(של)?\s*)(.*?)(?=(ריבית|תקופ|סכום|$))/);
+const dmeyMatch = text.match(/(?:ניהול\s*(של)?\s*)(.*?)(?=(ריבית|תקופ|סכום|$))/);
+//const tesuaMatch = text.match(/(?:תשוא[אה]?|תשועה)\s*(של)?\s*(.*?)(?=(ריבית|תקופ|סכום|$))/);
   // טקסטים
 const hadText = hadMatch ? hadMatch[1] : '';
 const hodshiText = hodshiMatch ? hodshiMatch[1] : '';
@@ -1531,7 +1540,7 @@ function handleMeshulav(transcript){
   const sugMMen=iframeWindow.document.getElementById('sugMMen');
   const percentage=iframeWindow.document.getElementById('percentage');
   const btnDo=iframeWindow.document.getElementById('btnDo');
-  if (transcript.includes('מוצר')) {
+  
     if (transcript.includes("השתלמות")) {
       sugMMen.selectedIndex = 1;
     } else if (transcript.includes("פנסיה")) {
@@ -1543,17 +1552,22 @@ function handleMeshulav(transcript){
     } else if ((transcript.includes("חסכון") || transcript.includes("חיסכון")) && !transcript.includes("ילד")) {
       sugMMen.selectedIndex = 4;
     }
-    if (sugMMen.value !== '') {
+    if(transcript.includes("השתלמות") || transcript.includes("פנסיה") || transcript.includes("גמל")
+     || transcript.includes("השקעה") || transcript.includes("חסכון") || transcript.includes("חיסכון")){
+      if (sugMMen.value !== '') {
       iframeWindow.chngTik(); iframeWindow.addMaslulim();
-  }
-}
-if((transcript.includes('הצג') || transcript.includes('מסלול')) && iframeWindow.document.getElementById('mas').style.display==='none' ){
+      }
+      
+    }
+
+
+if((transcript.includes('הצג') || transcript.includes('מסלול') || transcript.includes('בחר') ) && iframeWindow.document.getElementById('mas').style.display==='none' ){
   showMaslul();
 }
 else if(transcript.includes('הסתר') || transcript.includes('אסתר')){
   iframeWindow.document.getElementById('mas').style.display='none';
 }
- if(transcript.includes('מסלול')  && !transcript.includes('הצג')){
+ if(transcript.includes('מסלול')  && (!transcript.includes('הצג') || transcript.includes('בחר'))){
      const nummatch=matchNumber(transcript.replace('מסלול','').trim());
      if(nummatch && !transcript.includes('אחוז') && !transcript.includes('שיעור')){
      iframeWindow.document.getElementById('selectShemkupa').selectedIndex=parseInt(nummatch)-1;
@@ -1562,7 +1576,7 @@ else if(transcript.includes('הסתר') || transcript.includes('אסתר')){
    }
   if(transcript.includes('שיעור' ) || transcript.includes('אחוז')){
      const transcripta = transcript.replace(/שיעור|אחוז|%/g, '').trim();
-     const shiur=extractAmounta(transcripta);    if(shiur && parseFloat(shiur)<=100){
+     const shiur=extractAmounta(transcripta);if(shiur && parseFloat(shiur)<=100){
        percentage.value=shiur;
      }
      }
@@ -1648,20 +1662,20 @@ var count=1;
 }
 function handleInputx(text) {
 // חילוץ ממוקד לפי הקשר ולא לפי סדר בטקסט
-const hadMatch = text.match(/(?:סכום\s+)?חד\s*פעמי\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
+const hadMatch = text.match(/(?:סכום\s+)?חד\s*פעמי\s+(.*?)(?=(סכום|חודשי|ריבית|תקופ|דמי|בצע|חשב|תשלום|$))/);
 const hodshiMatch = text.match(/(?:סכום\s+)?חודשי\s+(.*?)(?=(סכום|חד\s*פעמי|ריבית|תק|ופה|גיל|גרייס|דמי|$))/);
-const amountMatch = text.match(/(?:סכום\s+)(?!חודשי)(?!חד\s*פעמי)(.*?)(?=(חד\s*פעמי|חודשי|ריבית|גיל|בצע|חשב|תקופה|גרייס|דמי|$))/);
-const interestMatch = text.match(/(?:ריבית\s*(של)?\s*)(.*?)(?=(סכום|בצע|חשב|תקופה|גרייס|$))/);
+const amountMatch = text.match(/(?:סכום\s+)(?!חודשי)(?!חד\s*פעמי)(.*?)(?=(חד\s*פעמי|חודשי|ריבית|גיל|בצע|חשב|תקופ|גרייס|דמי|$))/);
+const interestMatch = text.match(/(?:ריבית\s*(של)?\s*)(.*?)(?=(סכום|בצע|חשב|תקופ|גרייס|$))/);
 const termMatch = text.match(/(?:תקופ[ה|ת]\s*(של)?\s*)(.*?)(?=(ריבית|סכום|בצע|חשב|חודשים|גרייס|$))/);
-const graceMatch = text.match(/(?:גרייס\s*(של)?\s*)(.*?)(?=(ריבית|חודשים|בצע|חשב|תקופה|סכום|$))/);
-const dmeyMatch = text.match(/(?:ניהול\s*(של)?\s*)(.*?)(?=(ריבית|בצע|חשב|תקופה|סכום|$))/);
+const graceMatch = text.match(/(?:גרייס\s*(של)?\s*)(.*?)(?=(ריבית|חודשים|בצע|חשב|תקופ|סכום|$))/);
+const dmeyMatch = text.match(/(?:ניהול\s*(של)?\s*)(.*?)(?=(ריבית|בצע|חשב|תקופ|סכום|$))/);
 const zvirakayammatch =
-text.match(/דמי\s+ניהול\s+(?:מ)?צבירה\s+קיים\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
-const zvirahadashmatch = text.match(/דמי\s+ניהול\s+(?:מ)?צבירה\s+חדש\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
-const hafkadakayammatch = text.match(/דמי\s+ניהול\s+(?:מה)?(?:ה)?פקדה\s+קיים\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
-const hafkadahadashmatch = text.match(/דמי\s+ניהול\s+(?:מה)?(?:ה)?פקדה\s+חדש\s+(.*?)(?=(סכום|חודשי|ריבית|תקופה|דמי|בצע|חשב|תשלום|$))/);
-  const gilMatch = text.match(/(?:גיל\s*(של)?\s*)(.*?)(?=(ריבית|שנים|דמי|תקופה|סכום|$))/);
-//const tesuaMatch = text.match(/(?:תשוא[אה]?|תשועה)\s*(של)?\s*(.*?)(?=(ריבית|תקופה|סכום|$))/);
+text.match(/דמי\s+ניהול\s+(?:מ)?צבירה\s+קיים\s+(.*?)(?=(סכום|חודשי|ריבית|תקופ|דמי|בצע|חשב|תשלום|$))/);
+const zvirahadashmatch = text.match(/דמי\s+ניהול\s+(?:מ)?צבירה\s+חדש\s+(.*?)(?=(סכום|חודשי|ריבית|תקופ|דמי|בצע|חשב|תשלום|$))/);
+const hafkadakayammatch = text.match(/דמי\s+ניהול\s+(?:מה)?(?:ה)?פקדה\s+קיים\s+(.*?)(?=(סכום|חודשי|ריבית|תקופ|דמי|בצע|חשב|תשלום|$))/);
+const hafkadahadashmatch = text.match(/דמי\s+ניהול\s+(?:מה)?(?:ה)?פקדה\s+חדש\s+(.*?)(?=(סכום|חודשי|ריבית|תקופ|דמי|בצע|חשב|תשלום|$))/);
+  const gilMatch = text.match(/(?:גיל\s*(של)?\s*)(.*?)(?=(ריבית|שנים|דמי|תקופ|סכום|$))/);
+//const tesuaMatch = text.match(/(?:תשוא[אה]?|תשועה)\s*(של)?\s*(.*?)(?=(ריבית|תקופ|סכום|$))/);
   // טקסטים
 const hadText = hadMatch ? hadMatch[1] : '';
 const hodshiText = hodshiMatch ? hodshiMatch[1] : '';
