@@ -864,7 +864,7 @@ if(transcript.includes("מול")){
 }
 
 else if ((transcript.includes("שתי") && menahalotWindow.document.getElementById('mas').style.display==='none') || rd2.checked===true) {
-		rd2.checked=true;
+	if(rd1.checked===true){rd2.checked=true;menahalotWindow.selChange();}
 	menahalotDoc.getElementById('form2').style.display='flex';
 	menahalotDoc.getElementById('form1').style.display='none';
 
