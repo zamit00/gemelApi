@@ -246,7 +246,7 @@ function createFormMen() {
 
 
 async function tablhasifot() {
-    event.preventDefault(); var datfilter;
+     var datfilter;
     var sugmM=document.getElementById('sugM').value;
     if(sugmM==='קופות גמל' ){
         sugmM='תגמולים ואישית לפיצויים'
@@ -413,7 +413,7 @@ const sortKey = selectedKey ? {
             tds[0].textContent = data[i - 1].mh;
             if (tds[1]?.children[0]) tds[1].children[0].textContent = data[i - 1].shemkupa;
             tds[2].textContent = data[i - 1].sharp ? Number(data[i - 1].sharp).toFixed(2) : '';
-            if(Number( tds[2].textContent)<0){console.log(tds[2].textContent);
+            if(Number( tds[2].textContent)<0){
                 tds[2].innerHTML = `<span style="direction: ltr; display: inline-block;">${Number(tds[2].textContent).toFixed(2)}</span>`;
               }
             tds[3].textContent = data[i - 1].tesuam ? data[i - 1].tesuam + '%' : '';
