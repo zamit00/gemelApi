@@ -906,8 +906,7 @@ else if ((transcript.includes("שתי") && menahalotWindow.document.getElementBy
 }
 if (transcript.includes("מרובה") || rd1.checked===true) {
     const matchHev=matchHevra(transcript);
-		rd1.checked=true;
-		menahalotWindow.selchange()
+     if(rd2.checked===true){rd1.checked=true;menahalotWindow.selchange();}	
     var sugMMen=menahalotDoc.getElementById('sugMMen');
     if(transcript.includes('סגור') || transcript.includes('אסתר') || transcript.includes('הסתר') ){
       
