@@ -607,7 +607,7 @@ const gufmosdi = gufmosdix.sort((a, b) => a.localeCompare(b, 'he'));
     const selmenu2 = document.getElementById('selmen2');
     const tableBody = document.getElementById('comparisonTable')
     const tableBody2 = document.getElementById('comparisonTable2')
-const tableBody3 = document.getElementById('comparisonTable3')
+    const tableBody3 = document.getElementById('comparisonTable3')
 
     const divCompare = document.getElementById('compare');
     constbtnPdf = document.getElementById('compareButton3');
@@ -643,9 +643,16 @@ const tableBody3 = document.getElementById('comparisonTable3')
         form1.style.display='flex';
         form2.style.display='none';
     };
-       function selchange(){
+function selchange(){
+    document.getElementById('comparisonTable').style.display='none';
+    document.getElementById('comparisonTable2').style.display='none';
+    document.getElementById('comparisonTable3').style.display='none';
+    document.getElementById('compare').style.display='none';
+    document.getElementById('compareButton3').style.display='none';
+    document.querySelector('.tes').style.display = 'none';
+    document.querySelector('.has').style.display = 'none';
+    document.querySelector('.sik').style.display = 'none';
         if(radio1.checked){
-        
             form1.style.display='flex';
             form2.style.display='none';
             charts.style.display='block';
