@@ -96,7 +96,8 @@ recognition.onresult = (event) => {
   else {ifrmValue=0;}
   const molMatch = transcript.match(/((\S+)\s+מול\s+(\S+))/);
   var matchMaslul = transcript.match(/הצג מסלול\s+(\S+)/);
-
+  const matchReg=regexAll(transcript);
+	
   if (matchMaslul && matchMaslul!==matchKlaliLast) {
     matchKlaliLast=matchMaslul;
     searchMh(matchMaslul[1].trim());
