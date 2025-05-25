@@ -155,7 +155,7 @@ recognition.onresult = (event) => {
 
     iframex.onload = function () {
       if (molMatchAll.length > 0) {
-        const firstMatch = molMatchAll[0];
+        const firstMatch = molMatchAll[molMatchAll.length-1];
         const fullText = firstMatch[0]; // לדוגמה: "אלטשולר מול ילין"
         handleMenahalot(fullText);
       }
@@ -868,7 +868,7 @@ if(transcript.includes("מול")){
         if(selmenu1.value && selmenu2.value){
           menahalotWindow.compare2();
           setTimeout(function() {
-            iframex.contentWindow.scrollBy(0, window.innerHeight*0.8);
+            iframex.contentWindow.scrollTo(0, window.innerHeight*0.8);
           }, 100);
         }
         transcript='';return; 
