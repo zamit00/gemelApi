@@ -743,40 +743,49 @@ function handleLoan(transcript) {
 	const interestfor = loanDoc.getElementById('interest-rate');
 	const delayfor = loanDoc.getElementById('payment-delay');
 	const pianoach=handleInput(transcript);
+  let lastTranscript='';
 	// סכום
-	if (pianoach.amount) {
+	if((pianoach.amount || pianoach.grace || pianoach.term || pianoach.interest) && 
+transcript!==lastTranscript ){
+    lastTranscript=transcript;
+    recognition.stop;
+
+    if (pianoach.amount) {
 		loanAmountInput.value = pianoach.amount;
 		loanDoc.getElementById('loan-amount-range').value=pianoach.amount;
-	}
+	  }
 	// גרייס
-	if (pianoach.grace) {
+	  if (pianoach.grace) {
 	         delayfor.value = pianoach.grace;
 		loanDoc.getElementById('payment-delay-range').value=pianoach.grace;
-	}
-	else if (transcript.includes("גרייס") ) {
+	  }
+	  else if (transcript.includes("גרייס") ) {
 		delayfor.value = '';
 		loanDoc.getElementById('payment-delay-range').value=0;
 			}
 	// תקופה
-	if (pianoach.term) {
+	  if (pianoach.term) {
 		termfor.value = pianoach.term;
 		loanDoc.getElementById('loan-term-range').value=pianoach.term;
 			}
 	// ריבית
-	if (pianoach.interest) {
+	  if (pianoach.interest) {
 		interestfor.value = pianoach.interest;
 		loanDoc.getElementById('interest-rate-range').value=pianoach.interest;
 			}
+      transcript='';
+  }
 	// הפעלת מחשבון רק אם כל השדות מולאו
-	if (termfor.value && interestfor.value && loanAmountInput.value) {
+	  if (termfor.value && interestfor.value && loanAmountInput.value) {
 		loanWindow.calculateLoan();
-	}
+	  }
 	// לוח סילוקין
-	if (transcript.includes("סילוק") || transcript.includes("הסתר")
+	  if (transcript.includes("סילוק") || transcript.includes("הסתר")
     || transcript.includes('אסתר')) {
+      
 		loanWindow.toggleAmortizationTable();
-	}
-	transcript='';
+	  }
+	  transcript='';
 }
 function handleCompoundInterest(transcript) {
   const iframex = document.getElementById('ifrm');
