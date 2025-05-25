@@ -193,14 +193,14 @@ recognition.onresult = (event) => {
        Object.values(patterns).map(r => r.source).join('|'),'g');
 
 // זיהוי כל הנקודות בהן מתחילים החלקים
-      const matches = [...text.matchAll(markerRegex)];
+      const matches = [...transcript.matchAll(markerRegex)];
 
 // חילוץ החלקים לפי התחלה → תחילת הבא או סוף טקסט
         const parts = {};
         for (let i = 0; i < matches.length; i++) {
           const start = matches[i].index;
-          const nextStart = i + 1 < matches.length ? matches[i + 1].index : text.length;
-          const segment = text.substring(start, nextStart).trim();
+          const nextStart = i + 1 < matches.length ? matches[i + 1].index : transcript.length;
+          const segment = transcript.substring(start, nextStart).trim();
 
           // זיהוי סוג החלק לפי ההתאמה
           for (const [key, regex] of Object.entries(patterns)) {
