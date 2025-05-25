@@ -1,8 +1,6 @@
 let startStop = 0; let ifrmValue=0;
  let finalTranscript = '';  var transcript='';var matchKlaliLast;
 ;let lastTranscript = '';
-
-let lastAmount='';let lastInterest='';let lastTerm='';let lastGrace='';
  
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
@@ -84,7 +82,7 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
-  console.log("transcript:"+transcript);
+  console.log(transcript);
 
   // ======= טיפול ב־Swal Yossi =======
   if (Swal.isVisible()) {
@@ -181,38 +179,6 @@ recognition.onresult = (event) => {
   // ======= טיפול בסימולטורים =======
   if (ifrmValue === 1) {
     if ((matchReg.loanExist) && iframe.src.includes('loan')) {
-        const patterns = {
-        amount: /(בסכום(?: של)?|סכום(?: של)?)/,
-        interest: /(בריבית(?: של)?|ריבית(?: של)?)/,
-        term: /(לתקופה(?: של)?|תקופה(?: של)?|במשך)/,
-        grace: /(בגרייס(?: של)?|גרייס(?: של)?)/,
-      };
-
-// מיזוג כל ההתחלות לביטוי רגולרי כולל
-      const markerRegex = new RegExp(
-       Object.values(patterns).map(r => r.source).join('|'),'g');
-
-// זיהוי כל הנקודות בהן מתחילים החלקים
-      const matches = [...transcript.matchAll(markerRegex)];
-
-// חילוץ החלקים לפי התחלה → תחילת הבא או סוף טקסט
-        const parts = {};
-        for (let i = 0; i < matches.length; i++) {
-          const start = matches[i].index;
-          const nextStart = i + 1 < matches.length ? matches[i + 1].index : transcript.length;
-          const segment = transcript.substring(start, nextStart).trim();
-
-          // זיהוי סוג החלק לפי ההתאמה
-          for (const [key, regex] of Object.entries(patterns)) {
-            if (regex.test(segment)) {
-              parts[key] = segment;
-              break;
-            }
-          }
-        }
-
-      console.log(parts);
-      
       handleLoan(transcript);
     } else if ((matchReg.DeribitExist) && iframe.src.includes('ribit')) {
       handleCompoundInterest(transcript);
@@ -777,10 +743,8 @@ function handleLoan(transcript) {
 	const interestfor = loanDoc.getElementById('interest-rate');
 	const delayfor = loanDoc.getElementById('payment-delay');
 	const pianoach=handleInput(transcript);
-
 	// סכום
-	
-  if (pianoach.amount) {
+	if (pianoach.amount) {
 		loanAmountInput.value = pianoach.amount;
 		loanDoc.getElementById('loan-amount-range').value=pianoach.amount;
 	}
