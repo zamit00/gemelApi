@@ -802,17 +802,21 @@ if(transcript.includes('סוג')){
   const pianoach=handleInput(transcript);
 	if (pianoach.had) {
 		initialAmountInput.value = pianoach.had;
+		compoundWindow.onch()
 			}
 	if (pianoach.hodshi) {
 		monthlyDepositInput.value = pianoach.hodshi;
+		compoundWindow.onch()
 	}
 	if (pianoach.term) {
 			termInput.value = pianoach.term;
+			compoundWindow.onch()
 				}
 	// ריבית
 if (pianoach.interest) {
    interestRateInput.value = pianoach.interest/100;
-   compoundDoc.getElementById("kottoz").textContent = `לפי ריבית ${pianoach.interest}% שנתי:`;compoundWindow.hashev(0.4);
+   compoundDoc.getElementById("kottoz").textContent = `לפי ריבית ${pianoach.interest}% שנתי:`
+   ;compoundWindow.hashev(0.4);
 }
 if (pianoach.dmey || pianoach.dmey===0) {
     const valueToSelect = pianoach.dmey.toString();
@@ -829,6 +833,7 @@ if (pianoach.dmey || pianoach.dmey===0) {
         DmeyNihulInput.appendChild(option);
        }
     }
+    compoundWindow.onch()
 }
   // הפעלת חישוב אם כל השדות מולאו
  if(transcript.includes('חשב') && !transcript.includes('מחשב')){
