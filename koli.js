@@ -132,7 +132,7 @@ transcript='';
 	
 if(newTranscript.length>0){
   for(let i=newTranscript.length;i--;i<0){
-	 transcript+=newTranscript[i];
+	 transcript=newTranscript[i]+" "+transcript
 	  console.log(transcript);
 	 // ======= בדיקת "הצג מסלול ..." =======
 	var matchMaslul = transcript.match(/הצג מסלול\s+(\S+)/);
