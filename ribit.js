@@ -97,7 +97,7 @@ document.getElementById("kottoz").textContent = `לפי ריבית ${Math.round(
       else if(schomdiv1.style.display==='none' && schomdiv2.style.display==='flex' && schom2.value>0){ hashev(rb)}
       else if(schomdiv1.style.display==='flex' && schomdiv2.style.display==='flex' && schom1.value>0 && schom2.value>0){ hashev(rb)}
       
-      
+      document.getElementById("tozaot").innerHTML=""; 
     }
 //function chngDn(x){
 //		document.getElementById("txttkofa2").value=x;
@@ -176,7 +176,7 @@ function hashev(x) {
        
         
         
-        if(x1>0){
+   /*     if(x1>0){
                 tr=document.createElement("tr");
                 tr.style.width="clamp(300px,90vw,600px)";
                 table.appendChild(tr);
@@ -205,37 +205,41 @@ function hashev(x) {
                 td.innerText=(x2*x3*12).toLocaleString() + shach;
                 td.className="numtd";
                 tr.appendChild(td);
-            }
-                tr=document.createElement("tr");
+            }*/
+            tr=document.createElement("tr");
                 tr.style.width="clamp(300px,90vw,600px)";
                 table.appendChild(tr);
                 td=document.createElement("td");
-                td.style.width="70%";
+                td.style.width="60%";
+                td.style.height='30px';td.style.textSize='16px';
                 td.innerText="סך השקעה";
                 td.className="txttd";
                 tr.appendChild(td);
                 td=document.createElement("td");
-                td.style.width="30%";
+                td.style.width="35%";td.style.height='30px';
+                td.style.textSize='16px';
                 td.innerText=Number(x1+(x2*x3*12)).toLocaleString()+shach;
                  td.className="numtd";
                 tr.appendChild(td);
                 
-                tr=document.createElement("tr");
+             tr=document.createElement("tr");
                 tr.style.width="clamp(300px,90vw,600px)";
                 table.appendChild(tr);
                 td=document.createElement("td");
-                td.style.width="70%";
+                td.style.width="60%";td.style.height='30px';
+                td.style.textSize='16px';
                 td.innerHTML="שווי השקעה עתידי ב - "+x3+textshanim;
                 td.className="txttd";
                 tr.appendChild(td);
                 td=document.createElement("td");
-                td.style.width="30%";
+                td.style.width="35%";td.style.height='30px';
+                td.style.textSize='16px';
                  td.className="numtd";
                 td.innerText=parseInt(sum).toLocaleString() + shach;
                 td.className="numtd";
                 tr.appendChild(td);
 
-
+/*
             if(x3<10){
             tr=document.createElement("tr");
             tr.style.width="clamp(300px,90vw,600px)";
@@ -283,7 +287,7 @@ function hashev(x) {
             td.className="numtd";
             tr.appendChild(td);
             }            
-                
+           */     
                 document.getElementById("hashevdo").scrollIntoView({ behavior: "smooth" });
         }
 
@@ -313,4 +317,5 @@ function hashev(x) {
           }
         });
         }
+
 
