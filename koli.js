@@ -773,8 +773,19 @@ function handleLoan(transcript) {
 	}
 	// לוח סילוקין
 	if (transcript.includes("סילוק") || transcript.includes("הסתר")
-    || transcript.includes('אסתר')) {
-		loanWindow.toggleAmortizationTable();
+    || transcript.includes('אסתר') || transcript.includes('לוקי')) {
+      
+   const table = loanDoc.getElementById('amortization-table-container');
+	if(transcript.includes("סילוק") && !transcript.includes("הסתר")
+    && !transcript.includes('אסתר')){
+      table.style.display='block';
+      table.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    else{
+      table.style.display='none';
+      handleSearchFromVoice('הרבה למעלה')
+    }
+	//	loanWindow.toggleAmortizationTable();
 	}
 	transcript='';
 }
