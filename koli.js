@@ -198,7 +198,9 @@ recognition.onresult = (event) => {
 const regexloan = /הלוואה\s+בסכום\s+של\s+(.*?)\s+בריבית\s+של\s+(.*?)\s+לתקופה\s+של\s+(.*?)\s+חודשים?/iu;
 const matchloan = transcript.match(regexloan);
 
-if (matchloan) {
+if (matchloan && matchloan !== matchKlaliLast) {
+  matchKlaliLast = matchloan[0];
+
   hideframe();
   const amount = matchloan[1];
   const interest = matchloan[2];
@@ -1806,4 +1808,3 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
-
