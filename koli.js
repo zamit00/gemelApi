@@ -165,6 +165,31 @@ recognition.onresult = (event) => {
     return;
   }
 
+
+const regexloan = /הלוואה\s+בסכום\s+של\s+(.*?)\s+בריבית\s+של\s+(.*?)\s+לתקופה\s+של\s+(.*?)\s+חודשים?/iu;
+const matchloan = transcript.match(regexloan);
+
+if (matchloan) {
+  const amount = matchloan[1];
+  const interest = matchloan[2];
+  const period = matchloan[3];
+
+  showIframe("loan.html");
+
+  const iframex = document.getElementById("ifrm");
+  iframex.onload = function () { // תוקן כאן סוג הסוגריים
+    const loanDoc = iframex.contentWindow.document;
+    const loanWindow = iframex.contentWindow;
+
+    const loanAmountInput = loanDoc.getElementById('loan-amount');
+    const termfor = loanDoc.getElementById('loan-term');
+    const interestfor = loanDoc.getElementById('interest-rate');
+
+    loanAmountInput.value = extractAmounta(amount);
+    termfor.value = period;
+    interestfor.value = extractInterestRatea(interest);
+  };
+} 
   // ======= מילת חיפוש כללית =======
   const matchWord = matchOneTwo(transcript);
   if (matchWord.matched && matchWord.matched !== matchKlaliLast) {
@@ -222,11 +247,11 @@ function matchOneTwo(transcript) {
   }
 
   const nivutWordsOne = [
-    "למעלה", "למטה", "ראש", "תחתית", "הלווא", "הסבר", "קולי", "שימוש", "תנאי", "פנסיה",
+    "למעלה", "למטה", "ראש", "תחתית", "הסבר", "קולי", "שימוש", "תנאי", "פנסיה",
     "גמל", "השתלמות", "ילד", "פוליסות", "שאלון", "סיכון",
     "שרפ", "שארפ", "מנהלות", "חשיפות", "משולב", "מחשבונים", "חזור", "הבית",
     "דריבית", "דריביט", "דרביט", "ניהול", "סוכן", "קשר", "מאשר", "משולם", "חזור"
-  ];
+ ,"הלוואות" ];
   const matchedOne = nivutWordsOne.find(word => words.includes(word));
   if (matchedOne) {
     return { type: "word-1", matched: matchedOne };
@@ -407,8 +432,8 @@ if (Swal.isVisible()) {
   return;
 }
   // פקודות הפניה למחשבונים
-  if ((transcript.includes("מחשבונים") || transcript.includes("פיננסיים")) && ifrmValue===0) {
-    hideformic(); showIframe("Machshevonim.html");transcript='';return;
+  if ((transcript.includes("מחשבונים") || transcript.includes("פיננסיים")) ) {
+    hideformic();hideframe; showIframe("Machshevonim.html");transcript='';return;
   }
 if(ifrmValue===1){
   
@@ -502,9 +527,9 @@ if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && 
   }
   
   //  פקודות הפניה להשוואות 
-  if (transcript.includes("חברות") && ifrmValue===0
+  if (transcript.includes("חברות")
     && !transcript.includes("ניהול") && !transcript.includes("משולב") && !transcript.includes("מנהלות")) {
-    hideformic(); showIframe("hashvaotRikuz.html");transcript='';return;
+    hideformic();hideframe; showIframe("hashvaotRikuz.html");transcript='';return;
   }
 if(iframe && ifrmValue===1){
   if (iframe.src.includes("hashvaotRikuz")) {
@@ -776,7 +801,7 @@ function handleLoan(transcript) {
     || transcript.includes('אסתר') || transcript.includes('לוקי')) {
       
    const table = loanDoc.getElementById('amortization-table-container');
-	if(transcript.includes("סילוק") && !transcript.includes("הסתר")
+	if(transcript.includes("לוק") && !transcript.includes("הסתר")
     && !transcript.includes('אסתר')){
       table.style.display='block';
       table.scrollIntoView({ behavior: 'smooth', block: 'start' });
