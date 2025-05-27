@@ -1,3 +1,23 @@
+let speechEnabled = false;
+
+function speakClick (){
+  // הפעלה ראשונית — מספיקה כדי לקבל הרשאה
+  speechEnabled = true;
+  const dummy = new SpeechSynthesisUtterance("");
+  dummy.lang = "he-IL";
+  speechSynthesis.speak(dummy);
+};
+function speakLater(text) {
+  if (!speechEnabled) return; // נוודא שהייתה אינטראקציה
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "he-IL";
+  speechSynthesis.speak(utter);
+}
+
+
+
+
+
 let startStop = 0; let ifrmValue=0;
  let finalTranscript = '';  var transcript='';var matchKlaliLast;
 ;let lastTranscript = '';
@@ -17,8 +37,13 @@ function micClick() {
   if (mictext.includes("עצור")) {
     startStop = 1;
     recognition.stop();
+    speakLater('סיים להאזין')
   } else {
     document.getElementById('resultMic').textContent = " מאזין - אמור 'עצור' כדי להפסיק";
+    setTimeout(()=>{
+      speakLater('מתחיל להאזין')
+    },50)
+    
     recognition.start();
   }
 }
@@ -162,6 +187,7 @@ recognition.onresult = (event) => {
       transcript = "";
       lastTranscript = "";
     };
+    setTimeout(()=>{recognition.stop;},1000)
     return;
   }
 
@@ -190,7 +216,9 @@ if (matchloan) {
     termfor.value = period;
     interestfor.value = extractInterestRatea(interest);
     iframex.contentWindow.calculateLoan();
-    handleSearchFromVoice('הרבה למטה')
+    handleSearchFromVoice('הרבה למטה');
+   setTimeout(()=>{ 
+   window.speakLater( loanDoc.getElementById("hechzer").innerText)},500);
     
     setTimeout(()=>{recognition.stop;},1000)
   };
@@ -1765,3 +1793,4 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
+
