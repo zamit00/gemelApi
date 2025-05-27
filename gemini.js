@@ -15,7 +15,7 @@ async function geminiCall(data) {
     }
 }
 
-const dataA = { text: "כתוב  לי מהו שער הדולר לעומת השקל וכן מהו שער מניית tesla" };
+const dataA = { text: "כתוב לי על מגדל ביטוח" };
 
 geminiCall(dataA).then(output => {
   console.log("תוצאה שהתקבלה מהפונקציה:", output);
