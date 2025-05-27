@@ -1,5 +1,5 @@
 let speechEnabled = false;
-
+let speakLaterLast='';
 function speakClick (){
   // הפעלה ראשונית — מספיקה כדי לקבל הרשאה
   speechEnabled = true;
@@ -8,6 +8,8 @@ function speakClick (){
   speechSynthesis.speak(dummy);
 };
 function speakLater(text) {
+ if(text===speakLaterLast){return}
+ speakLaterLast=text;
   if (!speechEnabled) return; // נוודא שהייתה אינטראקציה
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "he-IL";
@@ -851,6 +853,7 @@ function handleLoan(transcript) {
 function handleCompoundInterest(transcript) {
   const iframex = document.getElementById('ifrm');
   const compoundDoc = iframex.contentWindow.document;
+  
   const compoundWindow = iframex.contentWindow;
   const initialAmountInput = compoundDoc.getElementById('hadpeami');
   const monthlyDepositInput = compoundDoc.getElementById('hodshi');
@@ -903,11 +906,19 @@ if (pianoach.dmey || pianoach.dmey===0) {
         DmeyNihulInput.appendChild(option);
        }
     }
-    compoundWindow.onch()
+    compoundWindow.onch();
+    const mll=compoundDoc.getElementById('txtShuvy').innerText;
+  const shuvy=compoundDoc.getElementById('schomShuvy').innerText;
+  speakLater(mll+shuvy)
+    
 }
   // הפעלת חישוב אם כל השדות מולאו
  if(transcript.includes('חשב') && !transcript.includes('מחשב')){
     compoundWindow.hashev(0.04)
+    const mll=compoundDoc.getElementById('txtShuvy').innerText;
+  const shuvy=compoundDoc.getElementById('schomShuvy').innerText;
+  speakLater(mll+shuvy);
+  setTimeout(()=>{recognition.stop},1000)
   }
   }
 function handleMenahalot(transcript) {
@@ -1256,6 +1267,7 @@ function handleYaad(transcript) {
       yaadWindow.calculateMonthlyDeposit();
       yaadDoc.getElementById("result").scrollIntoView({ behavior: "smooth", block: "start" });
     }
+    speakLater(yaadDoc.getElementById('calculateMonthlyDeposit').value)
 //yaadWindow.calculateMonthlyDeposit()
 }
 function handleHasifot(transcript) {
