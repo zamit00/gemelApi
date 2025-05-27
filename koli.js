@@ -170,6 +170,7 @@ const regexloan = /הלוואה\s+בסכום\s+של\s+(.*?)\s+בריבית\s+ש�
 const matchloan = transcript.match(regexloan);
 
 if (matchloan) {
+  hideframe();
   const amount = matchloan[1];
   const interest = matchloan[2];
   const period = matchloan[3];
@@ -188,7 +189,12 @@ if (matchloan) {
     loanAmountInput.value = extractAmounta(amount);
     termfor.value = period;
     interestfor.value = extractInterestRatea(interest);
+    iframex.contentWindow.calculateLoan();
+    handleSearchFromVoice('הרבה למטה')
+    
+    setTimeout(()=>{recognition.stop;},1000)
   };
+  
 } 
   // ======= מילת חיפוש כללית =======
   const matchWord = matchOneTwo(transcript);
