@@ -1,3 +1,32 @@
+
+const API_KEY = "AIzaSyAftZenP0bIjFlXNWHd9fitaJ-4PnIKpYc";
+const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+
+const datagemini = {
+  contents: [{ parts: [{ text: "כתוב לי בדיחה על מתכנתים" }] }]
+};
+
+fetch(url, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(datagemini)
+})
+.then(res => res.json())
+.then(json => {
+  const output = json.candidates?.[0]?.content?.parts?.[0]?.text;
+  console.log("תשובת ג'מיני:", output);
+  console.log("כל התשובה:", json);
+});
+
+
+
+
+
+
+
+
 let speechEnabled = false;
 let speakLaterLast='';
 function speakClick (){
