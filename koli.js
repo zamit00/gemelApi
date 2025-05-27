@@ -1,5 +1,5 @@
 
-const url = 'https://functions-hello-world-310059876816.me-west1.run.app';
+const url = 'https://functions-hello-world-742661432038.me-west1.run.app';
 
 const dataA = { text: "כתוב לי בדיחה על מתכנתים" };
 
