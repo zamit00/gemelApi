@@ -1,29 +1,21 @@
 
-const API_KEY = "AIzaSyAftZenP0bIjFlXNWHd9fitaJ-4PnIKpYc";
-const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`;
+const url = 'https://functions-hello-world-310059876816.me-west1.run.app';
 
-const datagemini = {
-  contents: [{ parts: [{ text: "כתוב לי בדיחה על מתכנתים" }] }]
-};
+const dataA = { text: "כתוב לי בדיחה על מתכנתים" };
 
 fetch(url, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(datagemini)
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(dataA)
 })
 .then(res => res.json())
 .then(json => {
-  const output = json.candidates?.[0]?.content?.parts?.[0]?.text;
-  console.log("תשובת ג'מיני:", output);
-  console.log("כל התשובה:", json);
+  console.log("פלט:", json.output);
+  console.log("תשובה מלאה:", json.raw);
+})
+.catch(err => {
+  console.error("שגיאה בקריאה לפונקציה:", err);
 });
-
-
-
-
-
 
 
 
