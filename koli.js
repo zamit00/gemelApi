@@ -11,11 +11,11 @@ fetch(url, {
 .then(res => res.json())
 .then(json => {
   console.log("פלט:", json.output);
-  console.log("תשובה מלאה:", json.raw);
 })
 .catch(err => {
   console.error("שגיאה בקריאה לפונקציה:", err);
 });
+
 
 
 
