@@ -1,24 +1,4 @@
 
-const url = 'https://functions-hello-world-742661432038.me-west1.run.app';
-
-const dataA = { text: "כתוב לי בדיחה על מתכנתים" };
-
-fetch(url, {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(dataA)
-})
-.then(res => res.json())
-.then(json => {
-  console.log("פלט:", json.output);
-})
-.catch(err => {
-  console.error("שגיאה בקריאה לפונקציה:", err);
-});
-
-
-
-
 let speechEnabled = false;
 let speakLaterLast='';
 function speakClick (){
