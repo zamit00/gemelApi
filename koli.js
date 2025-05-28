@@ -2,14 +2,14 @@
 let speechEnabled = false;
 let speakLaterLast='';
 const geminiInstruction = `
-אם המשתמש מבקש לבצע חישוב, השוואה או להפעיל מחולל מסוים, יש להחזיר תשובה בפורמט JSON בלבד, המכילה:
+אם המשתמש מבקש לבצע חישוב, השוואה, או להפעיל מחולל מסוים – יש להחזיר תשובה בפורמט JSON תקני בלבד, הכוללת:
 
-1. המאפיין "tahalich" – עם תיאור קצר (עד 4 מילים) של סוג התהליך המבוקש: מחשבון, סימולטור, או מחולל השוואות.
-2. הנתונים הדרושים לתהליך – רק אם נאמרו במפורש. אל תמציא ערכים.
+1. המאפיין "tahalich" – המתאר בקצרה (עד 4 מילים) את סוג התהליך: מחשבון, סימולטור או מחולל השוואות.
+2. הנתונים הדרושים לביצוע – רק אם נאמרו במפורש. אין להשלים, לשער או להמציא ערכים.
 
-יש להחזיר אך ורק את המאפיינים הרלוונטיים שיש להם ערך ברור. אין להחזיר מאפיינים ריקים, חסרים, או מומצאים.
+❗ החזר אך ורק מאפיינים שיש להם ערך ברור. אין להחזיר מאפיינים ריקים, חסרים או מומצאים – אלא אם הבקשה מתחילה במילה "אחר".
 
-מיפוי מאפיינים:
+### מיפוי מאפיינים:
 - סכום חד פעמי: "had"
 - סכום חודשי: "hodshi"
 - סכום כללי: "amount"
@@ -28,15 +28,18 @@ const geminiInstruction = `
 - גיל: "gil"
 - גרייס: "grace"
 - הצגת מסלול: "searchMaslul"
+- בקשה למידע מקצועי כללי (לא פעולה): "mikzoei"
 
-הערות חשובות:
-- אם המשתמש מציין ביטוי כמו "עד 70%" או "מעל 70%", יש לכלול במדויק את המילה "עד" או "מעל" כחלק מהערך המוחזר.
-- כל פנייה עומדת בפני עצמה. יש להתעלם לחלוטין מכל מידע שהגיע בפניות קודמות.
+### הערות:
+- אם מופיע ביטוי כמו "עד 70%" או "מעל 70%", יש לכלול במדויק את המילים "עד" או "מעל" כחלק מהערך.
+- כל פנייה נבחנת בפני עצמה. יש להתעלם לחלוטין ממידע קודם.
 
-אם הבקשה להצגת מידע מקצועי תחזיר ב mikzoei את הבקשה.
+### חריג – אם הבקשה מתחילה במילה "אחר":
+- **אין להחזיר JSON**.
+- החזר תשובה קצרה, ממוקדת, בגובה העיניים – עד 3 משפטים.
+- ענה ישירות על הבקשה באופן מילולי.
 
-
-החזר תמיד JSON תקני, ללא טקסט מסביב וללא עטיפות כלשהן.
+בעת החזרת JSON – יש להחזיר אותו באופן נקי וללא טקסט נוסף לפניו או אחריו.
 `;
 function speakClick (){
   // הפעלה ראשונית — מספיקה כדי לקבל הרשאה
@@ -185,16 +188,26 @@ recognition.onresult = (event) => {
     lastTranscript = "";
     return;
   }
-if(transcript.includes('תהליך') && transcript!==matchKlaliLast){
-  matchKlaliLast=transcript;
-  if(!transcript.includes('סוף')){
+if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
+  matchKlaliLast = transcript;
+  
+  if (!transcript.includes('סוף')) {
     return;
-  } 
-  else{
-    recognition.stop;
-      geminiAnswer(transcript+geminiInstruction) }
-  return;
+  }
+  recognition.stop();
+  geminiAnswer(transcript); // מבקש תשובה רגילה ללא JSON
 } 
+else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
+  matchKlaliLast = transcript;
+  
+  if (!transcript.includes('סוף')) {
+    return;
+  }
+
+  recognition.stop();
+  const cleanTranscript = transcript.replace('סוף', '').replace('תהליך', '').trim();
+  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`); // מוסיף את ההוראות ל־Gemini
+}
   
   // ======= בדיקת iframe קיים =======
   var iframe = document.getElementById('ifrm');
