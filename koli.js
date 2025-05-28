@@ -1,5 +1,4 @@
 
-
 let speechEnabled = false;
 let speakLaterLast='';
 const geminiInstruction = `
