@@ -195,7 +195,8 @@ if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  geminiAnswer(transcript,"groq"); // מבקש תשובה רגילה ללא JSON
+const tosefet=" שהתשובה תהיה מקסימום שלושה משפטים"
+  geminiAnswer(tosefet+transcript,"groq"); // מבקש תשובה רגילה ללא JSON
 } 
 else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
