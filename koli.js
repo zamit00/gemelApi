@@ -1,6 +1,43 @@
 
 let speechEnabled = false;
 let speakLaterLast='';
+const geminiInstruction = `
+אם המשתמש מבקש לבצע חישוב, השוואה או להפעיל מחולל מסוים, יש להחזיר תשובה בפורמט JSON בלבד, המכילה:
+
+1. המאפיין "tahalich" – עם תיאור קצר (עד 4 מילים) של סוג התהליך המבוקש: מחשבון, סימולטור, או מחולל השוואות.
+2. הנתונים הדרושים לתהליך – רק אם נאמרו במפורש. אל תמציא ערכים.
+
+יש להחזיר אך ורק את המאפיינים הרלוונטיים שיש להם ערך ברור. אין להחזיר מאפיינים ריקים, חסרים, או מומצאים.
+
+מיפוי מאפיינים:
+- סכום חד פעמי: "had"
+- סכום חודשי: "hodshi"
+- סכום כללי: "amount"
+- ריבית: "interest"
+- תקופה בחודשים: "termH"
+- תקופה בשנים: "termS"
+- דמי ניהול כלליים: "dmey"
+- סוג מסלול או מוצר: "sug"
+- מניות: "menayut"
+- מט"ח: "matach"
+- חו"ל: "hul"
+- דמי ניהול צבירה – קיים: "zvirakayam"
+- דמי ניהול צבירה – חדש: "zvirahadash"
+- דמי ניהול הפקדה – קיים: "hafkadakayam"
+- דמי ניהול הפקדה – חדש: "hafkadahadash"
+- גיל: "gil"
+- גרייס: "grace"
+- הצגת מסלול: "searchMaslul"
+
+הערות חשובות:
+- אם המשתמש מציין ביטוי כמו "עד 70%" או "מעל 70%", יש לכלול במדויק את המילה "עד" או "מעל" כחלק מהערך המוחזר.
+- כל פנייה עומדת בפני עצמה. יש להתעלם לחלוטין מכל מידע שהגיע בפניות קודמות.
+
+אם הבקשה להצגת מידע מקצועי תחזיר ב mikzoei את הבקשה.
+
+
+החזר תמיד JSON תקני, ללא טקסט מסביב וללא עטיפות כלשהן.
+`;
 function speakClick (){
   // הפעלה ראשונית — מספיקה כדי לקבל הרשאה
   speechEnabled = true;
@@ -110,7 +147,7 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
-  console.log(transcript);
+ // console.log(transcript);
 
   // ======= טיפול ב־Swal Yossi =======
   if (Swal.isVisible()) {
@@ -148,7 +185,17 @@ recognition.onresult = (event) => {
     lastTranscript = "";
     return;
   }
-
+if(transcript.includes('תהליך') && transcript!==matchKlaliLast){
+  matchKlaliLast=transcript;
+  if(!transcript.includes('סוף')){
+    return;
+  } 
+  else{
+    recognition.stop;
+      geminiAnswer(transcript+geminiInstruction) }
+  return;
+} 
+  
   // ======= בדיקת iframe קיים =======
   var iframe = document.getElementById('ifrm');
   if (iframe && iframe.src.includes("html") && !iframe.src.includes("index")) {
@@ -200,7 +247,7 @@ const matchloan = transcript.match(regexloan);
 
 if (matchloan && matchloan !== matchKlaliLast) {
   matchKlaliLast = matchloan[0];
-
+ 
   hideframe();
   const amount = matchloan[1];
   const interest = matchloan[2];
