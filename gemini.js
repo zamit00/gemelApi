@@ -16,8 +16,11 @@ async function geminiCall(data) {
   }
 }
 
-function geminiAnswer(transcript) {
-  const dataA = { text: transcript };
+function geminiAnswer(transcript, provider = "gemini") {
+  const dataA = {
+    text: transcript,
+    provider: provider
+  };
 
   geminiCall(dataA).then(responseText => {
     try {
@@ -27,7 +30,7 @@ function geminiAnswer(transcript) {
       if (transcript.includes('אחר')) {
         if (responseText !== outputLast) {
           outputLast = responseText;
-          console.log("Gemini (רגיל):", responseText);
+          console.log(`${provider} (רגיל):`, responseText);
         }
         return;
       }
@@ -35,7 +38,7 @@ function geminiAnswer(transcript) {
       // חילוץ JSON מתוך הטקסט
       const jsonMatch = responseText.match(/{[\s\S]*}/);
       if (!jsonMatch) {
-        console.error("לא נמצא JSON בתשובת Gemini:", responseText);
+        console.error(`לא נמצא JSON בתשובת ${provider}:`, responseText);
         return;
       }
 
@@ -60,8 +63,7 @@ function geminiAnswer(transcript) {
       }
 
     } catch (err) {
-      console.error("שגיאה בעיבוד תשובת Gemini:", err);
+      console.error(`שגיאה בעיבוד תשובת ${provider}:`, err);
     }
   });
 }
-
