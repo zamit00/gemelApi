@@ -31,6 +31,7 @@ function geminiAnswer(transcript, provider = "gemini") {
         if (responseText !== outputLast) {
           outputLast = responseText;
           console.log(`${provider} (רגיל):`, responseText);
+          speakLater(responseText);
         }
         return;
       }
