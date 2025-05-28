@@ -1,4 +1,5 @@
 
+
 let speechEnabled = false;
 let speakLaterLast='';
 const geminiInstruction = `
@@ -195,8 +196,7 @@ if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-const tosefet=" שהתשובה תהיה מקסימום שלושה משפטים"
-  geminiAnswer(tosefet+transcript,"groq"); // מבקש תשובה רגילה ללא JSON
+  geminiAnswer(transcript,"groq"); // מבקש תשובה רגילה ללא JSON
 } 
 else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
