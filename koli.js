@@ -195,7 +195,7 @@ if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  geminiAnswer(transcript,"groq"); // מבקש תשובה רגילה ללא JSON
+  geminiAnswer(transcript,"gemini"); // מבקש תשובה רגילה ללא JSON
 } 
 else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
@@ -206,7 +206,7 @@ else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
 
   recognition.stop();
   const cleanTranscript = transcript.replace('סוף', '').replace('תהליך', '').trim();
-  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`,"groq"); // מוסיף את ההוראות ל־Gemini
+  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`,"gemini"); // מוסיף את ההוראות ל־Gemini
 }
   
   // ======= בדיקת iframe קיים =======
