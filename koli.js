@@ -152,7 +152,7 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
- // console.log(transcript);
+ console.log("זיהוי קולי:", transcript);
 
   // ======= טיפול ב־Swal Yossi =======
   if (Swal.isVisible()) {
@@ -173,6 +173,15 @@ recognition.onresult = (event) => {
     transcript = "";
     lastTranscript = "";
     return;
+  }
+
+  else if(document.getElementById("topFundsPopup")) {
+    if (transcript.includes("סגור") || transcript.includes("הסתר") || transcript.includes("אסתר")) {
+      document.getElementById("topFundsPopup").remove();
+      transcript = "";
+      lastTranscript = "";
+      return;
+    }
   }
 
   // ======= פקודות כלליות =======
@@ -197,8 +206,21 @@ if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  geminiAnswer(transcript,"groq"); // מבקש תשובה רגילה ללא JSON
+  const cleanTranscript = transcript.replace('סוף', '').replace('אחר', '').trim();
+  geminiAnswer(cleanTranscript,"gemini"); // מבקש תשובה רגילה ללא JSON
 } 
+else if (transcript.includes('כוכבים') && transcript !== matchKlaliLast) {
+  matchKlaliLast = transcript;
+  
+  if (!transcript.includes('סוף')) {
+    return;
+  }
+  recognition.stop();
+  const cleanTranscript = transcript.replace('סוף', '').replace('כוכבים', '').trim();
+  kochavim(cleanTranscript) // מוסיף את ההוראות ל־Gemini
+  return;
+}
+
 else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
   
@@ -208,7 +230,7 @@ else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
 
   recognition.stop();
   const cleanTranscript = transcript.replace('סוף', '').replace('תהליך', '').trim();
-  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`,"groq"); // מוסיף את ההוראות ל־Gemini
+  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`,"gemini"); // מוסיף את ההוראות ל־Gemini
   return;
 }
   
@@ -1871,4 +1893,104 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
+
+function kochavim(mozar) {
+  const sortKey = 'tesuam'; 
+  let Data;
+  let moz;
+
+  if (mozar) {
+    if(mozar.includes('השתלמות') ){ 
+      moz = 'קרנות השתלמות';
+      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
+    else if(mozar.includes('פנסיה')){
+      moz = 'קרנות חדשות';
+      Data = datanetunimKlaliXP.filter(obj => obj.mozar===moz);}
+    else if(mozar.includes('גמל') && !mozar.includes('השקעה')){
+      moz = 'תגמולים ואישית לפיצויים';
+      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
+    else if(mozar.includes('השקעה')){
+      moz = 'קופת גמל להשקעה';
+      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
+    else if((mozar.includes('חיסכון') || mozar.includes('פוליס'))  && !mozar.includes('ילד')){
+      moz = "פוליסות חסכון";
+      Data = datanetunimKlaliXB.filter(obj => obj.mozar===moz);}
+    else if(mozar.includes('ילד')){
+      moz = 'קופת גמל להשקעה - חסכון לילד';
+      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
+  }
+
+  if (sortKey && Array.isArray(Data)) {
+    const datam = [...Data]
+      .filter(obj => obj[sortKey] !== undefined && !isNaN(obj[sortKey]))
+      .sort((a, b) => b[sortKey] - a[sortKey]);
+      showTopFunds(datam, sortKey,moz);
+
+ /*   console.log("🔥 מיון לפי:", "תשואה לשנה");
+    for (let i = 0; i < 5 && i < datam.length; i++) {
+      console.log(`${i + 1}. ${datam[i].shemkupa} | תשואה: ${datam[i][sortKey]}%`);
+    }*/
+  } else {
+    console.log("⚠️ לא נמצאו נתונים מתאימים או שלא מדובר במערך.");
+  }
+}
+function showTopFunds(datam, sortKey,moz) {
+  if (!datam || datam.length === 0) {
+    return;
+  }
+  const existingPopup = document.getElementById("topFundsPopup");
+  if (existingPopup) existingPopup.remove();
+
+  const popup = document.createElement("div");
+  popup.id = "topFundsPopup";
+  popup.style.position = "fixed";
+  popup.style.top = "50%";
+  popup.style.left = "50%";
+  popup.style.transform = "translate(-50%, -50%)";
+  popup.style.background = "white";
+  popup.style.border = "2px solid #444";
+  popup.style.borderRadius = "12px";
+  popup.style.boxShadow = "0 0 20px rgba(0,0,0,0.3)";
+  popup.style.padding = "20px";
+  popup.style.zIndex = "9999";
+  popup.style.maxWidth = "90%";
+  popup.style.width = "400px";
+  popup.style.fontFamily = "Arial, sans-serif";
+
+  const title = document.createElement("h2");
+  if (moz === 'קרנות חדשות') moz = 'קרנות הפנסיה מקיפה';
+  if (moz === 'תגמולים ואישית לפיצויים') moz = 'קופות הגמל';
+  title.innerText = `5 ${moz} 🔥 המובילות בתשואה לשנה`;
+  title.style.marginBottom = "12px";
+  title.style.textAlign = "center";
+  popup.appendChild(title);
+
+  const list = document.createElement("ol");
+  for (let i = 0; i < 5 && i < datam.length; i++) {
+    const li = document.createElement("li");
+    li.innerText = `${datam[i].shemkupa} — ${datam[i][sortKey]}%`;
+    li.style.marginBottom = "8px";
+    list.appendChild(li);
+  }
+  popup.appendChild(list);
+
+  const closeBtn = document.createElement("button");
+  closeBtn.innerText = "סגור";
+  closeBtn.style.marginTop = "16px";
+  closeBtn.style.padding = "8px 16px";
+  closeBtn.style.border = "none";
+  closeBtn.style.borderRadius = "8px";
+  closeBtn.style.background = "#444";
+  closeBtn.style.color = "white";
+  closeBtn.style.cursor = "pointer";
+  closeBtn.style.display = "block";
+  closeBtn.style.marginLeft = "auto";
+  closeBtn.style.marginRight = "auto";
+  closeBtn.onclick = () => popup.remove();
+  popup.appendChild(closeBtn);
+
+  document.body.appendChild(popup);
+}
+
+
 
