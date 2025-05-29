@@ -152,8 +152,7 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
- console.log("זיהוי קולי:", transcript);
-
+ 
   // ======= טיפול ב־Swal Yossi =======
   if (Swal.isVisible()) {
     const popup = document.querySelector('.swal2-popup');
