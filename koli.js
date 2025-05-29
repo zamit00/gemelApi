@@ -4,7 +4,8 @@ let speakLaterLast='';
 const geminiInstruction = `
 אם המשתמש מבקש לבצע חישוב, השוואה, או להפעיל מחולל מסוים – יש להחזיר תשובה בפורמט JSON תקני בלבד, הכוללת:
 
-1. המאפיין "tahalich" – המתאר בקצרה (עד 4 מילים) את סוג התהליך: מחשבון, סימולטור או מחולל השוואות.
+1. המאפיין "tahalich" – המתאר בקצרה (עד 4 מילים) את סוג התהליך.
+סוג התהליכים שיש באתר:  סימולטור הלוואות, חישוב ערך עתידי, חישוב הפקדה לסכום יעד, השוואת דמי ניהול, מחשבון סיכון, השוואת חברות מנהלות, מחולל חשיפות, השוואת תיק משולב, מחולל יחס תשואה סיכון שארפ.
 2. הנתונים הדרושים לביצוע – רק אם נאמרו במפורש. אין להשלים, לשער או להמציא ערכים.
 
 ❗ החזר אך ורק מאפיינים שיש להם ערך ברור. אין להחזיר מאפיינים ריקים, חסרים או מומצאים – אלא אם הבקשה מתחילה במילה "אחר".
@@ -31,6 +32,7 @@ const geminiInstruction = `
 - בקשה למידע מקצועי כללי (לא פעולה): "mikzoei"
 
 ### הערות:
+- כאשר מחזירים מספר שהוא באחוזים יש להחזיר את המספר  ללא אחוזים.
 - אם מופיע ביטוי כמו "עד 70%" או "מעל 70%", יש לכלול במדויק את המילים "עד" או "מעל" כחלק מהערך.
 - כל פנייה נבחנת בפני עצמה. יש להתעלם לחלוטין ממידע קודם.
 
@@ -195,7 +197,7 @@ if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  geminiAnswer(transcript,"gemini"); // מבקש תשובה רגילה ללא JSON
+  geminiAnswer(transcript,"groq"); // מבקש תשובה רגילה ללא JSON
 } 
 else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
@@ -206,7 +208,8 @@ else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
 
   recognition.stop();
   const cleanTranscript = transcript.replace('סוף', '').replace('תהליך', '').trim();
-  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`,"gemini"); // מוסיף את ההוראות ל־Gemini
+  geminiAnswer(`${cleanTranscript}\n${geminiInstruction}`,"groq"); // מוסיף את ההוראות ל־Gemini
+  return;
 }
   
   // ======= בדיקת iframe קיים =======
@@ -1868,3 +1871,4 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
   gil:gil
 };
 }
+
