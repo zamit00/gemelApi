@@ -27,19 +27,20 @@ function geminiAnswer(transcript, provider = "gemini") {
       recognition.stop();
 
       // אם מדובר בפנייה רגילה (לא json) — פשוט הדפס
-      if (transcript.includes('אחר')) {
+      
+      if (transcript.includes('אחר') || transcript.includes('חיפוש')) {
         if (responseText !== outputLast) {
           outputLast = responseText;
           console.log(`${provider} (רגיל):`, responseText);
         }
-        return;
+        return responseText;
       }
 
       // חילוץ JSON מתוך הטקסט
       const jsonMatch = responseText.match(/{[\s\S]*}/);
       if (!jsonMatch) {
         console.error(`לא נמצא JSON בתשובת ${provider}:`, responseText);
-        return;
+        return responseText;
       }
 
       const output = JSON.parse(jsonMatch[0]);
