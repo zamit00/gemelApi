@@ -216,7 +216,7 @@ else if (transcript.includes('כוכבים') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  const cleanTranscript = transcript.replace('סוף', '').replace('כוכבים', '').trim();
+  const cleanTranscript = transcript.replace('מתחיל להאזין','').replace('סוף', '').replace('כוכבים', '').trim();
   kochavim(cleanTranscript) // מוסיף את ההוראות ל־Gemini
   return;
 }
@@ -1895,7 +1895,12 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
 }
 
 function kochavim(mozar) {
-  const sortKey = 'tesuam'; 
+  if(mozar.includes('3') || mozar.includes('שלוש')){var sortKey = 'tesuam36'}
+  else if(mozar.includes('5') || mozar.includes('חמש')){var sortKey = 'tesuam60'}
+  else{
+    var sortKey = 'tesuam'
+  }
+  
   let Data;
   let moz;
 
@@ -1938,6 +1943,15 @@ function showTopFunds(datam, sortKey,moz) {
   if (!datam || datam.length === 0) {
     return;
   }
+  if(sortKey==='tesuam'){
+    var tkofaX='שנה';
+  }
+  else if(sortKey==='tesuam36'){
+    var tkofaX=` - 3 שנים;
+  `}
+  else if(sortKey==='tesuam60'){
+    var tkofaX=` - 5 שנים`}
+  
   const existingPopup = document.getElementById("topFundsPopup");
   if (existingPopup) existingPopup.remove();
 
@@ -1960,7 +1974,7 @@ function showTopFunds(datam, sortKey,moz) {
   const title = document.createElement("h2");
   if (moz === 'קרנות חדשות') moz = 'קרנות הפנסיה מקיפה';
   if (moz === 'תגמולים ואישית לפיצויים') moz = 'קופות הגמל';
-  title.innerText = `5 ${moz} 🔥 המובילות בתשואה לשנה`;
+  title.innerText = `5 ${moz} 🔥 המובילות בתשואה ל${tkofaX}`;
   title.style.marginBottom = "12px";
   title.style.textAlign = "center";
   popup.appendChild(title);
