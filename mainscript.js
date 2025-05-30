@@ -9,9 +9,9 @@ const gufmosdixA = [
 ];
 const mozAll = [
   'קרנות השתלמות', 'תגמולים ואישית לפיצויים', 'קופת גמל להשקעה',
-  "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון","קרנות חדשות"
+  "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון","קרנות חדשות","מרכזית לפיצויים"
 ];
-
+merkazit=['כללי'];
 const fieldsToAverage = [
   "tesuam", "tesuam36", "tesuam60",
     "stiya36", "stiya60", "yitratNechasim",
@@ -435,12 +435,13 @@ function hisht(x) {
  }
 
 async function indications(){ 
-for(let r=0;r<=5;r++){
+for(let r=0;r<=6;r++){
   const sugmuzar=mozAll[r] 
 var typamas;
 if(r===0 || r===2 || r===4){typamas=hishtalmot}
 else if(r===1 || r===5){typamas=gemel} 
 else if(r===3){typamas=layeled}
+else if(r===6){typamas=merkazit}
 
 for (let i = 0; i < typamas.length; i++) {
   const dataY = await filterMaslul(typamas[i], sugmuzar, 0);
@@ -471,7 +472,6 @@ if (result["tesuam60"] && result["stiya60"]) {
 }
   dataIndicators.push(result);
 } 
-
   } 
 
 };
