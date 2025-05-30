@@ -136,14 +136,14 @@ tableTesuot.innerHTML += `
     document.getElementById('kupaInfo').style.display='block';
     document.getElementById('kupaInfo').style.margin='0 auto';
 
-    const tospeak=`המסלול ${shemkupa} של ${menahelet} מדורג במקום ה${fieldNames[mikom]} 
+    /*const tospeak=`המסלול ${shemkupa} של ${menahelet} מדורג במקום ה${fieldNames[mikom]} 
     בתשואה ל - 12 חודשים אחרונים עם תשואה של ${data[0].tesuam} אחוזים.
     תשואת המסלול לתקופה של 3 שנים עומדת על ${data[0].tesuam36} אחוזים.
      ותשואת המסלול לתקופה של 5 שנים עומדת על ${data[0].tesuam60} אחוזים.
    בנתוני השנה הנוכחית: 
     תשואת המסלול מתחילת השנה עומדת על ${data[0].tesuaMitchilatshana} 
     אחוזים. תשואת המסלול לחודש האחרון עומדת על ${data[0].tusaAharona} אחוזים.`
-   speakClick();speakLater(tospeak);
+   speakClick();speakLater(tospeak);*/
     var yValues = [];
     var xValues = [];
     var yValuesM = [];
