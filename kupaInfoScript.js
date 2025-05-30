@@ -1,3 +1,27 @@
+const fieldNames = {
+  tesuam: 'תשואה ל - 12 חודשים',
+  tesuam36: 'תשואה 3 שנים',
+  tesuam60: 'תשואה 5 שנים',
+  stiya36: 'סטיית תקן 3 שנים',
+  stiya60: 'סטיית תקן 5 שנים',
+  yitratNechasim: 'יתרת נכסים',
+  sharp: 'מדד שארפ',
+  tusaAharona: 'תשואה חודש אחרון',
+  tesuaMitchilatshana: 'תשואה מתחילת שנה',
+  kvutzaAhuz4751: 'שיעור חשיפה למניות',
+  kvutzaAhuz4761: 'שיעור חשיפה למטבע חוץ',
+  tesuaLestiya36: 'תשואה לסטייה 3 שנים',
+  tesuaLestiya60: 'תשואה לסטייה 5 שנים'
+};
+const fieldsToCompare = [
+    "yitratNechasim",
+    "tusaAharona", "tesuaMitchilatshana",
+    "tesuam", "tesuam36", "tesuam60",
+    "stiya36", "stiya60", "sharp", 
+    "kvutzaAhuz4751", "kvutzaAhuz4761", 
+    "tesuaLestiya36", "tesuaLestiya60"
+  ];
+  
 
 async function bring(data,mikom) {
     
@@ -5,33 +29,106 @@ async function bring(data,mikom) {
     const muzar = data[0].mozar; 
     const shemkupa = data[0].shemkupa;
     const maslul = data[0].mas;
-    const tesuam = data[0].tesuam;
-    const tesuam36 = data[0].tesuam36;
-    const tesuam60 =data[0].tesuam60;
-    const menahelet = data[0].menahelet;
-    const yitratnechasim=data[0].yitratnechasim;
-    const stiya36=data[0].stiya36;
-    const stiya60=data[0].stiya60;
-    const mas = await maslultype(maslul);
+    
+    
+var menahelet = data[0].menahelet;
+   
+
+if (data[0]["tesuam36"] && data[0]["stiya36"] && data[0]["stiya36"] !== 0) {
+  data[0]["tesuaLestiya36"] = parseFloat(data[0]["tesuam36"] / data[0]["stiya36"]).toFixed(2);
+}
+
+if (data[0]["tesuam60"] && data[0]["stiya60"] && data[0]["stiya60"] !== 0) {
+  data[0]["tesuaLestiya60"] = parseFloat(data[0]["tesuam60"] / data[0]["stiya60"]).toFixed(2);
+}
+
+    const kupaInfo = document.getElementById('kupaInfo');
+    kupaInfo.innerHTML = '';
+    kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;">נתונים כלליים</h3>
+    <table id="tableklali" style="width:clamp(300px,90vw, 800px); margin:0 auto;
+     border-collapse: collapse; font-size: 16px;">
+		<tbody></tbody>
+	</table>`
+    const tbody = document.querySelector('#tableklali tbody');
+    if(!menahelet || menahelet === 'undefined' || menahelet === 'null'){
+        menahelet = matchHevra(shemkupa);
+    }
+    tbody.innerHTML += `
+    <tr>
+    <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">שם המסלול:</td>
+    <td id="shemkupa" style="padding:8px; border:1px solid #ccc;font-weight:bold;
+    color:orangered;font-size:16px;">${shemkupa}</td>
+  </tr>
+  <tr>
+    <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">מספר אוצר:</td>
+    <td style="padding:8px; border:1px solid #ccc;">${mhkupa}</td>
+  </tr>
+  <tr>
+    <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">סוג מוצר:</td>
+    <td style="padding:8px; border:1px solid #ccc;">${muzar}</td>
+  </tr>
+  <tr>
+    <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">חברה מנהלת:</td>
+    <td style="padding:8px; border:1px solid #ccc;">${menahelet}</td>
+  </tr>
+`;
+kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;margin:10px auto">אופי השקעה</h3>
+<table id="tableOfi" style="width:clamp(300px,90vw, 800px); margin:0 auto;
+     border-collapse: collapse; font-size: 16px;">
+		<tbody></tbody>
+	</table>`
+const tbodyOfi = document.querySelector('#tableOfi tbody');
+const mas = await maslultype(maslul);
+tbodyOfi.innerHTML += `
+    <tr>
+        <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">אפיק השקעה:</td>
+        <td style="padding:8px; border:1px solid #ccc;">${maslul}</td>
+    </tr>
+    <tr>
+        <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">אופי מסלול השקעה:</td>
+        <td style="padding:8px; border:1px solid #ccc;">${mas[0]}</td>
+    </tr>
+  `
+kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;margin:10px auto">נתוני נכסים, תשואה וסיכון</h3>
+<h3>המסלול מדורג במקום ה - <span style="color:orangered;"> ${mikom} </span> בתשואה ל - 12 חודשים אחרונים</h3>
+<table id="tableTesuot" style="width:clamp(300px,90vw, 800px); margin:0 auto;
+     border-collapse: collapse; font-size: 16px;">
+		<tbody></tbody>
+	</table>`
+const tableTesuot = document.querySelector('#tableTesuot tbody');
+const analysisScore= analyzeMaslulAgainstAverage(data[0]);
+console.log(analysisScore);
+tableTesuot.innerHTML += `
+    <tr>
+        <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;text-align:center">נושא</td>
+        <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;text-align:center">נתון במסלול</td>
+        <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;text-align:center"> ממוצע ענף</td>
+        <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;text-align:center">ביחס לממוצע</td>
+    </tr>
+  `
+  for (const field of fieldsToCompare) {
+    const val = analysisScore.fields.find(f => f.field === field).value || 0;
+    const avg =analysisScore.fields.find(f => f.field === field).average || 0; 
+    const result = analysisScore.fields.find(f => f.field === field).result || "";
+
+    if (isNaN(val) || isNaN(avg)) continue;
+
+    tableTesuot.innerHTML += `
+    <tr>
+        <td style="padding:8px; border:1px solid #ccc;text-align:right">${fieldNames[field] || field}</td>
+        <td style="padding:8px; border:1px solid #ccc;text-align:center">
+        ${val.toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="padding:8px; border:1px solid #ccc;text-align:center">
+        ${avg.toLocaleString('he-IL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="padding:8px; border:1px solid #ccc;text-align:center">${result}</td>
+    </tr>
+  `
+
+  }
     document.getElementById('pdf').style.display='block';
-    document.getElementById('kupa').innerHTML=shemkupa;
-    document.getElementById('sugmuzar').innerHTML='<span style="color: orangered;">'
-    +'סוג המוצר: '+ '</span>'+muzar; 
-    if(maslul!==undefined){  
-    document.getElementById('sugmaslul').innerHTML='<span style="color: orangered;">'
-    +'אפיק ההשקעה: '+ '</span>'+maslul
-    document.getElementById('ofi').innerHTML='<span style="color: orangered;">'
-    +'אופי מסלול ההשקעה: '+ '</span>'+mas[0]}
-    document.getElementById('mhkupa').innerHTML='<span style="color: orangered;">'
-    +'מספר קופה: '+ '</span>'+mhkupa
-    document.title =shemkupa+mhkupa;
-    let tesuaMitchilatshana=data[0].tesuaMitchilatshana;
-    let ramatsikon= data[0].ramatsikon; let shiurmenayut= data[0].kvutzaAhuz4751;
-     let baaretz= data[0].kvutzaSug4731; let shiurbaaretz= data[0].kvutzaAhuz4731;
-     let behul= data[0].kvutzaSug4761; let shiurbehul= data[0].kvutzaAhuz4761;
-    document.getElementById('stiya36').innerHTML='<span style="color: orangered;">'
-      +'סטיית תקן ל - 3 שנים: '+ '</span>'+stiya36;
-    var tchilatshana=1;
+    document.getElementById('kupaInfo').style.display='block';
+    document.getElementById('kupaInfo').style.margin='0 auto';
+
     var yValues = [];
     var xValues = [];
     var yValuesM = [];
@@ -50,23 +147,7 @@ async function bring(data,mikom) {
         formattedDate = month + '/' + year;
         xValues.push(formattedDate);
     }
-    document.getElementById("miztaberet").innerHTML ='<span style="color: orangered;">'
-    + 'תשואה מצטברת מתחילת שנה: '+ '</span>'+data[0].tesuaMitchilatshana+"%"
-    document.getElementById("shana").innerHTML ='<span style="color: orangered;">'
-    + 'תשואה מצטברת לשנה: '+ '</span>'+tesuam+"%";
-    document.getElementById("shalosh").innerHTML ='<span style="color: orangered;">'
-      + 'תשואה מצטברת ל -3 שנים: '+ '</span>'+tesuam36+"%";
-      if(maslul!==undefined && mikom!==''){
-    document.getElementById("derog").innerHTML ='<span style="color: orangered;">'
-    + 'דירוג: '+ '</span>'+
-  'הקופה מדורגת במקום ה - <span style="color: green;font-size:22px">' + mikom + '</span>' + 
-  ' באפיק ההשקעה ' + maslul + '.';}
-  else{
-    document.getElementById("derog").innerHTML ='<span style="color: orangered;">'
-    + 'דירוג: '+ '</span>'+
-  'הקופה מדורגת במקום ה - <span style="color: green;font-size:22px">' + mikom + '</span>' + 
-  ' באפיק ההשקעה '  + '.';
-  }
+    
     var barColors = yValues.map(function (value) {
         return value >= 0 ? "green" : "red"; // Green for positive values, red for negative values
     });
@@ -114,14 +195,7 @@ if (existingChart) {
             maintainAspectRatio: false
         }
     });
-    document.getElementById('ramatsikon').innerHTML='<span style="color: orangered;">'
-                +'רמת סיכון: '+ '</span>'+ramatsikon ;
-    document.getElementById('menayot').innerHTML='<span style="color: orangered;">'
-                +'חשיפה למניות: '+ '</span>'+shiurmenayut+"%";
-   document.getElementById('behul').innerHTML='<span style="color: orangered;">'
-                +'חשיפה למטח: ' + '</span>'+ shiurbehul+"%";
-    document.getElementById('baaretz').innerHTML='<span style="color: orangered;">'
-                +'שיעור נכסים בארץ: '+ '</span>'+shiurbaaretz+"%";
+    // גרף תשואה חודשית מצטברת
     existingChart = Chart.getChart("myChart"); // מחפש אם יש גרף קיים
         if (existingChart) {
                     existingChart.destroy(); // הורס את הגרף הקודם
@@ -222,30 +296,31 @@ async function maslultype(y) {
         console.error('Error:', error);
         return [];
     }
-    
 }
+   
+
 let pieChartInstance; 
 
 function pie(nehasim) {
-    var tda, trma;
+
     const tbl = document.getElementById('nehasim');   
     document.getElementById('nehasimkot').innerText = 'חלוקת נכסים לקבוצות ראשיות:';  
     tbl.innerHTML = ""; // איפוס הטבלה לפני הוספת נתונים חדשים
+    
 
     var shemhaneches = [], ahuzhaneches = [];
     for (let i = 0; i < nehasim.length; i += 3) {
-        trma = document.createElement('tr');
-        trma.className = 'trkupa';
-        tda = document.createElement('td');
-        tda.className = "tdmhkupa";
-        tda.innerHTML = `<span style="font-weight: bold; color: blue;">${nehasim[i]}:</span> 
-                          ${Number(nehasim[i + 2]).toFixed(2)}%`;
+        
+       tbl.innerHTML +=`<td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;text-align:right">
+       ${nehasim[i]}</td>
+       <td style="padding:8px; border:1px solid #ccc;text-align:center">
+       ${Number(nehasim[i + 2]).toFixed(2)}%</td>`
+
         shemhaneches.push(nehasim[i]);
         ahuzhaneches.push(Number(nehasim[i + 2]));
-
-        trma.appendChild(tda);
-        tbl.appendChild(trma);
+       
     }
+    
     var existingChart = Chart.getChart("pieChartkupa"); // מחפש אם יש גרף קיים
     if (existingChart) {
         existingChart.destroy(); // הורס את הגרף הקודם
@@ -275,11 +350,12 @@ function pie(nehasim) {
                     display: true,
                     text: "פיזור נכסים",
                     font: {
-                        size: 20,
+                        size: 25,
                         family: "Arial",
-                        weight: "bold"
+                        weight: "bold",
+                       
                     },
-                    color: "#333"
+                    color: "blue"
                 },
                 legend: {
                     display: true,
@@ -304,7 +380,7 @@ function pie(nehasim) {
 }*/
 function exportToPDF() {
     const element = document.getElementById('kupaInfo');
-    const kupa = document.getElementById('mhkupa');
+    const kupa = document.getElementById('shemkupa');
     const opt = {
         margin:       0.5,
         filename:     `${kupa.innerText}.pdf`,
@@ -316,3 +392,82 @@ function exportToPDF() {
     html2pdf().set(opt).from(element).save();
 }
     
+function analyzeMaslulAgainstAverage(maslulData) {
+  const analysis = {
+    mozar: maslulData.mozar || '',
+    maslul: maslulData.mas || '',
+    totalAboveAvg: 0,
+    totalFields: 0,
+    fields: []
+  };
+
+  var averageData = dataIndicators.find(item =>
+    item.maslul === maslulData.mas && item.mozar === maslulData.mozar);
+  if (!averageData) return;
+  if (averageData["tesuam36"] && averageData["stiya36"] && averageData["stiya36"] !== 0) {
+  averageData["tesuaLestiya36"] = parseFloat(averageData["tesuam36"] / averageData["stiya36"]).toFixed(2);
+}
+
+if (averageData["tesuam60"] && averageData["stiya60"] && averageData["stiya60"] !== 0) {
+  averageData["tesuaLestiya60"] = parseFloat(averageData["tesuam60"] / averageData["stiya60"]).toFixed(2);
+}
+  
+  for (const field of fieldsToCompare) {
+    const val = parseFloat(maslulData[field]);
+    const avg = parseFloat(averageData[field]);
+
+    if (isNaN(val) || isNaN(avg)) {
+        analysis.fields.push({
+      field,
+      value: "",
+      average: '',
+      result: 'לא נותח'
+    });
+        continue;}
+
+    const betterIfHigher = ["tesuam", "tesuam36", "tesuam60", "sharp", "tusaAharona",
+         "tesuaMitchilatshana", "kvutzaAhuz4751", "kvutzaAhuz4761","tesuaLestiya36", "tesuaLestiya60",
+         "yitratNechasim"];
+    const betterIfLower = ["stiya36", "stiya60"];
+
+    let comparison = '';
+
+    if (betterIfHigher.includes(field)) {
+      if (val > avg) {
+        comparison = 'מעל הממוצע';
+        analysis.totalAboveAvg++;
+      } else if (val < avg) {
+        comparison = 'מתחת לממוצע';
+      } else {
+        comparison = 'שווה לממוצע';
+      }
+    } else if (betterIfLower.includes(field)) {
+      if (val < avg) {
+        comparison = 'מעל הממוצע (סטייה נמוכה)';
+        analysis.totalAboveAvg++;
+      } else if (val > avg) {
+        comparison = 'מתחת לממוצע (סטייה גבוהה)';
+      } else {
+        comparison = 'שווה לממוצע';
+      }
+    } else {
+      comparison = 'לא נותח';
+    }
+
+    analysis.fields.push({
+      field,
+      value: val,
+      average: avg,
+      result: comparison
+    });
+
+
+    analysis.totalFields++;
+  }
+
+  analysis.score = ((analysis.totalAboveAvg / analysis.totalFields) * 100).toFixed(1) + '% ביצועים מעל הממוצע';
+
+  return analysis;
+}
+
+
