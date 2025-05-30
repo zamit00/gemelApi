@@ -11,7 +11,11 @@ const fieldNames = {
   kvutzaAhuz4751: 'שיעור חשיפה למניות',
   kvutzaAhuz4761: 'שיעור חשיפה למטבע חוץ',
   tesuaLestiya36: 'תשואה לסטייה 3 שנים',
-  tesuaLestiya60: 'תשואה לסטייה 5 שנים'
+  tesuaLestiya60: 'תשואה לסטייה 5 שנים',
+    1:'ראשון', 2:'שני',3:'שלישי',4:'רביעי',5:'חמישי',6:'שישי'
+    ,7:'שביעי',8:'שמיני',9:'תשיעי',10:'עשירי',
+    11:'אחדעשרה', 12:'שנייםעשר'
+
 };
 const fieldsToCompare = [
     "yitratNechasim",
@@ -63,6 +67,7 @@ if (data[0]["tesuam60"] && data[0]["stiya60"] && data[0]["stiya60"] !== 0) {
     <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">מספר אוצר:</td>
     <td style="padding:8px; border:1px solid #ccc;">${mhkupa}</td>
   </tr>
+
   <tr>
     <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">סוג מוצר:</td>
     <td style="padding:8px; border:1px solid #ccc;">${muzar}</td>
@@ -72,6 +77,7 @@ if (data[0]["tesuam60"] && data[0]["stiya60"] && data[0]["stiya60"] !== 0) {
     <td style="padding:8px; border:1px solid #ccc;">${menahelet}</td>
   </tr>
 `;
+
 kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;margin:10px auto">אופי השקעה</h3>
 <table id="tableOfi" style="width:clamp(300px,90vw, 800px); margin:0 auto;
      border-collapse: collapse; font-size: 16px;">
@@ -106,6 +112,7 @@ tableTesuot.innerHTML += `
         <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;text-align:center">ביחס לממוצע</td>
     </tr>
   `
+ 
   for (const field of fieldsToCompare) {
     const val = analysisScore.fields.find(f => f.field === field).value || 0;
     const avg =analysisScore.fields.find(f => f.field === field).average || 0; 
@@ -129,6 +136,14 @@ tableTesuot.innerHTML += `
     document.getElementById('kupaInfo').style.display='block';
     document.getElementById('kupaInfo').style.margin='0 auto';
 
+    const tospeak=`המסלול ${shemkupa} של ${menahelet} מדורג במקום ה${fieldNames[mikom]} 
+    בתשואה ל - 12 חודשים אחרונים עם תשואה של ${data[0].tesuam} אחוזים.
+    תשואת המסלול לתקופה של 3 שנים עומדת על ${data[0].tesuam36} אחוזים.
+     ותשואת המסלול לתקופה של 5 שנים עומדת על ${data[0].tesuam60} אחוזים.
+   בנתוני השנה הנוכחית: 
+    תשואת המסלול מתחילת השנה עומדת על ${data[0].tesuaMitchilatshana} 
+    אחוזים. תשואת המסלול לחודש האחרון עומדת על ${data[0].tusaAharona} אחוזים.`
+   speakClick();speakLater(tospeak);
     var yValues = [];
     var xValues = [];
     var yValuesM = [];
