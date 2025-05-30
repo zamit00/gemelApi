@@ -152,7 +152,8 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
- 
+ console.log("זיהוי קולי:", transcript);
+
   // ======= טיפול ב־Swal Yossi =======
   if (Swal.isVisible()) {
     const popup = document.querySelector('.swal2-popup');
@@ -215,7 +216,7 @@ else if (transcript.includes('כוכבים') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  const cleanTranscript = transcript.replace('מתחיל להאזין','').replace('סוף', '').replace('כוכבים', '').trim();
+  const cleanTranscript = transcript.replace('סוף', '').replace('כוכבים', '').trim();
   kochavim(cleanTranscript) // מוסיף את ההוראות ל־Gemini
   return;
 }
@@ -1574,7 +1575,6 @@ const dmey = extractInterestRatea(dmeyText);
 function matchHevra(transcript){
 	if (transcript.includes("מגדל")) {return "מגדל";}
 	else if (transcript.includes("הראל")) {return  "הראל";}
-	else if (transcript.includes("כלל")) {return  "כלל";}
 	else if (transcript.includes("מנורה")) {return  "מנורה";}
 	else if (transcript.includes("אלטשולר")) {return "אלטשולר";}
 	else if (transcript.includes("פניקס")) {return  "פניקס";}
@@ -1582,7 +1582,11 @@ function matchHevra(transcript){
 	else if (transcript.includes("ילין")) {return  "ילין";}
 	else if (transcript.includes("אנליסט")) {return  "אנליסט";}
 	else if (transcript.includes("מיטב")) {return  "מיטב";}
+  else if (transcript.includes("איילון")) {return  "איילון";}
 	else if (transcript.includes("אינפי") || transcript.includes("אנפי")) {return "אינפיניטי";}
+  else if (transcript.includes("כלל")) {return  "כלל";}
+  else if (transcript.includes("הכשרה")) {return  "הכשרה";}
+  else{return '';}
 }
 function handleSheelon(transcript){
   const iframeWindow=document.getElementById('ifrm').contentWindow;
@@ -1894,12 +1898,7 @@ const hafkadahadash = extractInterestRatea(hafkadahadashText);
 }
 
 function kochavim(mozar) {
-  if(mozar.includes('3') || mozar.includes('שלוש')){var sortKey = 'tesuam36'}
-  else if(mozar.includes('5') || mozar.includes('חמש')){var sortKey = 'tesuam60'}
-  else{
-    var sortKey = 'tesuam'
-  }
-  
+  const sortKey = 'tesuam'; 
   let Data;
   let moz;
 
@@ -1942,15 +1941,6 @@ function showTopFunds(datam, sortKey,moz) {
   if (!datam || datam.length === 0) {
     return;
   }
-  if(sortKey==='tesuam'){
-    var tkofaX='שנה';
-  }
-  else if(sortKey==='tesuam36'){
-    var tkofaX=` - 3 שנים;
-  `}
-  else if(sortKey==='tesuam60'){
-    var tkofaX=` - 5 שנים`}
-  
   const existingPopup = document.getElementById("topFundsPopup");
   if (existingPopup) existingPopup.remove();
 
@@ -1973,7 +1963,7 @@ function showTopFunds(datam, sortKey,moz) {
   const title = document.createElement("h2");
   if (moz === 'קרנות חדשות') moz = 'קרנות הפנסיה מקיפה';
   if (moz === 'תגמולים ואישית לפיצויים') moz = 'קופות הגמל';
-  title.innerText = `5 ${moz} 🔥 המובילות בתשואה ל${tkofaX}`;
+  title.innerText = `5 ${moz} 🔥 המובילות בתשואה לשנה`;
   title.style.marginBottom = "12px";
   title.style.textAlign = "center";
   popup.appendChild(title);
