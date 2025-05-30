@@ -1,10 +1,22 @@
-var datanetunimKlaliXM;var datanetunimKlaliXB;var datanetunimKlaliXP;var clickStatus;
+var datanetunimKlaliXM;var datanetunimKlaliXB;var datanetunimKlaliXP;
+var clickStatus;let dataIndicators = [];
 const gufmosdixA = [
     'הראל פנסיה וגמל', 'כלל פנסיה וגמל',
     'מגדל מקפת קרנות פנסיה וקופות גמל', 'מנורה מבטחים פנסיה וגמל',
     'הפניקס פנסיה וגמל', 'אלטשולר שחם גמל ופנסיה',
     'אנליסט קופות גמל', 'ילין לפידות ניהול קופות גמל', 'מור גמל ופנסיה',
     'מיטב גמל ופנסיה', 'אינפיניטי השתלמות, גמל ופנסיה '
+];
+const mozAll = [
+  'קרנות השתלמות', 'תגמולים ואישית לפיצויים', 'קופת גמל להשקעה',
+  "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון","קרנות חדשות"
+];
+
+const fieldsToAverage = [
+  "tesuam", "tesuam36", "tesuam60",
+  "stiya36", "stiya60", "yitratNechasim",
+  "sharp", "tusaAharona", "tesuaMitchilatshana",
+  "kvutzaAhuz4751", "kvutzaSchum4752", "kvutzaSchum4761"
 ];
 const pHishSmall=`קרן השתלמות היא מכשיר חיסכון לטווח בינוני המאפשר חיסכון הן לשכירים והן לעצמאים. הקרן היא לספק מענה לצרכי השתלמות מקצועית, אך בפועל היא משמשת ככלי חיסכון פופולרי בישראל בזכות הטבות המס הנלוות לה . בקרן ההשתלמות מגוון מסלולי השקעה השונים זה מזה ברמת הסיכון. ככלל, הכספים בקרן ניתנים 
 למשיכה לאחר 6 שנים ממועד הפקדה ראשונה.`
@@ -47,7 +59,7 @@ window.onload = async function() {
              fetchdataJasonM(),
             
         ]);
-       // tkofa(); 
+       indications(); 
         backtop();
        
        
@@ -79,13 +91,13 @@ function showKupaMeida(x){
     if(window.innerWidth<=850 && x==='pHash'){pMeida[1].innerHTML=pHashSmall;pMeida[0].innerHTML=''}
 }
 async function searchMh(x){
-    
      var mikom=""
      var mhSearch=document.getElementById('searchBoxmh').value;
      if(x!==0 || !mhSearch ){mhSearch=x}
      var mhkupa=datanetunimKlaliXM.filter(item=>item.mh===mhSearch.trim());
      if(mhkupa.length===0){mhkupa=datanetunimKlaliXB.filter(item=>item.mh===mhSearch.trim())}
      if(mhkupa.length===0){mhkupa=datanetunimKlaliXP.filter(item=>item.mh===mhSearch.trim())}
+
     if(mhkupa.length===0){
          Swal.fire({
             title: "<span style='color: green; font-size: 16px;'> לא נמצא מסלול במספר שנבחר</span>" +" "+
@@ -254,7 +266,7 @@ async function fetchdataJasonM() {
         const data = await response.json(); 
         datanetunimKlaliXM = data;
 	    datanetunimKlaliXM= datanetunimKlaliXM.filter(item=>!item.menahelet.includes('סלייס'));    
-       
+
         let tkofa = document.getElementById('tkufatdivuach');
         var tkf = data.filter(item => item.mh === '579');
         tkf=tkf[0].tesua12;
@@ -266,6 +278,7 @@ async function fetchdataJasonM() {
         console.error('שגיאה בשליפת הנתונים:', error);
         throw error;  // נזרוק את השגיאה כדי ש-Promise.all יוכל לטפל בה
     }
+    
 }
 async function fetchdataJasonB() {
     try {
@@ -421,7 +434,44 @@ function hisht(x) {
   document.getElementById('footer').style.display='none';
  }
 
+async function indications(){ 
+for(let r=0;r<=5;r++){
+  const sugmuzar=mozAll[r] 
+var typamas;
+if(r===0 || r===2 || r===4){typamas=hishtalmot}
+else if(r===1 || r===5){typamas=gemel} 
+else if(r===3){typamas=layeled}
 
+for (let i = 0; i < typamas.length; i++) {
+  const dataY = await filterMaslul(typamas[i], sugmuzar, 0);
+  if (dataY.length === 0) continue;
+
+  const result = {
+    mozar: sugmuzar,
+    maslul: typamas[i]
+  };
+  for (const field of fieldsToAverage) {
+    const validItems = dataY.filter(obj =>
+      obj[field] !== undefined &&
+      obj[field] !== null &&
+      obj[field] !== '' &&
+      !isNaN(obj[field])
+    );
+    const total = validItems.reduce((sum, obj) => sum + parseFloat(obj[field]), 0);
+    const avg = validItems.length > 0 ? total / validItems.length : 0;
+    result[field] = avg.toFixed(2); 
+    if (field === "stiya36") {
+      result['tesuaLestiya36'] = parseFloat(result["tesuam36"]/result["stiya36"]).toFixed(2); 
+    }
+    if (field === "stiya60") {
+      result['tesuaLestiya60'] = parseFloat(result["tesuam60"]/result["stiya60"]).toFixed(2); 
+    }
+  }
+  dataIndicators.push(result);
+}     
+  } 
+    
+};
 
 
 
