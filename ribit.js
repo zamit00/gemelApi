@@ -99,9 +99,7 @@ document.getElementById("kottoz").textContent = `לפי ריבית ${Math.round(
       
       document.getElementById("tozaot").innerHTML=""; 
     }
-//function chngDn(x){
-//		document.getElementById("txttkofa2").value=x;
-//	}
+
 function hashev(x) {
    var rbvalue=document.getElementById('selecttoz').value;
     if(!rbvalue){
@@ -167,8 +165,20 @@ function hashev(x) {
        const tablediv= document.getElementById("tozaot");
        tablediv.innerHTML=""; 
        document.getElementById("alltoz").style.display="flex";
+
+       tablediv.innerHTML+=`
+       <div id="result" class="result">
+                <div class="result-title">סכום ערך עתידי :</div>
+                <div id="monthlyAmount" class="result-amount">${parseInt(sum).toLocaleString()
+                     + shach} ₪</div>
+                <div id="resultDetails" class="result-details">עבור סכום השקעה כולל של ${
+                    Number(x1+(x2*x3*12)).toLocaleString()+shach}</div>
+        </div>
+       `
+
+
        
-       table= document.createElement("table");
+  /*     table= document.createElement("table");
        table.style.width="clamp(300px,90vw,600px)";
         table.style.fontSize="1.5rem";
         table.id="tbltoz";table.className="tbltoz";
@@ -176,7 +186,7 @@ function hashev(x) {
        
         
         
-   /*     if(x1>0){
+        if(x1>0){
                 tr=document.createElement("tr");
                 tr.style.width="clamp(300px,90vw,600px)";
                 table.appendChild(tr);
@@ -205,7 +215,7 @@ function hashev(x) {
                 td.innerText=(x2*x3*12).toLocaleString() + shach;
                 td.className="numtd";
                 tr.appendChild(td);
-            }*/
+            }
             tr=document.createElement("tr");
                 tr.style.width="clamp(300px,90vw,600px)";
                 table.appendChild(tr);
@@ -238,7 +248,7 @@ function hashev(x) {
                 td.innerText=parseInt(sum).toLocaleString() + shach;
                 td.className="numtd";
                 tr.appendChild(td);
-
+*/
 /*
             if(x3<10){
             tr=document.createElement("tr");
