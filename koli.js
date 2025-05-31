@@ -59,6 +59,10 @@ function speakLater(text) {
   speechSynthesis.speak(utter);
 }
 
+
+
+
+
 let startStop = 0; let ifrmValue=0;
  let finalTranscript = '';  var transcript='';var matchKlaliLast;
 ;let lastTranscript = '';
@@ -148,11 +152,12 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
-  if (transcript.includes('הפסק')){
- speechSynthesis.cancel();
- return;
- }
 
+  if (transcript.includes('הפסק')){
+    speechSynthesis.cancel();
+    return;
+ }
+  
 if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcript.includes('ניהול')){
   const index = transcript.lastIndexOf('חדש');
   if (index === -1) return "";
@@ -285,16 +290,31 @@ else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   }
 
 
-const regexloan = /הלוואה\s+בסכום\s+של\s+(.*?)\s+בריבית\s+של\s+(.*?)\s+לתקופה\s+של\s+(.*?)\s+חודשים?/iu;
-const matchloan = transcript.match(regexloan);
+const regexloanA = /הלוואה\s+בסכום\s+(?:של\s*)?(.+?)\s+בריבית\s+(?:של\s*)?(.+?)\s+לתקופה\s+(?:של\s*)?(.+?)\s+(חודשים?|שנים?)/iu;
+const regexloanB = /הלוואה\s+בסכום\s+(?:של\s*)?(.+?)\s+לתקופה\s+(?:של\s*)?(.+?)\s+(חודשים?|שנים?)\s+בריבית\s+(?:של\s*)?(.+?)(?:\s*%|$)/iu;
 
-if (matchloan && matchloan !== matchKlaliLast) {
-  matchKlaliLast = matchloan[0];
- 
+
+
+const matchloanA = transcript.match(regexloanA)
+const matchloanB = transcript.match(regexloanB)
+if (matchloanA) {var matchloan = matchloanA;var interest = matchloan[2];
+  var period = matchloan[3];
+}
+else if (matchloanB) {var matchloan = matchloanB; var interest = matchloan[3];
+  var period = matchloan[2];
+}
+
+if (matchloan  && matchloan !== matchKlaliLast) {
+  matchKlaliLast = matchloan;
+ if(transcript.includes("שנה") || transcript.includes("שנים") ) {
+  period=period*12;
+ }
   hideframe();
   const amount = matchloan[1];
-  const interest = matchloan[2];
-  const period = matchloan[3];
+  if (amount === "0" || amount === null || amount === "" || amount === undefined
+    || interest === "0" || interest === null || interest === "" || interest === undefined
+    || period === "0" || period === null || period === "" || period === undefined
+  )return
 
   showIframe("loan.html");
 
@@ -313,7 +333,11 @@ if (matchloan && matchloan !== matchKlaliLast) {
     iframex.contentWindow.calculateLoan();
     handleSearchFromVoice('הרבה למטה');
    setTimeout(()=>{ 
-   window.speakLater( loanDoc.getElementById("hechzer").innerText)},500);
+    if (loanDoc.getElementById("hechzer")) {
+        window.speakLater( loanDoc.getElementById("hechzer").innerText)
+    }
+  },500);
+   
     
     setTimeout(()=>{recognition.stop;},1000)
   };
@@ -1908,24 +1932,14 @@ function kochavim(mozar) {
   let moz;
 
   if (mozar) {
-    if(mozar.includes('השתלמות') ){ 
-      moz = 'קרנות השתלמות';
+    moz = matchsugMuzar(mozar);
+    if(moz === 'קרנות השתלמות' || moz === 'תגמולים ואישית לפיצויים'  ||
+    moz === 'קופת גמל להשקעה' || moz === 'קופת גמל להשקעה - חסכון לילד'){
       Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
-    else if(mozar.includes('פנסיה')){
-      moz = 'קרנות חדשות';
-      Data = datanetunimKlaliXP.filter(obj => obj.mozar===moz);}
-    else if(mozar.includes('גמל') && !mozar.includes('השקעה')){
-      moz = 'תגמולים ואישית לפיצויים';
-      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
-    else if(mozar.includes('השקעה')){
-      moz = 'קופת גמל להשקעה';
-      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
-    else if((mozar.includes('חיסכון') || mozar.includes('פוליס'))  && !mozar.includes('ילד')){
-      moz = "פוליסות חסכון";
+    else if(moz=== 'פוליסות חסכון'){
       Data = datanetunimKlaliXB.filter(obj => obj.mozar===moz);}
-    else if(mozar.includes('ילד')){
-      moz = 'קופת גמל להשקעה - חסכון לילד';
-      Data = datanetunimKlaliXM.filter(obj => obj.mozar===moz);}
+    else if(moz === 'קרנות חדשות'){
+      Data = datanetunimKlaliXP.filter(obj => obj.mozar===moz);}
   }
 
   if (sortKey && Array.isArray(Data)) {
@@ -2000,6 +2014,14 @@ function showTopFunds(datam, sortKey,moz) {
   document.body.appendChild(popup);
 }
 
-
-
+function matchsugMuzar(transcript) {
+  if (transcript.includes("השתלמות")) { return "קרנות השתלמות"; }
+  else if (transcript.includes("פנסיה")) { return "קרנות חדשות"; }
+  else if (transcript.includes("גמל") && !transcript.includes("השקעה")) { return "תגמולים ואישית לפיצויים"; }
+  else if (transcript.includes("השקעה")) { return "קופת גמל להשקעה"; }
+  else if ((transcript.includes("חסכון") || transcript.includes("חיסכון")
+   || transcript.includes('פוליס')) && !transcript.includes("ילד")) { return "פוליסות חסכון"; }
+  else if (transcript.includes("ילד")) { return "קופת גמל להשקעה - חסכון לילד"; }
+  else { return ""; }
+}
 
