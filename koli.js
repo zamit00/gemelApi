@@ -59,10 +59,6 @@ function speakLater(text) {
   speechSynthesis.speak(utter);
 }
 
-
-
-
-
 let startStop = 0; let ifrmValue=0;
  let finalTranscript = '';  var transcript='';var matchKlaliLast;
 ;let lastTranscript = '';
@@ -152,7 +148,11 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
-  
+  if (transcript.includes('הפסק')){
+ speechSynthesis.cancel();
+ return;
+ }
+
 if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcript.includes('ניהול')){
   const index = transcript.lastIndexOf('חדש');
   if (index === -1) return "";
