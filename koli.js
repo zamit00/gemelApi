@@ -1,22 +1,4 @@
-const fieldNamesA = {
-  tesuam: 'תשואה ל - 12 חודשים',
-  tesuam36: 'תשואה 3 שנים',
-  tesuam60: 'תשואה 5 שנים',
-  stiya36: 'סטיית תקן 3 שנים',
-  stiya60: 'סטיית תקן 5 שנים',
-  yitratNechasim: 'יתרת נכסים',
-  sharp: 'מדד שארפ',
-  tusaAharona: 'תשואה חודש אחרון',
-  tesuaMitchilatshana: 'תשואה מתחילת שנה',
-  kvutzaAhuz4751: 'שיעור חשיפה למניות',
-  kvutzaAhuz4761: 'שיעור חשיפה למטבע חוץ',
-  tesuaLestiya36: 'תשואה לסטייה 3 שנים',
-  tesuaLestiya60: 'תשואה לסטייה 5 שנים',
-    1:'ראשון', 2:'שני',3:'שלישי',4:'רביעי',5:'חמישי',6:'שישי'
-    ,7:'שביעי',8:'שמיני',9:'תשיעי',10:'עשירי',
-    11:'אחדעשרה', 12:'שנייםעשר'
 
-};
 let speechEnabled = false;
 let speakLaterLast='';
 const dummy = new SpeechSynthesisUtterance("");
@@ -171,17 +153,11 @@ recognition.onresult = (event) => {
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
 
-  
-  if (transcript.includes('הפסק') ) {
+  if (transcript.includes('הפסק')){
     speechSynthesis.cancel();
     return;
  }
- 
-
- else if (transcript.includes('דבר') ) { 
-    if (speechEnabled) {speakNow(); return;}
-  } 
- 
+  
 if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcript.includes('ניהול')){
   const index = transcript.lastIndexOf('חדש');
   if (index === -1) return "";
@@ -2047,40 +2023,5 @@ function matchsugMuzar(transcript) {
    || transcript.includes('פוליס')) && !transcript.includes("ילד")) { return "פוליסות חסכון"; }
   else if (transcript.includes("ילד")) { return "קופת גמל להשקעה - חסכון לילד"; }
   else { return ""; }
-}
-
-function speakNow(){
-  
-  if(document.getElementById('kupaInfo').style.display==='block'){
-    const shemkupa=document.getElementById("shemkupa").textContent;
-    const menahelet=document.getElementById("menahelet").textContent;
-    const mikom=document.getElementById("mikom").textContent;
-    const tesuam= getAdjacentCellText("תשואה ל - 12 חודשים");
-    const tesuam36= getAdjacentCellText("תשואה 3 שנים");
-    const tesuam60= getAdjacentCellText("תשואה 5 שנים");
-    const tesuaMitchilatshana= getAdjacentCellText("תשואה מתחילת שנה");
-    const tusaAharona= getAdjacentCellText("תשואה חודש אחרון");
-   
-
-    const tospeak=`המסלול ${shemkupa} של ${menahelet} מדורג במקום ה${mikom} 
-    בתשואה ל - 12 חודשים אחרונים עם תשואה של ${tesuam} אחוזים.
-    תשואת המסלול לתקופה של 3 שנים עומדת על ${tesuam36} אחוזים.
-     ותשואת המסלול לתקופה של 5 שנים עומדת על ${tesuam60} אחוזים.
-   בנתוני השנה הנוכחית: 
-    תשואת המסלול מתחילת השנה עומדת על ${tesuaMitchilatshana} 
-    אחוזים. תשואת המסלול לחודש האחרון עומדת על ${tusaAharona} אחוזים.`
-   speakClick();speakLater(tospeak);
-  }
-  
-}
-function getAdjacentCellText(valueToFind, direction = "next") {
-  const cells = document.querySelectorAll("#tableTesuot td");
-  for (const cell of cells) {
-    if (cell.textContent.trim() === valueToFind) {
-      const adjacent = direction === "next" ? cell.nextElementSibling : cell.previousElementSibling;
-      return adjacent ? adjacent.textContent.trim() : null;
-    }
-  }
-  return null; // לא נמצא
 }
 
