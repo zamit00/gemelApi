@@ -1,6 +1,8 @@
 
 let speechEnabled = false;
 let speakLaterLast='';
+const dummy = new SpeechSynthesisUtterance("");
+  dummy.lang = "he-IL";
 const geminiInstruction = `
 אם המשתמש מבקש לבצע חישוב, השוואה, או להפעיל מחולל מסוים – יש להחזיר תשובה בפורמט JSON תקני בלבד, הכוללת:
 
@@ -46,8 +48,6 @@ const geminiInstruction = `
 function speakClick (){
   // הפעלה ראשונית — מספיקה כדי לקבל הרשאה
   speechEnabled = true;
-  const dummy = new SpeechSynthesisUtterance("");
-  dummy.lang = "he-IL";
   speechSynthesis.speak(dummy);
 };
 function speakLater(text) {
@@ -152,8 +152,13 @@ recognition.onresult = (event) => {
   if (!transcript) return;
   if (transcript === lastTranscript) return;
   lastTranscript = transcript;
- console.log("זיהוי קולי:", transcript);
-
+  
+if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcript.includes('ניהול')){
+  const index = transcript.lastIndexOf('חדש');
+  if (index === -1) return "";
+  transcript= transcript.slice(index, transcript.length).replace('חדש','')
+}
+  console.log(transcript)
   // ======= טיפול ב־Swal Yossi =======
   if (Swal.isVisible()) {
     const popup = document.querySelector('.swal2-popup');
@@ -921,7 +926,7 @@ function handleLoan(transcript) {
 		loanWindow.calculateLoan();
 	}
 	// לוח סילוקין
-	if (transcript.includes("סילוק") || transcript.includes("הסתר")
+	if (transcript.includes("סילוק") || transcript.includes('זינוק') || transcript.includes("הסתר")
     || transcript.includes('אסתר') || transcript.includes('לוקי')) {
       
    const table = loanDoc.getElementById('amortization-table-container');
@@ -1994,6 +1999,7 @@ function showTopFunds(datam, sortKey,moz) {
 
   document.body.appendChild(popup);
 }
+
 
 
 
