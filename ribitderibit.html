@@ -12,6 +12,16 @@
     <script src="ribit.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>	
     <style>
+      :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #27ae60;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --error-color: #e74c3c;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+            --border-radius: 8px;
+        }
   *{box-sizing:border-box;
           margin:0;padding:0;}
   body {
@@ -25,6 +35,39 @@
 	overflow-x:hidden;
 	max-width:95%;
   font-size: 16px;
+        }
+.result {
+            margin-top: 30px;
+            padding: 25px;
+            background:rgb(159, 215, 233);
+            border-radius: 15px;
+            text-align: center;
+            display: block;
+            animation: fadeIn 0.5s;
+            border-right: 4px solid var(--accent-color);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-title {
+            font-size: 1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .result-amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin: 10px 0;
+        }
+
+        .result-details {
+            font-size: 1rem;
+            color: var(--dark-color);
         }
 .custom-confirm-button{max-width: 250px;}
 		.forBigScreen{
@@ -378,6 +421,11 @@ box-sizing: border-box;margin: 0%;padding: 0%;
 				</div>
 			</div>    
 		</div>
+  <!--          <div id="result" class="result">
+                <div class="result-title">סכום ערך עתידי :</div>
+                <div id="monthlyAmount" class="result-amount">0 ₪</div>
+                <div id="resultDetails" class="result-details"></div>
+            </div> -->
 		<div class="tozaot" id="tozaot" style="display: block;margin-top: 20px;"></div>
 	</div>
 	<div class="meida">
