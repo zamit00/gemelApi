@@ -2084,4 +2084,3 @@ function getAdjacentCellText(valueToFind, direction = "next") {
   return null; // לא נמצא
 }
 
-
