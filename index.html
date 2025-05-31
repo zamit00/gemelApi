@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -150,12 +151,11 @@ function hidekupainfo(){
 			<td><label style="font-size:12px;">   להפעלת ניווט קולי  לחץ</label></td>
 			<td><button id="mic" onclick="micClick();speakClick();">🎤</button></td>	
 			<td><div id="resultMic">לא מאזין</div></td>
-			<td onclick="speakNow()"><button id="speakText" title="השמע טקסט">
-  				<i class="speaker-icon">🔊 התחל לדבר</i>
-			</button></td>
 			<td>
-			 	<button id="stopSpeechBtn" onclick='speechSynthesis.cancel()'
-				 title="עצור דיבור"> ⏹️ הפסק דיבור</button> 
+			 <button id="stopSpeechBtn" onclick='speechSynthesis.cancel()'
+			 title="עצור דיבור">
+  ⏹️ עצור דיבור
+</button> 
 			</td>
 		</tr>	
 	</table>
