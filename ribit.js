@@ -170,7 +170,7 @@ function hashev(x) {
        <div id="result" class="result">
                 <div class="result-title">סכום ערך עתידי :</div>
                 <div id="monthlyAmount" class="result-amount">${parseInt(sum).toLocaleString()
-                     + shach} ₪</div>
+                     } ₪</div>
                 <div id="resultDetails" class="result-details">עבור סכום השקעה כולל של ${
                     Number(x1+(x2*x3*12)).toLocaleString()+shach}</div>
         </div>
