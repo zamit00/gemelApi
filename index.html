@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
@@ -148,10 +149,14 @@ function hidekupainfo(){
 		<tr style="max-width: 100%; display: block;margin: 10px auto;overflow:hidden;
 		box-sizing:border-box;margin:0;padding:0;">
 			<td><label style="font-size:12px;">   להפעלת ניווט קולי  לחץ</label></td>
-			<td><div id="mic" onclick="micClick();speakClick();">🎤</div></td>	
+			<td><button id="mic" onclick="micClick();speakClick();">🎤</button></td>	
 			<td><div id="resultMic">לא מאזין</div></td>
-			<td><div style="color:green;font-size:14px;
-			float:left;" onclick="showIframe('koliHes.html');">הסבר </div></td>
+			<td>
+			 <button id="stopSpeechBtn" onclick='speechSynthesis.cancel()'
+			 title="עצור דיבור">
+  ⏹️ עצור דיבור
+</button> 
+			</td>
 		</tr>	
 	</table>
 	<h3 id='kategorut' style="text-align: center; font-family: 'David Bril', sans-serif;
