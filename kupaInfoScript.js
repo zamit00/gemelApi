@@ -132,7 +132,7 @@ tableTesuot.innerHTML += `
   `
 
   }
-    document.getElementById('pdf').style.display='block';
+   // document.getElementById('pdf').style.display='block';
     document.getElementById('kupaInfo').style.display='block';
     document.getElementById('kupaInfo').style.margin='0 auto';
 
