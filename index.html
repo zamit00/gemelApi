@@ -147,8 +147,11 @@ function hidekupainfo(){
 		box-sizing:border-box;margin:0;padding:0;border:1px solid rgb(0,148,255);margin-bottom:10px;">
 		<tr style="max-width: 100%; display: block;margin: 10px auto;overflow:hidden;
 		box-sizing:border-box;margin:0;padding:0;">
-			<td><label style="font-size:12px;">   להפעלת ניווט קולי  לחץ</label></td>
-			<td><button id="mic" onclick="micClick();speakClick();">🎤</button></td>	
+			
+			
+			<td style="font-size: 8px;min-width: 20vw;" onclick="micClick();speakClick();"><button id="mic" title="השמע קלט קולי">
+  				<i class="fas fa-microphone"></i>ניווט כולי
+			</button></td>
 			<td><div id="resultMic">לא מאזין</div></td>
 			<td onclick="speakNow()"><button id="speakText" title="השמע טקסט">
   				<i class="speaker-icon">🔊 התחל לדבר</i>
