@@ -82,35 +82,41 @@
     color: white;
     border: 1px solid green;
     border-collapse: collapse;
-    font-size: 10px;
+    line-height: 15px;
     font-weight: bolder;
     text-align: right;
     padding-right: 2vw;
+    overflow-y: hidden;
+    font-size: 16px;
   }
   .numtd {
             width: 25vw;
-            font-size: 10px;
+            font-size: 16px;
             color: #333;
             border: 1px solid green;
             text-align: center;
+            line-height: 15px;
         }
-        .numtdx {
-            color: lightgray;
-            background-color: green;
-            border: 1px solid green;
-            border-collapse: collapse;
-            font-size: 10px;
-            font-weight: bold;
-            text-align: center;
-            width: 25vw;
-        }
-        .tdts{
-            width: 15vw;
-            font-size: 10px;
-            text-align: center;
-        }
+.numtdx {
+    color: white;
+    background-color: green;
+    border: 1px solid green;
+    border-collapse: collapse;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    width: 25vw;
+    line-height: 15px;
+    overflow-y: hidden;
+}
+    .tdts{
+        width: 15vw;
+        font-size: 16px;
+        text-align: center;
+        line-height: 15px;
+}
 
-	 @media screen and (max-width:850px) {
+ @media screen and (max-width:850px) {
 	  body{
  	  display:flex;
 	   flex-direction:column;
@@ -130,7 +136,7 @@
             text-align: center;
         }
         .numtdx {
-            color: lightgray;
+            color: white;
             background-color: green;
             border: 1px solid green;
             border-collapse: collapse;
@@ -138,12 +144,14 @@
             font-weight: bold;
             text-align: center;
             width: 25vw;
+            overflow-y: hidden;
         }
         .tdts{
             width: 15vw;
             font-size: 10px;
             text-align: center;
-        }  
+        } 
+        .tdth{font-size: 10px;} 
         .divtozz {
             width: 100vw;
             display: flex;
@@ -218,9 +226,9 @@
          <li>- <strong>דמי ניהול מהפקדות:</strong> נגבים כאחוז מהסכום המופקד מדי חודש.</li>
          <li>- <strong>דמי ניהול מצבירה:</strong> נגבים כאחוז מסך החיסכון המצטבר.</li>
     </ul>
-    <p style="padding:5px 20px;">ההשפעה של דמי הניהול על החיסכון יכולה להיות משמעותית לאורך השנים.</p>
+    <p style="padding:5px 20px;">ההשפעה של דמי הניהול על החיסכון יכולה להיות משמעותית לאורך השנים. לדוגמה:</p>
     <p style="padding:5px 20px;"><strong>חיסכון מצטבר = סכום ההפקדות + תשואה - דמי ניהול</strong></p>
-    <p style="padding:5px 20px;">באמצעות המחשבון ניתן להזין דמי ניהול שונים ולראות כיצד הם משפיעים על סך החיסכון.</p>
+    <p style="padding:5px 20px;">באמצעות המחשבון ניתן להזין את דמי הניהול ולראות כיצד הם מצטברים עם הזמן ומשפיעים על סך החיסכון.</p>
     
     <h2 style="padding:5px 20px;">למי מיועד השימוש במחשבון?</h2>
     <p style="padding:5px 20px;">המחשבון מיועד לכל מי שחוסך בקרנות פנסיה, קופות גמל או קרנות השתלמות ורוצה לוודא שהוא משלם דמי ניהול תחרותיים. הוא שימושי עבור:</p>
