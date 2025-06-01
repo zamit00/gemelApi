@@ -22,7 +22,10 @@
     font-weight: bold;
     text-decoration: underline;
     text-align: right;
-   margin: 10px 72% 10px 0;
+    position: relative;    
+    right:45%;
+    top:20px;
+    margin-bottom: 20px;
 }
 .meidaMuzarSpecific{
     position:relative;
@@ -540,7 +543,7 @@ header{
     color:var(--main-color);
     position: relative; box-sizing: border-box;
 }
-.tbl tr:nth-child(even) {background-color: rgb(237, 229, 229);}
+.tbl tr:nth-child(even) {background-color: rgb(230, 238, 247);}
 h4{text-align: center;font-size: 14px;font-weight: bold;}
 h4,.allTheTables{margin:0 auto;}
 .tdmh,.tdsmall{width:15%;}
@@ -658,7 +661,7 @@ select:focus {
 }
 
 @media screen and (max-width:850px) {
- #tnaiyShimoshB{font-size: 16px;left: 0px;margin-right:75%;}
+ #tnaiyShimoshB{font-size: 16px;margin-bottom: 20px;}
 	.pMuzarSmall{
 	font-size:20px}
     .pMuzarSpecificBig{
@@ -721,11 +724,11 @@ margin-right: auto;
     .klalikoch{
         margin-bottom: 20px;
     }
+
 }
 
 @media screen and (max-width:600px) {
-	 #tnaiyShimoshB{font-size: 12px;left: 0px;
-    margin-right:68%;}
+	 #tnaiyShimoshB{font-size: 12px;margin-bottom: 20px;}
 	.pMuzarSmall{
 	font-size:16px}
     .pmeidaMuzarSpecificSmall{
