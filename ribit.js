@@ -298,7 +298,8 @@ function hashev(x) {
             tr.appendChild(td);
             }            
            */     
-                document.getElementById("hashevdo").scrollIntoView({ behavior: "smooth" });
+            if(window.innerWidth<600){document.getElementById("hashevdo").scrollIntoView({ behavior: "smooth" });}
+
         }
 
          function hishuv(x,y,rb,dn,t){
