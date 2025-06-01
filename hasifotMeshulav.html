@@ -24,7 +24,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 77, 153, 0.2);
             width:95vw;
-            max-width: 400px;
+            width:clamp(300px, 90vw, 700px);
             margin-bottom: 20px;
             margin-top: 20px;
             box-sizing: border-box;
@@ -125,6 +125,7 @@
         <h2>מחולל חשיפות מרובה</h2>
 
         <label for="product">בחר מוצר:</label>
+        <label id="found" style="float:left;display:none;">נמצאו:</label>
         <select id="product" class="product" onchange="submitForm(this)">
               <option value="" disabled selected>בחר מוצר</option>
             <option value="קרנות השתלמות">קרן השתלמות</option>
