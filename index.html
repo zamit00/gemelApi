@@ -64,7 +64,7 @@ function hidekupainfo(){
 <style>
     #mic { font-size: 2em; cursor: pointer; }
     #result { margin-top: 2em; white-space: pre-line; direction: rtl; }
-    .tblMic td{text-align: center;padding: 5px 12px;}
+    .tblMic td{text-align: center;padding: 20px 12px;min-width:20vw !important;}
   </style>
 </head>
 <body>
@@ -142,26 +142,33 @@ function hidekupainfo(){
 				מספק מחוללי השוואה, מחוללי איתור מוצרים לפי סיכון וכלים פיננסיים.
 				 הנתונים באתר מבוססים על פירסומי  רשות שוק ההון באתרים גמל נט, ביטוח נט ופנסיה נט.
 			</p>
+			<div id="tnaiyShimoshB" onclick="showIframe('tnaiyShimosh.html');">תנאי שימוש באתר</div>  
 		</div>
 	</div>
-	<table  class="tblMic" style="max-width: 90vw; display: block;margin: 10px auto;overflow:hidden;
-		box-sizing:border-box;margin:0;padding:0;border:1px solid rgb(0,148,255);margin-bottom:10px;">
-		<tr style="max-width: 100%; display: block;margin: 10px auto;overflow:hidden;
-		box-sizing:border-box;margin:0;padding:0;">
-			<td><label style="font-size:12px;">   להפעלת ניווט קולי  לחץ</label></td>
-			<td><button id="mic" onclick="micClick();speakClick();">🎤</button></td>	
-			<td><div id="resultMic">לא מאזין</div></td>
-	<!--		<td>
-			 <button id="stopSpeechBtn" onclick='speechSynthesis.cancel()'
-			 title="עצור דיבור">
-                       ⏹️ עצור דיבור
-                      </button> </td> -->
-		</tr>	
-	</table>
+	<div style="display: flex; justify-content: center;width: 100%;overflow-x: hidden;">
+		<table  class="tblMic" style="width: clamp(300px,90%,1000px); display: block;
+		overflow:hidden;box-sizing:border-box;margin:0;padding:0;border:1px solid rgb(0,148,255);
+		margin-bottom:10px;display: flex;justify-content: center;">
+			<tbody style="width: 100%;display: flex;justify-content: center;">
+				<tr style="width: 100%; display: block;margin: 5px auto;overflow:hidden;
+				box-sizing:border-box;margin:0;padding:0;">
+					<td><label style="font-size:16px;">   להפעלת ניווט קולי  לחץ</label></td>
+					<td><button id="mic" onclick="micClick();speakClick();">🎤</button></td>	
+					<td style="text-align: right;"><div id="resultMic">לא מאזין</div></td>
+					
+					<!--		<td>
+					<button id="stopSpeechBtn" onclick='speechSynthesis.cancel()'
+					title="עצור דיבור">
+							⏹️ עצור דיבור
+							</button> </td> -->
+				</tr>
+			</tbody>	
+		</table>
+	</div>
 	<h3 id='kategorut' style="text-align: center; font-family: 'David Bril', sans-serif;
 	box-sizing: border-box;max-width: 100%;font-weight:bold;overflow-x: hidden;color:darkblue;margin-bottom:15px;"
 	>קטגוריות ראשיות</h3>
-	<div id="tnaiyShimoshB" onclick="showIframe('tnaiyShimosh.html');">תנאי שימוש באתר</div>  
+	
 <div class="Imgcontainer" id='allImages'>
 	<div class="boxImg boxcalc" onclick="showMachshevonim()" ><div class="stripe" style="text-align:center;">מחשבונים פיננסים</div></div>
 	<div class="boxImg boxdata" onclick="showHashvaa();" ><div class="stripe" style="text-align:center;">השוואת חברות</div></div>
