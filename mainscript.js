@@ -336,6 +336,10 @@ const acceptBtn = document.getElementById('accept-btn');
        await maslulim(1,0,0);
        
 });
+function toggleDropdown(id) {
+        let dropdown = document.getElementById(id);
+        dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+}
 
 function toggleMenu() {
    hideMaBaatar();hideMabaatarSpecific();
@@ -347,7 +351,7 @@ function toggleMenu() {
   
 else{
     document.querySelector(".menu-btn").classList.add("open");
-    document.querySelector(".menu-container").style.display='block';
+    document.querySelector(".menu-container").style.display='block';  
     document.getElementById("menu").classList.add("open");
 }
 
