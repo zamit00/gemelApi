@@ -185,6 +185,7 @@ if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcrip
   else if(document.getElementById("topFundsPopup")) {
     if (transcript.includes("סגור") || transcript.includes("הסתר") || transcript.includes("אסתר")) {
       document.getElementById("topFundsPopup").remove();
+      document.getElementById('allImages').style.opacity='1';    
       transcript = "";
       lastTranscript = "";
       return;
