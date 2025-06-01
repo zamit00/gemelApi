@@ -728,7 +728,7 @@ margin-right: auto;
 }
 
 @media screen and (max-width:600px) {
-	 #tnaiyShimoshB{font-size: 12px;margin-bottom: 20px;}
+	 #tnaiyShimoshB{font-size: 12px;top:0px;}
 	.pMuzarSmall{
 	font-size:16px}
     .pmeidaMuzarSpecificSmall{
