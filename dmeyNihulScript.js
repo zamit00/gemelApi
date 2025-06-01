@@ -169,7 +169,7 @@ if(hishuv1_0 && hishuv2_0){
     table.appendChild(tr);
     td=document.createElement("th");
     td.textContent="עדיפות ";
-    td.className="tdth tdts";
+    td.className="tdth";
     td.style.textAlign="center";
     tr.appendChild(td);
     table.appendChild(tr);
