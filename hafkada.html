@@ -470,13 +470,14 @@
             const resultElement = document.getElementById('result');
             
             // בדיקת תקינות קלט
-            if (isNaN(targetAmount) || isNaN(initialAmount) || isNaN(annualInterestRate) || 
+            if (isNaN(targetAmount)  || isNaN(annualInterestRate) || 
                 isNaN(annualManagementFee) || isNaN(years)) {
                 errorMsg.textContent = "אנא מלא את כל השדות בערכים מספריים תקינים";
                 errorMsg.style.display = "block";
                 resultElement.style.display = "none";
                 return;
             }
+            if( isNaN(initialAmount)){initialAmount=0;}
             
             if (targetAmount <= 0) {
                 errorMsg.textContent = "סכום היעד חייב להיות גדול מאפס";
