@@ -461,24 +461,22 @@
         function calculateMonthlyDeposit() {
             // קלט מהמשתמש
             const targetAmount = parseFloat(document.getElementById('targetAmount').value);
-            const initialAmount = parseFloat(document.getElementById('initialAmount').value);
+            const initialAmount = parseFloat(document.getElementById('initialAmount').value) || 0;
             const annualInterestRate = parseFloat(document.getElementById('interestRate').value) / 100;
-            const annualManagementFee = parseFloat(document.getElementById('managementFee').value) / 100;
+            const annualManagementFee = parseFloat(document.getElementById('managementFee').value) / 100 || 0;
             const years = parseInt(document.getElementById('years').value);
             
             const errorMsg = document.getElementById('errorMsg');
             const resultElement = document.getElementById('result');
             
             // בדיקת תקינות קלט
-            if (isNaN(targetAmount)  || isNaN(annualInterestRate) || 
-                isNaN(annualManagementFee) || isNaN(years)) {
+            if (isNaN(targetAmount)  || isNaN(annualInterestRate) ||  isNaN(years)) {
                 errorMsg.textContent = "אנא מלא את כל השדות בערכים מספריים תקינים";
                 errorMsg.style.display = "block";
                 resultElement.style.display = "none";
                 return;
             }
-            if( isNaN(initialAmount)){initialAmount=0;}
-            
+        
             if (targetAmount <= 0) {
                 errorMsg.textContent = "סכום היעד חייב להיות גדול מאפס";
                 errorMsg.style.display = "block";
