@@ -7,6 +7,8 @@ function hasifch(z){
 
 }
 function notfind(x){
+  const found = document.getElementById('found');
+  found.style.display = 'none';found.innerHTML = '';
   const expo=document.getElementsByClassName('circular-progress')
     Array.from(expo).forEach(exp=>{
       exp.style.display='none'
@@ -207,8 +209,15 @@ document.querySelectorAll('.tblHasifot tr').forEach(tr => {
   z++;
 });
    if(table.rows.length) {
+    const found = document.getElementById('found');
      if(table.rows.length>1){
-     Swal.fire({
+      found.innerHTML = `נמצאו <span style="color:green;font-weight:bold;">
+      ${table.rows.length-1}</span> מסלולים`;
+      found.style.display = 'block';
+
+      
+
+   /*  Swal.fire({
     title: `<span style='color: green; font-size: 16px;'> נמצאו ${table.rows.length-1} מסלולים מתאימים</span>`,
    
     icon: "success",
@@ -221,10 +230,11 @@ document.querySelectorAll('.tblHasifot tr').forEach(tr => {
           customClass: {
             popup: 'swal2-center-custom'
           }
-        });
+        });*/
      }
    
-   }    
+   } 
+      
  }  
  
   
