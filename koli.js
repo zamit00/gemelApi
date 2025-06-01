@@ -60,9 +60,6 @@ function speakLater(text) {
 }
 
 
-
-
-
 let startStop = 0; let ifrmValue=0;
  let finalTranscript = '';  var transcript='';var matchKlaliLast;
 ;let lastTranscript = '';
@@ -1957,6 +1954,8 @@ function kochavim(mozar) {
   }
 }
 function showTopFunds(datam, sortKey,moz) {
+  allImages= document.getElementById("allImages");
+  allImages.style.opacity = "0.2";
   if (!datam || datam.length === 0) {
     return;
   }
@@ -2008,7 +2007,10 @@ function showTopFunds(datam, sortKey,moz) {
   closeBtn.style.display = "block";
   closeBtn.style.marginLeft = "auto";
   closeBtn.style.marginRight = "auto";
-  closeBtn.onclick = () => popup.remove();
+  closeBtn.onclick = () => {
+  popup.remove();
+  document.getElementById("allImages").style.opacity = "1"; 
+};
   popup.appendChild(closeBtn);
 
   document.body.appendChild(popup);
