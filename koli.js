@@ -122,9 +122,14 @@ function regexAll(transcript){
   const sharpExist=sharpWords.some(word => new RegExp(word, "i").test(transcript));
 
   const  MeshulavWords= ["מוצר","פנסיה"
-    ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","הפעל","הוסף","נקה",
+    ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","הפעל","הוסף","נק","נקה",
     "שיעור","מסלול","הצג","מיין","מעיין","אוסף"];
   const MeshulavExist=MeshulavWords.some(word => new RegExp(word, "i").test(transcript));
+
+  const  TsionWords= ["מוצר","פנסיה"
+    ,"גמל","השתלמות","ילד","פוליסות","גמל להשקעה","הפעל","משקל","ציון","נק","נקה",
+    "שיעור","מסלול","הצג"];
+  const TsionExist=TsionWords.some(word => new RegExp(word, "i").test(transcript));
  
   return{
      
@@ -137,7 +142,8 @@ function regexAll(transcript){
       gufmosdiMatch:gufmosdiMatch,
       HasifotExist:HasifotExist,
       sharpExist:sharpExist,
-      MeshulavExist:MeshulavExist
+      MeshulavExist:MeshulavExist,
+      TsionExist:TsionExist
     }
       
   
@@ -376,6 +382,9 @@ if (matchloan  && matchloan !== matchKlaliLast) {
       handleHasifot(transcript);
     } else if ((matchReg.MeshulavExist) && iframe.src.includes('Virtual')) {
       handleMeshulav(transcript);
+    
+    } else if ((matchReg.TsionExist) && iframe.src.includes('ScoreT')) {
+      handleTsion(transcript);
     }
 
     transcript = "";
@@ -402,7 +411,7 @@ function matchOneTwo(transcript) {
     "גמל", "השתלמות", "ילד", "פוליסות", "שאלון", "סיכון",
     "שרפ", "שארפ", "מנהלות", "חשיפות", "משולב", "מחשבונים", "חזור", "הבית",
     "דריבית", "דריביט", "דרביט", "ניהול", "סוכן", "קשר", "מאשר", "משולם", "חזור"
- ,"הלוואות" ];
+ ,"הלוואות","משקל","ציון" ];
   const matchedOne = nivutWordsOne.find(word => words.includes(word));
   if (matchedOne) {
     return { type: "word-1", matched: matchedOne };
@@ -598,6 +607,7 @@ if(ifrmValue===1){
       }
       transcript='';return;
     }
+    
     else if (transcript.includes("דריבית") || transcript.includes("עתידי") ||
     transcript.includes("דריביט") || transcript.includes("דרביט")) {
       showIframe("ribitderibit.html");
@@ -643,6 +653,14 @@ if ((transcript.includes("הלווא") || transcript.includes("שפיצר")) && 
     };
     transcript='';return;
 }
+else if ((transcript.includes("משקל") || 
+    transcript.includes("ציון")) && ifrmValue === 0){
+      showIframe("ScoreTesuaSharp.html");
+      const iframe = document.getElementById("ifrm");iframe.onload = function() {
+        handleTsion(transcript);
+      }
+      transcript='';return;
+    }
   else if ((transcript.includes("דריבית") || transcript.includes("עתידי")
     ||   transcript.includes("דריביט") || transcript.includes("דרביט"))
   && ifrmValue === 0) {
@@ -714,6 +732,13 @@ if(iframe && ifrmValue===1){
         transcript='';return;
       }
     }
+    else if ((transcript.includes("ציון") || transcript.includes("משקל"))  && ifrmValue===0) {
+      hideformic(); showIframe("ScoreTesuaSharp.html");
+      const iframe = document.getElementById("ifrm");iframe.onload =function(){
+        handleTsion(transcript);
+        transcript='';return;
+      }
+    }
     
   }
 }
@@ -741,6 +766,13 @@ if(transcript.includes("מנהלות") || transcript.includes("מנהלת")) {
         handleMeshulav(transcript);
       }
       transcript='';return;
+    }
+    else if ((transcript.includes("ציון") || transcript.includes("משקל"))  && ifrmValue===0) {
+      hideformic(); showIframe("ScoreTesuaSharp.html");
+      const iframe = document.getElementById("ifrm");iframe.onload =function(){
+        handleTsion(transcript);
+        transcript='';return;
+      }
     }
 
   // פקודות הפניה למידע
@@ -884,6 +916,9 @@ if(iframe && ifrmValue===1){
       }
       else if(iframe.src.includes('VirtualInvest')){
         handleMeshulav(transcript);transcript='';return;
+      }
+       else if(iframe.src.includes('ScoreTesuaSharp')){
+        handleTsion(transcript);transcript='';return;
       }
    }
   if(document.getElementById('filter').style.display==='flex'){
@@ -1801,8 +1836,72 @@ else if(transcript.includes('הסתר') || transcript.includes('אסתר')){
       iframeWindow.sortTableX(iframeWindow.document.getElementById('miyunhamesh'))
     }
   }
-  if(transcript.includes('נקה')){
-    iframeWindow.chngTik(); handleSearchFromVoice("הפעל");
+  if(transcript.includes('נק')){
+    iframeWindow.chngTik();
+  }
+}
+function handleTsion(transcript){
+  const iframe=document.getElementById('ifrm');
+  const iframeWindow=iframe.contentWindow;
+  const sugMMen=iframeWindow.document.getElementById('sugMMen');
+  const mishkal=iframeWindow.document.getElementById('mishkalNumber');
+  const btnDo=iframeWindow.document.getElementById('btnDo');
+  
+    if (transcript.includes("השתלמות")) {
+      sugMMen.selectedIndex = 1;
+    } else if (transcript.includes("פנסיה")) {
+      sugMMen.selectedIndex = 5;
+    } else if (transcript.includes("גמל") && !transcript.includes("השקעה")) {
+      sugMMen.selectedIndex = 2;
+    } else if (transcript.includes("השקעה")) {
+      sugMMen.selectedIndex = 3;
+    } else if ((transcript.includes("חסכון") || transcript.includes("חיסכון")) && !transcript.includes("ילד")) {
+      sugMMen.selectedIndex = 4;
+    }
+    if(transcript.includes("השתלמות") || transcript.includes("פנסיה") || transcript.includes("גמל")
+     || transcript.includes("השקעה") || transcript.includes("חסכון") || transcript.includes("חיסכון")){
+      if (sugMMen.value !== '') {
+      iframeWindow.chngTik(); iframeWindow.addMaslulim();
+      }
+      
+    }
+
+
+if((transcript.includes('הצג') || transcript.includes('מסלול') || transcript.includes('בחר') ) && iframeWindow.document.getElementById('mas').style.display==='none' ){
+  showMaslul();
+}
+else if(transcript.includes('הסתר') || transcript.includes('אסתר')){
+  iframeWindow.document.getElementById('mas').style.display='none';
+}
+ if(transcript.includes('מסלול')  && (!transcript.includes('הצג') || transcript.includes('בחר'))){
+     const nummatch=matchNumber(transcript.replace('מסלול','').trim());
+     if(nummatch && !transcript.includes('משקל')){
+     iframeWindow.document.getElementById('selectShemkupa').selectedIndex=parseInt(nummatch)-1;
+     iframeWindow.document.getElementById('mas').style.display='none';
+   }
+   }
+  if(transcript.includes('משקל')){
+     const transcripta = transcript.trim();
+     const mishkalV=extractAmounta(transcripta);
+     if(mishkalV && parseFloat(mishkalV)<=50
+    && parseFloat(mishkalV)>=10){
+       mishkal.value=parseFloat(mishkalV);
+     }
+     else if(parseFloat(mishkalV)<10){
+      mishkal.value=10;
+     }
+     else if(parseFloat(mishkalV)>10){
+      mishkal.value=50;
+     }
+     iframeWindow.submitForm(9)
+    }
+   
+  if(transcript.includes('הפעל') || transcript.includes('בצע')){
+    iframeWindow.submitForm();
+  }
+ 
+  if(transcript.includes('נק')){
+     iframeWindow.chngTik();
   }
 }
 function matchNumber(transcript) {
