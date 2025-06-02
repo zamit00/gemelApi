@@ -1793,7 +1793,7 @@ function handleMeshulav(transcript){
     if(transcript.includes("השתלמות") || transcript.includes("פנסיה") || transcript.includes("גמל")
      || transcript.includes("השקעה") || transcript.includes("חסכון") || transcript.includes("חיסכון")){
       if (sugMMen.value !== '') {
-      iframeWindow.chngTik(); iframeWindow.addMaslulim();
+      iframeWindow.clearform(); iframeWindow.addMaslulim();
       }
       
     }
@@ -1861,7 +1861,7 @@ function handleTsion(transcript){
     if(transcript.includes("השתלמות") || transcript.includes("פנסיה") || transcript.includes("גמל")
      || transcript.includes("השקעה") || transcript.includes("חסכון") || transcript.includes("חיסכון")){
       if (sugMMen.value !== '') {
-      iframeWindow.chngTik(); iframeWindow.addMaslulim();
+      iframeWindow.clearform(); iframeWindow.addMaslulim();
       }
       
     }
