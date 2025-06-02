@@ -130,7 +130,7 @@
          <div id='mas'  style='width:clamp(300px,90vw,600px);height:100vh;z-index:1000;background-color:white;display:none;' ></div> 
         <div class="row">
             <label>בחר מוצר:</label>
-            <select id="sugMMen" style="margin-right: 7px;text-align: center;" onchange="chngTik();addMaslulim()">
+            <select id="sugMMen" style="margin-right: 7px;text-align: center;" onchange="clearform();addMaslulim()">
                 <option value="" disabled selected>בחר מוצר</option>
                 <option value='קרנות השתלמות'>קרנות השתלמות</option>
 				<option value='תגמולים ואישית לפיצויים'>קופות גמל</option>
@@ -142,7 +142,7 @@
         <div id="track-container">
             <div class="row track-row">
                 <label >בחר מסלול:</label>
-                <select id="selectShemkupa" class="selectShemkupa" onchange="chngTik();"></select>        
+                <select id="selectShemkupa" class="selectShemkupa" onchange="clearform();"></select>        
             </div>
         </div>
         <div id="weight-container">
