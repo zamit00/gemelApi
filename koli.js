@@ -1,4 +1,3 @@
-
 let speechEnabled = false;
 let speakLaterLast='';
 const dummy = new SpeechSynthesisUtterance("");
@@ -1837,7 +1836,7 @@ else if(transcript.includes('הסתר') || transcript.includes('אסתר')){
     }
   }
   if(transcript.includes('נק')){
-    iframeWindow.chngTik();
+    iframeWindow.clearform();
   }
 }
 function handleTsion(transcript){
@@ -1902,7 +1901,7 @@ else if(transcript.includes('הסתר') || transcript.includes('אסתר')){
   }
  
   if(transcript.includes('נק')){
-     iframeWindow.chngTik();
+     iframeWindow.clearform();
   }
 }
 function matchNumber(transcript) {
