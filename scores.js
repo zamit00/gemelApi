@@ -1,4 +1,5 @@
-
+var typamas='כללי';var sugmuzar='קרנות השתלמות';
+await  getData(typamas,sugmuzar);
 async function getData(typamas,sugmuzar) { 
   console.log(typamas,sugmuzar)
   const dataToScore = await filterMaslul(typamas, sugmuzar, 0);
