@@ -1,42 +1,35 @@
-var typamas='כללי';var sugmuzar='קרנות השתלמות';
-getData(typamas,sugmuzar);
+
 async function getData(typamas,sugmuzar) { 
-  console.log(typamas,sugmuzar)
-  const dataToScore = await filterMaslul(typamas, sugmuzar, 0);
+  
+  const dataToScore =await parent.filterMaslul(typamas, sugmuzar, 0);
   
   const numbertesua = dataToScore
     .map(obj => Number(obj.tesuam))
     .filter(num => num !== 0 && !isNaN(num));
 
+
   const numbersharp = dataToScore
     .map(obj => Number(obj.sharp))
     .filter(num => num !== 0 && !isNaN(num));
-
   const mintesuam = Math.min(...numbertesua);
   const maxtesuam = Math.max(...numbertesua);
   const minsharp = Math.min(...numbersharp);
   const maxsharp = Math.max(...numbersharp);
 
   const avg = dataIndicators.find(obj => 
-    obj.mozar.includes('השתלמות') && obj.maslul.includes('כללי')
+    obj.mozar===sugmuzar && obj.maslul.includes(typamas)
   );
 
   const avgTesuam = parseFloat(avg.tesuam);
   const avgSharp = parseFloat(avg.sharp);
 
-  const scoreBack = calculateScore(
+  
+  return scoreBack = calculateScore(
     dataToScore, avgTesuam, avgSharp,
     mintesuam, maxtesuam,
     minsharp, maxsharp
   );
-  scoreBack.forEach(score=>{
-   console.log(score.shemkupa,score.finalScore,score.tesuam,score.sharp)
-  });
-const total = scoreBack.reduce((sum, obj) => sum + parseFloat(obj.finalScore), 0);
-const avgScore = scoreBack.length > 0 ? total / scoreBack.length : 0;
-const result = avgScore.toFixed(2);
-console.log(result);
-  return scoreBack;
+  
 }
 
 function calculateScore(arr, avgTesuam, avgSharp, mintesuam, maxtesuam, minsharp, maxsharp) {
