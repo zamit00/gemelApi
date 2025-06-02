@@ -4,10 +4,12 @@
 <head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-41JX3YK216"></script>
 <script>
+
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-41JX3YK216');
+  
 </script>
     <meta property="og:title" content="פיננסי-נט">
     <meta property="og:description" content="אתר השוואה לנתוני קופות גמל, קרנות השתלמות, קרנות פנסיה ופוליסות חסכון ">
@@ -36,6 +38,29 @@
 	eruda.init();
 </script>
 <script>
+function hidForStars(){
+	document.getElementById('hamb').className='menu-btn';
+	document.getElementById('drp1').style.display='none';
+	document.getElementById('h3Tikrot').style.display='none';
+	document.getElementById('h3Odot').style.display='none';
+	document.getElementById('h3Kesher').style.display='none';
+	document.getElementById('h3Shimosh').style.display='none';
+	document.getElementById('menu').style.marginLeft="30vw";
+	  toggleMenu();toggleDropdown('drp1');
+	document.getElementById('allImages').style.opacity='0.2';
+
+  }
+  function showForStars(){
+	toggleMenu();toggleDropdown('drp1');
+	document.getElementById('h3Tikrot').style.display='block';
+	document.getElementById('h3Odot').style.display='block';
+	document.getElementById('h3Kesher').style.display='block';
+	document.getElementById('h3Shimosh').style.display='block';
+	document.getElementById('menu').style.marginLeft="0vw";
+	document.getElementById('allImages').style.opacity='1'; 
+  }
+
+
 function showmehasifot(x){
   createForm(x)
 }
@@ -114,20 +139,19 @@ function hidekupainfo(){
 		<nav class="menu-container" id="menu">
 			<h3 class="h3Menu" onclick="toggleDropdown('drp1')">⭐ הכוכבים </h3>
 			<ul class="dropdown-content" id='drp1'>
-				<li><a href="#" class="kh" onclick="toggleMenu();toggleDropdown('drp1');kochavim('השתלמות')">⭐⭐קרנות השתלמות</a></li>
+				<li><a href="#" class="kh" onclick="showForStars();kochavim('השתלמות')">⭐⭐קרנות השתלמות</a></li>
 				<li><a href="#" onclick="toggleMenu();toggleDropdown('drp1');kochavim('פנסיה')">⭐⭐קרנות פנסיה </a></li>
 				<li><a href="#" onclick="toggleMenu();toggleDropdown('drp1');kochavim('השקעה')">⭐⭐קופות גמל להשקעה</a></li>
 				<li><a href="#" onclick="toggleMenu();toggleDropdown('drp1');kochavim('גמל')">⭐⭐קופות גמל לקצבה</a></li>
 				<li><a href="#"onclick="toggleMenu();toggleDropdown('drp1');kochavim('ילד')">⭐⭐קופות גמל חסכון לילד</a></li>
 			</ul>
-			<h3 class="h3Menu" onclick="toggleMenu();showTikrot()">📊 תקרות מס הכנסה </h3>  
-			<h3 class="h3Menu" onclick='openOdot()'>👬 אודותינו</h3>
-			<h3 class="h3Menu" onclick="toggleMenu();yossi();">📞 צור קשר</h3>
-		    <h3 class="h3Menu" onclick="toggleMenu();showIframe('tnaiyShimosh.html'); "> 📝 תנאי שימוש</h3>
+			<h3 id='h3Tikrot' class="h3Menu" onclick="toggleMenu();showTikrot()">📊 תקרות מס הכנסה </h3>  
+			<h3 id='h3Odot' class="h3Menu" onclick='openOdot()'>👬 אודותינו</h3>
+			<h3 id='h3Kesher' class="h3Menu" onclick="toggleMenu();yossi();">📞 צור קשר</h3>
+		    <h3 id='h3Shimosh' class="h3Menu" onclick="toggleMenu();showIframe('tnaiyShimosh.html'); "> 📝 תנאי שימוש</h3>
 		</nav>
 	</div>
-	<div class="stars-card" onclick="document.getElementById('hamb').className='menu-btn';
-	 document.getElementById('drp1').style.display='none'; toggleMenu();toggleDropdown('drp1')">
+	<div class="stars-card" onclick="hidForStars()">
   		<div class="icon blinking">⭐ <span class="label"> הכוכבים</span></div>
 	</div>
 	<div class="search-container" id="search-container">
