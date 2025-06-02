@@ -150,7 +150,8 @@
                 <label > משקל שארפ :</label>
                 <input type="number" id="mishkalNumber" class="selectShemkupa" 
                 min="10" max="50" step="5" value="20" style="max-width:100px;
-                text-align: center;" onchange="submitForm(9)"></input>        
+                text-align: center;" onchange="submitForm(9)"><span 
+                style="margin-top:10px">טווח  10% - 50%</span></input>        
             </div>
         </div>
         <div id="divBtn" style="display:flex;justify-content: center;width:100%;">
@@ -221,8 +222,12 @@ if(btn.innerHTML==='הפעל' || x===9){
     var bt=0;var abc;  
     const selectedProduct = document.getElementById('sugMMen').value;
     const maslul= document.getElementById('selectShemkupa').value;
-    const mishkal=parseInt(document.getElementById('mishkalNumber').value);
+    
 
+    var mishkal=parseInt(document.getElementById('mishkalNumber').value);
+    if(mishkal>50){document.getElementById('mishkalNumber').value=50;mishkal=50;}
+    if(mishkal<10){document.getElementById('mishkalNumber').value=10;mishkal=10;}
+    
     if(!selectedProduct){Swal.fire({
     title: "<span style='color: green; font-size: 16px;'>יש לבחור מוצר</span>",
     icon: "warning",
