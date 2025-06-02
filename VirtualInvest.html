@@ -74,6 +74,7 @@
             border: none;
             color: white;
         }
+    #btnclear{display: none;}
     .percentage {   max-width: 150px; box-sizing: border-box;text-align: center;}
     .btn-add {  width: 30px; height: 30px;background-color: green; font-size: 20px; }
     
@@ -193,6 +194,7 @@
         <div id="notar" style="margin-top: 10px;width: 100%;text-align: center;"></div>
         <div id="divBtn" style="display:flex;justify-content: center;width:100%;">
             <button class="btndo" id="btndo" onclick="submitForm()">הפעל</button>
+            <button class="btndo" id="btnclear" onclick="clearform()">נקה</button>
         </div>
         <div class="centerTbl" id="centerTbl" style="flex-direction: column;
     align-items: center;">
@@ -444,9 +446,19 @@ function validateSum() {
            if(accum<100) {bt=1}   
            return bt;
         }
+
+function clearform(){
+    const btn=document.getElementById('btndo'); 
+    const btnclear=document.getElementById('btnclear'); 
+    btn.style.display='block' ;
+    btnclear.style.display='none'
+    chngTik();
+
+}
 async function submitForm() {
     const btn=document.getElementById('btndo')
-if(btn.innerHTML==='הפעל'){   
+   const btnclear=document.getElementById('btnclear');
+
     var bt=0;var abc;  
     const selectedProduct = document.getElementById('sugMMen').value;
     if(!selectedProduct){Swal.fire({
@@ -640,8 +652,7 @@ for(let i=0;i<collection.length;i++){
 document.getElementById('chartKot').innerHTML="גרף תשואת התיק ל - 12 חודשים"
 createChart(lbl, dt);
 }
-else{btn.innerHTML='הפעל';chngTik()}
-}
+
 async function fetchdataJasonMA() {
     try {
         const response = await fetch('dataJasonM.json'); 
