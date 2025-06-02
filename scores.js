@@ -1,5 +1,4 @@
-
-async function getData(typamas,sugmuzar) { 
+async function getData(typamas,sugmuzar,mishkal) { 
   
   const dataToScore =await parent.filterMaslul(typamas, sugmuzar, 0);
   
@@ -27,12 +26,12 @@ async function getData(typamas,sugmuzar) {
   return scoreBack = calculateScore(
     dataToScore, avgTesuam, avgSharp,
     mintesuam, maxtesuam,
-    minsharp, maxsharp
+    minsharp, maxsharp,mishkal
   );
   
 }
 
-function calculateScore(arr, avgTesuam, avgSharp, mintesuam, maxtesuam, minsharp, maxsharp) {
+function calculateScore(arr, avgTesuam, avgSharp, mintesuam, maxtesuam, minsharp, maxsharp,mishkal) {
   const scoreList=[];
   const paarPlusTesua = maxtesuam - avgTesuam;
   const paarMinusTesua = mintesuam - avgTesuam;
@@ -55,7 +54,7 @@ function calculateScore(arr, avgTesuam, avgSharp, mintesuam, maxtesuam, minsharp
     
     const sharpScore = getSingleScore(sharp, avgSharp, paarMinusSharp, paarPlusSharp);
     
-    const finalScore = tesuamScore * 0.8 + sharpScore * 0.2;
+    const finalScore = tesuamScore * (1-Number(mishkal)/100) + sharpScore * Number(mishkal)/100;
 
 obj.finalScore = Number(finalScore.toFixed(2));
 scoreList.push({
