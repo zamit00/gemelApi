@@ -126,7 +126,7 @@
 <body dir="rtl">
     <div class="container" id="container">
         <div class='closewindow' onclick='window.parent.showHashvaa();'><i class="fa-solid fa-rotate-left"></i></div>
-        <h3 style="text-align: center;color:rgb(0,148,254);">מדד תשואה-שארפ (20%  משקל לשארפ)</h3>
+        <h3 id="kotMishkal" style="text-align: center;color:rgb(0,148,254);">מדד תשואה-שארפ (20%  משקל לשארפ)</h3>
          <div id='mas'  style='width:clamp(300px,90vw,600px);height:100vh;z-index:1000;background-color:white;display:none;' ></div> 
         <div class="row">
             <label>בחר מוצר:</label>
@@ -149,7 +149,7 @@
             <div class="row">
                 <label > משקל שארפ :</label>
                 <input type="number" id="mishkalNumber" class="selectShemkupa" 
-                min="10" max="50" step="5" value="20" style="max-width:100px;
+                min="10" max="50" step="1" value="20" style="max-width:100px;
                 text-align: center;" onchange="submitForm(9)"><span 
                 style="margin-top:10px">טווח  10% - 50%</span></input>        
             </div>
@@ -227,6 +227,11 @@ function clearform(){
 async function submitForm(x) {
     const btn=document.getElementById('btndo')
    const btnclear=document.getElementById('btnclear');
+    const kotMishkal=document.getElementById('kotMishkal');
+
+
+    
+
     var bt=0;var abc;  
     const selectedProduct = document.getElementById('sugMMen').value;
     const maslul= document.getElementById('selectShemkupa').value;
@@ -235,7 +240,7 @@ async function submitForm(x) {
     var mishkal=parseInt(document.getElementById('mishkalNumber').value);
     if(mishkal>50){document.getElementById('mishkalNumber').value=50;mishkal=50;}
     if(mishkal<10){document.getElementById('mishkalNumber').value=10;mishkal=10;}
-    
+    kotMishkal.innerHTML=`מדד תשואה-שארפ (${mishkal}%  משקל לשארפ)`
     if(!selectedProduct){Swal.fire({
     title: "<span style='color: green; font-size: 16px;'>יש לבחור מוצר</span>",
     icon: "warning",
