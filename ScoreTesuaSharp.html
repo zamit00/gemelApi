@@ -74,7 +74,8 @@
             border: none;
             color: white;
         }
-    
+    #btnclear{display: none;}
+    #btndo{display:block}
     .btn:hover { opacity: 0.8; }
     .btndo{width:clamp(150px,50%,150px);height: 30px;margin-top: 30px;
     background: #3498db;color: white;font-weight: bold;border-radius: 5px;
@@ -156,6 +157,7 @@
         </div>
         <div id="divBtn" style="display:flex;justify-content: center;width:100%;">
             <button class="btndo" id="btndo" onclick="submitForm()">הפעל</button>
+            <button class="btndo" id="btnclear" onclick="clearform()">נקה</button>
         </div>
         <div class="centerTbl" id="centerTbl" style="flex-direction: column;
             align-items: center;">
@@ -213,12 +215,19 @@ function chngTik(){
 }
 
 
+function clearform(){
+    const btn=document.getElementById('btndo'); 
+    const btnclear=document.getElementById('btnclear'); 
+    btn.style.display='block' ;
+    btnclear.style.display='none'
+    chngTik();
 
+}
 
 
 async function submitForm(x) {
     const btn=document.getElementById('btndo')
-if(btn.innerHTML==='הפעל' || x===9){   
+   const btnclear=document.getElementById('btnclear');
     var bt=0;var abc;  
     const selectedProduct = document.getElementById('sugMMen').value;
     const maslul= document.getElementById('selectShemkupa').value;
@@ -244,8 +253,9 @@ if(btn.innerHTML==='הפעל' || x===9){
         })
     } 
 });return}
-       btn.innerHTML='נקה' ;
 
+    btn.style.display='none' ;
+    btnclear.style.display='block'
     document.getElementById('centerTbl').style.display='flex';
     if (selectedProduct === "קרנות השתלמות" || selectedProduct === "קופת גמל להשקעה" 
             || selectedProduct === "תגמולים ואישית לפיצויים" || selectedProduct.includes('לילד' )
@@ -336,8 +346,8 @@ for(let i=0;i<collection.length;i++){
 document.getElementById('chartKot').innerHTML="גרף ציוני מדד תשואה לשארפ"
 createChart(lbl, dt);
 }
-else{btn.innerHTML='הפעל';chngTik()}
-}
+
+
 async function fetchdataJasonMA() {
     try {
         const response = await fetch('dataJasonM.json'); 
