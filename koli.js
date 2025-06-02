@@ -1846,7 +1846,8 @@ function handleTsion(transcript){
   const sugMMen=iframeWindow.document.getElementById('sugMMen');
   const mishkal=iframeWindow.document.getElementById('mishkalNumber');
   const btnDo=iframeWindow.document.getElementById('btnDo');
-  
+  if(transcript===lastTranscript)return;
+  lastTranscript=transcript;
     if (transcript.includes("השתלמות")) {
       sugMMen.selectedIndex = 1;
     } else if (transcript.includes("פנסיה")) {
