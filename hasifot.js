@@ -264,7 +264,9 @@ async function tablhasifot() {
                   await maslulim(30,sugmM,0);
         }
     else{await maslulim(30,sugmM,0);datfilter=datanetunimKlaliXM;}
+
     const tables = document.querySelectorAll("[id^='klalikoch']"); 
+    
     var data = datfilter.filter(item => 
         item.sharp!==0 & item.sharp!==undefined
         )
@@ -274,13 +276,12 @@ async function tablhasifot() {
         rows.forEach((row, index) => {
             const tdies = row.querySelectorAll("td, th");
             if(index === 0){tdies[2].textContent='שארפ'}
-            if (index > 0) { // מתחיל מהשורה השנייה
-                
-                const dataspecific=data.filter(item=>(item.shemkupa===tdies[1].textContent
+            if (index > 0) {
+                tdies[2].textContent=0;  
+                const dataspecific=data.filter(item=>(item.shemkupa===tdies[1].textContent     
                 ))
-                
                 if(dataspecific.length===0){                           
-                            row.style.display="none";
+                            tdies[2].textContent=0;
 
                 }
                 else{
