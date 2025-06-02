@@ -63,6 +63,7 @@
             max-width: 300px;
             margin-top: 10px;
         }
+       
         .closewindow{color:black;position: relative;right:20px;top:5px;}
         .btn {
             display: flex;
@@ -125,7 +126,7 @@
 <body dir="rtl">
     <div class="container" id="container">
         <div class='closewindow' onclick='window.parent.showHashvaa();'><i class="fa-solid fa-rotate-left"></i></div>
-        <h3 style="text-align: center;color:rgb(0,148,254);">ציון מדד  "תשואה לשארפ"</h3>
+        <h3 style="text-align: center;color:rgb(0,148,254);">מדד תשואה-שארפ (20%  משקל לשארפ)</h3>
          <div id='mas'  style='width:clamp(300px,90vw,600px);height:100vh;z-index:1000;background-color:white;display:none;' ></div> 
         <div class="row">
             <label>בחר מוצר:</label>
@@ -141,7 +142,15 @@
         <div id="track-container">
             <div class="row track-row">
                 <label >בחר מסלול:</label>
-                <select id="selectShemkupa" class="selectShemkupa" ></select>        
+                <select id="selectShemkupa" class="selectShemkupa" onchange="chngTik();"></select>        
+            </div>
+        </div>
+        <div id="weight-container">
+            <div class="row">
+                <label > משקל שארפ :</label>
+                <input type="number" id="mishkalNumber" class="selectShemkupa" 
+                min="10" max="50" step="5" value="20" style="max-width:100px;
+                text-align: center;" onchange="submitForm(9)"></input>        
             </div>
         </div>
         <div id="divBtn" style="display:flex;justify-content: center;width:100%;">
@@ -194,7 +203,8 @@
 };
 
 function chngTik(){
-  
+    const btn=document.getElementById('btndo')
+    btn.innerHTML='הפעל';
     document.getElementById('shana').innerHTML='';
     document.getElementById('centerTbl').style.display='none'
     document.querySelectorAll('.row').forEach(el => el.style.display = 'flex');
@@ -205,12 +215,13 @@ function chngTik(){
 
 
 
-async function submitForm() {
+async function submitForm(x) {
     const btn=document.getElementById('btndo')
-if(btn.innerHTML==='הפעל'){   
+if(btn.innerHTML==='הפעל' || x===9){   
     var bt=0;var abc;  
     const selectedProduct = document.getElementById('sugMMen').value;
     const maslul= document.getElementById('selectShemkupa').value;
+    const mishkal=parseInt(document.getElementById('mishkalNumber').value);
 
     if(!selectedProduct){Swal.fire({
     title: "<span style='color: green; font-size: 16px;'>יש לבחור מוצר</span>",
@@ -243,7 +254,7 @@ if(btn.innerHTML==='הפעל'){
     abc=await parent.filterMaslul(maslul,selectedProduct,0)
 
 const shanaTable= document.getElementById('shana');
-document.querySelectorAll('.row').forEach(el => el.style.display = 'none');
+//document.querySelectorAll('.row').forEach(el => el.style.display = 'none');
 let selectedProductA;
 if(selectedProduct==='תגמולים ואישית לפיצויים'){selectedProductA='קופות גמל'}
 else{selectedProductA=selectedProduct}
@@ -266,7 +277,7 @@ shanaTable.innerHTML=
     </table>	
     
 `;
-const collection=await parent.getData(maslul,selectedProduct)
+const collection=await parent.getData(maslul,selectedProduct,mishkal)
 console.log( collection);
 
 
