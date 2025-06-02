@@ -60,7 +60,9 @@ obj.finalScore = Number(finalScore.toFixed(2));
 scoreList.push({
   shemkupa:obj.shemkupa,finalScore:obj.finalScore,
   tesuam:obj.tesuam,
-  sharp:parseFloat(obj.sharp)
+  sharp:parseFloat(obj.sharp),
+  avgSharp:avgSharp,
+  avgTesuam:avgTesuam
 })
    
   });
