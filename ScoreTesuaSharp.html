@@ -151,7 +151,7 @@
                 <input type="number" id="mishkalNumber" class="selectShemkupa" 
                 min="10" max="50" step="5" value="20" style="max-width:100px;
                 text-align: center;" onchange="submitForm(9)"><span 
-                style="margin-top:10px;font-size:10px;">  10% - 50%</span></input>        
+                style="margin-top:10px">טווח  10% - 50%</span></input>        
             </div>
         </div>
         <div id="divBtn" style="display:flex;justify-content: center;width:100%;">
@@ -259,13 +259,16 @@ if(btn.innerHTML==='הפעל' || x===9){
     abc=await parent.filterMaslul(maslul,selectedProduct,0)
 
 const shanaTable= document.getElementById('shana');
+const collection=await parent.getData(maslul,selectedProduct,mishkal)
+console.log( collection);
 //document.querySelectorAll('.row').forEach(el => el.style.display = 'none');
 let selectedProductA;
 if(selectedProduct==='תגמולים ואישית לפיצויים'){selectedProductA='קופות גמל'}
 else{selectedProductA=selectedProduct}
 shanaTable.innerHTML=
 `
-    <h4 style='color:rgb(0,148,254);margin:10px;'> דירוג מסלול ${maslul} במוצר ${selectedProductA}</h4>	
+    <h4 style='color:rgb(0,148,254);margin:10px;'> דירוג מסלול ${maslul} ב${selectedProductA}</h4>	
+    <h4 style='color:#333;margin:10px;'> תשואה ממוצעת: ${collection[0].avgTesuam}% ושארפ ממוצע: ${collection[0].avgSharp}</h4>
     <table class="klalikoch" id="tblshana">
         <tr>
             <td class="tdbig" style="background:rgb(0,148,254);color:white;">שם גוף מוסדי</td>
@@ -282,8 +285,7 @@ shanaTable.innerHTML=
     </table>	
     
 `;
-const collection=await parent.getData(maslul,selectedProduct,mishkal)
-console.log( collection);
+
 
 
 var td;var tr;
