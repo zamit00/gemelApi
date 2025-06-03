@@ -5,7 +5,7 @@
    const array = Object.values(data.result);
    const nestedArray = array[5];
    console.log(nestedArray)
-  console.log(nestedArray[10].FUND_NAME);
+ console.log(nestedArray[1].FUND_NAME);
   
 
    // console.log('Total results:', data.result.total);
@@ -17,9 +17,8 @@
     fetch('https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&limit=32000')
   .then(response => response.json())
   .then(data => {
-    datanetunimPensiaNet=data;
-  //  console.log('Total results:', data.result.total);
-  //  console.log('Records:', data.result.records);
+   console.log('Total results:', data.result.total);
+    console.log('Records:', data.result.records);
   })
   .catch(error => console.error('Fetch error:', error));
   
@@ -28,10 +27,11 @@
   .then(response => response.json())
   .then(data => {
     datanetunimBituachNet=data;
-   // console.log('Total results:', data.result.total);
-   // console.log('Records:', data.result.records);
+   console.log('Total results:', data.result.total);
+    console.log('Records:', data.result.records);
   })
   .catch(error => console.error('Fetch error:', error));
+  /*
 // פעולת סיכום
  function totalsData(){
    const totals = datanetunimKlaliXM.filter(obj => obj.mozar === 'קרנות השתלמות')
@@ -53,3 +53,4 @@
 };
     console.log('total:', roundedTotals);
 }
+*/
