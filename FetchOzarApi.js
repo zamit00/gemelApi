@@ -3,8 +3,8 @@
   .then(response => response.json())
   .then(data => {
    const array = Object.values(data.result);
-   const nestedArray = array[5];
-   //nestedArray.filter(obj.FUND_CLASSIFICATION==='קרנות השתלמות');   
+   var nestedArray = array[5];
+   nestedArray=nestedArray.filter(obj=>obj.FUND_CLASSIFICATION==='קרנות השתלמות');   
    console.log(nestedArray)
  console.log(nestedArray[1].FUND_NAME);
   
