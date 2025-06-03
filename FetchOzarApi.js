@@ -33,7 +33,7 @@
   })
   .catch(error => console.error('Fetch error:', error));
 // פעולת סיכום
-  const totals = datanetunimKlaliXM
+/*  const totals = datanetunimKlaliXM
   .filter(obj => obj.mozar === 'קרנות השתלמות')
   .reduce(
     (acc, item) => {
@@ -44,4 +44,4 @@
       return acc;
     },
     { hafkadot: 0, meshichot: 0, niyudNeto: 0, zviraNeto: 0 }
-  );
+  ); */
