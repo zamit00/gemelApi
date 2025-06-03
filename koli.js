@@ -2081,7 +2081,7 @@ function showTopFunds(datam, sortKey,moz) {
   const title = document.createElement("h2");
   if (moz === 'קרנות חדשות') moz = 'קרנות הפנסיה מקיפה';
   if (moz === 'תגמולים ואישית לפיצויים') moz = 'קופות הגמל';
-  title.innerText = `5 ${moz} 🔥 המובילות בתשואה לשנה`;
+  title.innerText = `5 ${moz} 🔥 המובילות בתשואה ל - 12 חודשים אחרונים `;
   title.style.marginBottom = "12px";
   title.style.textAlign = "center";
   popup.appendChild(title);
