@@ -121,9 +121,35 @@
         }
         @media screen and (min-width:600px){
             .centerTbl,#shana,.chart-container,.klalikoch{width: clamp(550px,90%,750px)}}
+#topFundsPopup{display:none}
     </style>
 </head>
 <body dir="rtl">
+<div id="topFundsPopup" style="position: fixed;
+	  top:50%;
+	  right:50%;
+	  transform:translate(50%,-50%);
+	  background:white;
+	  border:2px solid #444;
+	  border-radius:12px;
+	  box-shadow:0 0 20px rgba(0,0,0,0.3);
+	  padding:20px;
+	  z-index:9999;
+	  max-width:90%;
+	  width:400px;
+	  font-family:Arial, sans-serif;">
+ 
+	<h2 style="margin-bottom:12px;text-align:center;">לוגיקת חישוב הציון</h2>
+	<ol>
+		<li style="margin-bottom:8px;" >ציון בסיס 80</li>
+		<li style="margin-bottom:8px;" >תוספת/הפחת בהתאם ליחס הסטיה מהממוצע</li>
+		<li style="margin-bottom:8px;">ציון לפי משקולת לרכיב</li>
+		<li style="margin-bottom:8px;">חיבור ציוני המשקולות</li>	
+	</ol>
+	<button onclick="document.getElementById('topFundsPopup').style.display='none'" style="margin-top:16px;padding:8px 16px;
+		border:none;border-radius:8px;background :#444;		color:white;cursor:pointer;display:block;margin-left:auto;
+		margin-right:auto;">סגור</button>
+</div>
     <div class="container" id="container">
         <div class='closewindow' onclick='window.parent.showHashvaa();'><i class="fa-solid fa-rotate-left"></i></div>
         <h3 id="kotMishkal" style="text-align: center;color:rgb(0,148,254);">מדד תשואה-שארפ (20%  משקל לשארפ)</h3>
@@ -288,7 +314,7 @@ shanaTable.innerHTML=
             <td class="tdbig" style="background:rgb(0,148,254);color:white;">שם גוף מוסדי</td>
             <td class="tdsmall" 
             id="miyunshana"
-            style="background:rgb(0,148,254);color:white;"  >ציון </td>
+            style="background:rgb(0,148,254);color:white;" onclick="document.getElementById('topFundsPopup').style.display='block'">ציון * </td>
             <td class="tdsmall" 
             id="miyunshalosh"
             style="background:rgb(0,148,254);color:white;" >תשואה</td>
