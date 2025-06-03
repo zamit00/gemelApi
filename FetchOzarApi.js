@@ -4,6 +4,7 @@
   .then(data => {
    const array = Object.values(data.result);
    const nestedArray = array[5];
+   nestedArray.filter(obj.FUND_CLASSIFICATION==='קרנות השתלמות');   
    console.log(nestedArray)
  console.log(nestedArray[1].FUND_NAME);
   
