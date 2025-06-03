@@ -4,7 +4,7 @@
   .then(data => {
    const array = Object.values(data.result);
    var nestedArray = array[5];
-   nestedArray=nestedArray.filter(obj=>obj.FUND_CLASSIFICATION==='קרנות השתלמות' && TARGET_POPULATION==='כלל האוכלוסיה');   
+   nestedArray=nestedArray.filter(obj=>obj.FUND_CLASSIFICATION==='קרנות השתלמות' && obj.TARGET_POPULATION==='כלל האוכלוסיה');   
    console.log(nestedArray)
  console.log(nestedArray[1].FUND_NAME);
   
