@@ -33,8 +33,8 @@
   })
   .catch(error => console.error('Fetch error:', error));
 // פעולת סיכום
-/*  const totals = datanetunimKlaliXM
-  .filter(obj => obj.mozar === 'קרנות השתלמות')
+ function totalsData(){
+   const totals = datanetunimKlaliXM.filter(obj => obj.mozar === 'קרנות השתלמות')
   .reduce(
     (acc, item) => {
       acc.hafkadot += parseFloat(item.hafkadot);
@@ -44,4 +44,12 @@
       return acc;
     },
     { hafkadot: 0, meshichot: 0, niyudNeto: 0, zviraNeto: 0 }
-  ); */
+  );
+  const roundedTotals = {
+  hafkadot: Math.round(totals.hafkadot),
+  meshichot: Math.round(totals.meshichot),
+  niyudNeto: Math.round(totals.niyudNeto),
+  zviraNeto: Math.round(totals.zviraNeto),
+};
+    console.log('total:', roundedTotals);
+}
