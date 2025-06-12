@@ -5,21 +5,19 @@
    const array = Object.values(data.result);
    var nestedArray = array[5];
    nestedArray=nestedArray.filter(obj=>obj.FUND_CLASSIFICATION==='קרנות השתלמות' && obj.TARGET_POPULATION==='כלל האוכלוסיה');   
-   console.log(nestedArray)
- console.log(nestedArray[1].FUND_NAME);
+  // console.log(nestedArray)
+ //console.log(nestedArray[1].FUND_NAME);
   
 
-   // console.log('Total results:', data.result.total);
-   // console.log('Records:', datanetunimGemelNet.result.records);
-   // console.log(Array.isArray(data));
+  
   })
   .catch(error => console.error('Fetch error:', error));
 //pensia datagov
     fetch('https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd&limit=32000')
   .then(response => response.json())
   .then(data => {
-   console.log('Total results:', data.result.total);
-    console.log('Records:', data.result.records);
+  // console.log('Total results:', data.result.total);
+  //  console.log('Records:', data.result.records);
   })
   .catch(error => console.error('Fetch error:', error));
   
@@ -28,8 +26,8 @@
   .then(response => response.json())
   .then(data => {
     datanetunimBituachNet=data;
-   console.log('Total results:', data.result.total);
-    console.log('Records:', data.result.records);
+  // console.log('Total results:', data.result.total);
+  //  console.log('Records:', data.result.records);
   })
   .catch(error => console.error('Fetch error:', error));
   /*
