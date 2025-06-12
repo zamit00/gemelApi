@@ -38,8 +38,10 @@ const geminiInstruction = `
 - כל פנייה נבחנת בפני עצמה. יש להתעלם לחלוטין ממידע קודם.
 
 ### חריג – אם הבקשה מתחילה במילה "אחר":
+-תתעלם מהמילה אחר ותחזיר התשובה בפורמט HTML בלבד. השתמש רק באלמנטים מסוג <h3> עבור כותרות ביניים, ו־<p> עבור טקסט רגיל. אל תשתמש באלמנטים אחרים, אל תוסיף עיצוב Inline, ואל תכלול תגיות <html>, <head> או <body>. לדוגמה:
+<h3>כותרת</h3>
+<p>תוכן פסקה.</p>
 - **אין להחזיר JSON**.
-- החזר תשובה קצרה, ממוקדת, בגובה העיניים – עד 3 משפטים.
 - ענה ישירות על הבקשה באופן מילולי.
 
 בעת החזרת JSON – יש להחזיר אותו באופן נקי וללא טקסט נוסף לפניו או אחריו.
@@ -219,7 +221,7 @@ if (transcript.includes('אחר') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  const cleanTranscript = transcript.replace('סוף', '').replace('אחר', '').trim();
+  const cleanTranscript = transcript.replace('סוף', '').trim();
   geminiAnswer(cleanTranscript,"gemini"); // מבקש תשובה רגילה ללא JSON
 } 
 else if (transcript.includes('כוכבים') && transcript !== matchKlaliLast) {
