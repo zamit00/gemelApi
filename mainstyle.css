@@ -14,7 +14,7 @@
 }
 #kupaInfo{display: none;}
 #tnaiyShimoshB{
-   
+   cursor: pointer;
    font-size: 20px;bottom: 10px;
     width: clamp(100px,30vw,250px);
     color:var(--main-color);
@@ -82,6 +82,7 @@
             aspect-ratio: 1 / 1;
             position: relative;
             overflow: hidden;
+	    cursor: pointer;
      }
 .phone{
   position: relative;
@@ -891,6 +892,7 @@ box-sizing: border-box;padding: 0%;margin: 0%};
   position: relative;
   right:55%;
   top: 20px;
+  cursor: pointer;	
 }
 
 .stars-card:hover {
