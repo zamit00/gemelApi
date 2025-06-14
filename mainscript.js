@@ -294,7 +294,11 @@ function maslulimSanen(){
                     td.style.textAlign = "right";
                     td.style.boxSizing="border-box";
                     td.style.paddingRight = "5px";
-                    td.textContent = data[tb].shemkupa;
+	            let link = document.createElement('a');
+                    link.href = '#';
+                    link.className="linktdbig";  
+                    link.textContent = dataY[tb].shemkupa;
+                     td.appendChild(link);
                     trm.appendChild(td);
 
                     td = document.createElement('td');
