@@ -459,6 +459,7 @@ function toggleMenu() {
         document.getElementById("hamb").classList.remove("open");
         document.querySelector(".menu-container").style.display='none';
         document.getElementById("menu").classList.remove("open");
+	document.getElementById('allImages').style.opacity='1';  
   }
   
 else{
