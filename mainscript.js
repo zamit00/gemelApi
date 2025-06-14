@@ -297,7 +297,7 @@ function maslulimSanen(){
 	            let link = document.createElement('a');
                     link.href = '#';
                     link.className="linktdbig";  
-                    link.textContent = dataY[tb].shemkupa;
+                    link.textContent = data[tb].shemkupa;
                      td.appendChild(link);
                     trm.appendChild(td);
 
