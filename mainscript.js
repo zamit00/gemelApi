@@ -270,9 +270,9 @@ function maslulimSanen(){
         <td style="text-align:center;" >מה</td>
         <td>שם המסלול</td>
         <td style="text-align:center;" >חודש</td>
-        <td style="text-align:center;" onclick='sortTable(this)'>שנה<i class="fa fa-sort"></i></td>
-        <td style="text-align:center;" onclick='sortTable(this)'>3 שנים<i class="fa fa-sort"></i></td>
-        <td style="text-align:center;" onclick='sortTable(this)'>5 שנים<i class="fa fa-sort"></i></td>
+        <td style="text-align:center;" onclick='sortTable(this)'>שנה</td>
+        <td style="text-align:center;" onclick='sortTable(this)'>3 שנים</td>
+        <td style="text-align:center;" onclick='sortTable(this)'>5 שנים</td>
     </tr>`
     for (let tb = 0; tb < data.length; tb++) {
                 //if (dataY[tb].tesuam) {
