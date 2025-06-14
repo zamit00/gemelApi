@@ -794,7 +794,7 @@ margin-right: auto;
     }
      
    .klalihevra td{font-size: 10px;} 
-    
+   .klalihevra{border-bottom: 1px solid #333;}
     
     .menu-container.open {
        float:left;
