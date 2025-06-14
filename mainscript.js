@@ -221,14 +221,122 @@ srch.style.display='block'
  
 }
 function maslulimSanen(){
+    let dataforfilter;let moza;
     const select=document.getElementById('sinonHevra').value
     const allTheTables = document.getElementById('allTheTables');
     const visibleH2s = Array.from(allTheTables.querySelectorAll('h2'))
     .filter(h2 => getComputedStyle(h2).display !== 'none');
-    var sugmuzar = visibleH2s[0].childNodes[0].textContent.trim(); 
-    if(sugmuzar.includes("קרנות פנסיה"))
-    {sugmuzar='קרנות חדשות'; maslulimP(30,sugmuzar,select)}
-    else {maslulim(30,sugmuzar,select)}   
+    var sugmuzar = visibleH2s[0].childNodes[0].textContent.trim();
+    moza=sugmuzar;
+    allTheTables.innerHTML='';
+    document.querySelector('.centertables').style.display='flex' 
+    if(sugmuzar.includes("קרנות פנסיה")){
+      dataforfilter=datanetunimKlaliXP;sugmuzar='קרנות חדשות';
+    }
+    else{
+      if(sugmuzar.includes("גמל") && !sugmuzar.includes("השקעה")){sugmuzar="תגמולים ואישית לפיצויים"}
+      dataforfilter=datanetunimKlaliXM;
+    }
+
+    const data = dataforfilter.filter(item => 
+      String(item.mozar).trim() === String(sugmuzar).trim()  && 
+      String(item.menahelet).trim().includes(select) && 
+      !String(item.shemkupa).trim().includes("מרכזית") && 
+      (!sugmuzar==='קרנות חדשות' ? !item.ochlosiyayaad.includes('עובדי מפעל/גוף מסויים'): true) &&
+       (!sugmuzar==='קרנות חדשות' ? !item.ochlosiyayaad.includes('עובדי סקטור מסויים'): true)
+  );
+  
+    const msll=`<h2 id="h2Hish" name="h2Hish" style="font-size:1rem;font-weight:bold;
+    line-height:1.8rem;vertical-align:middle; margin-top:15px;text-align:right;
+    padding-right:5px;">${moza}</h2>`
+    allTheTables.innerHTML+=msll;
+    if(data.length===0){return};
+    
+    const htmlt=`<div class="tblMuzarim" id="tblMuzarim">`
+    const tbladd=
+    `<div class="tblhevra">
+          <div class="divTblNetunimhevra">
+              <table class="klalihevra" id="klalikoch"> 
+              </table>	
+          </div>
+    </div>`
+    allTheTables.innerHTML+=htmlt;
+     allTheTables.innerHTML+=tbladd;
+     const table = document.getElementById(`klalikoch`);
+      if (!table){return;}
+      table.innerHTML='';
+      table.innerHTML=`<tr style="font-weight: bold;background-color: var(--main-color);color: white;
+      border:none;">						
+        <td style="text-align:center;" >מה</td>
+        <td>שם המסלול</td>
+        <td style="text-align:center;" >חודש</td>
+        <td style="text-align:center;" onclick='sortTable(this)'>שנה<i class="fa fa-sort"></i></td>
+        <td style="text-align:center;" onclick='sortTable(this)'>3 שנים<i class="fa fa-sort"></i></td>
+        <td style="text-align:center;" onclick='sortTable(this)'>5 שנים<i class="fa fa-sort"></i></td>
+    </tr>`
+    for (let tb = 0; tb < data.length; tb++) {
+                //if (dataY[tb].tesuam) {
+                    const trm = document.createElement('tr');
+                    trm.style.width='100%'
+                    // יצירת תא ראשון
+                    let td = document.createElement('td');
+                    td.style.color = '#333';
+		                td.style.textAlign='center';
+                    td.className="tdmh";
+                    td.style.boxSizing="border-box";
+                    td.textContent = data[tb].mh;
+                    trm.appendChild(td);
+                    // יצירת תא שני עם קישור
+                    td = document.createElement('td');
+                    td.style.color = '#333';
+                    td.className="tdbig";
+                    td.style.boxSizing="border-box";
+                    td.style.textAlign = "right";
+                    td.style.boxSizing="border-box";
+                    td.style.paddingRight = "5px";
+                    td.textContent = data[tb].shemkupa;
+                    trm.appendChild(td);
+
+                    td = document.createElement('td');
+                    td.className="tdsmall";
+                    td.style.boxSizing="border-box";
+                    td.style.textAlign="center";
+                    td.textContent = data[tb].tusaAharona.toFixed(2) + "%";
+                    trm.appendChild(td);
+                    // יצירת תאים נוספים
+                    td = document.createElement('td');
+                    td.style.color = '#333';
+                    td.className="tdsmall";
+                    td.style.boxSizing="border-box";
+                    td.style.textAlign="center"
+                    td.textContent = data[tb].tesuam.toFixed(2) + "%";
+                    trm.appendChild(td);
+                    td = document.createElement('td');
+                    
+                    td.className="tdsmall";
+                    td.style.boxSizing="border-box";
+                    td.style.textAlign="center"
+                    if (data[tb].tesuam36) { td.textContent = data[tb].tesuam36.toFixed(2) + "%"; }
+                    trm.appendChild(td);
+                    td = document.createElement('td');
+                    td.style.color = '#333';
+                    td.className="tdsmall";
+                    td.style.boxSizing="border-box";
+                    td.style.textAlign="center"
+                    if (data[tb].tesuam60) { td.textContent = data[tb].tesuam60.toFixed(2) + "%"; }
+                    trm.appendChild(td);
+                    table.appendChild(trm);
+                //}
+            }
+
+      document.querySelectorAll('[class^="klalihevra"] td').forEach(td => {
+      let text = td.textContent.trim();
+      if (text.startsWith("-")) {
+          td.innerHTML = `<span style="direction: ltr; display: inline-block;">${text}</span>`;
+          td.style.color="red";
+      }
+    })
+
 }
 
 window.addEventListener("scroll", function() {
