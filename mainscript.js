@@ -50,9 +50,11 @@ for(let i=0;i<gufmosdiA.length;i++){
      opt.textContent=gufmosdiA[i]
      opt.value=gufmosdiA[i]
      sinon.appendChild(opt)  
-    }
+}
+
+
 window.onload = async function() {
-    try {
+  try {
         await Promise.all([
             fetchdataJasonB(),
             fetchdataJasonP(),
@@ -60,35 +62,32 @@ window.onload = async function() {
             
         ]);
        indications(); 
-        backtop();
+        backtop();     
        
-       
-    } catch (error) {
+  } catch (error) {
         console.error("שגיאה בטעינת הנתונים:", error);
-    }
+  }
 }
 
 function showKupaMeida(x){
-    document.querySelector('.meidaMuzarSpecific').style.display='block';
-    
+    document.querySelector('.meidaMuzarSpecific').style.display='block';    
     const pMeida=document.querySelectorAll('#mabaatarSpecific p')
-    if(window.innerWidth>850 && x==='pHish'){pMeida[0].innerHTML=pHishBig;pMeida[1].innerHTML=''}
-    if(window.innerWidth<=850 && x==='pHish'){pMeida[1].innerHTML=pHishSmall;pMeida[0].innerHTML=''}
-    
-    if(window.innerWidth>850 && x==='pGemel'){pMeida[0].innerHTML=pGemelBig;pMeida[1].innerHTML=''}
-    if(window.innerWidth<=850 && x==='pGemel'){pMeida[1].innerHTML=pGemelSmall;pMeida[0].innerHTML=''}
-
-    if(window.innerWidth>850 && x==='pPensia'){pMeida[0].innerHTML=pPensiaBig;pMeida[1].innerHTML=''}
-    if(window.innerWidth<=850 && x==='pPensia'){pMeida[1].innerHTML=pPensiaSmall;pMeida[0].innerHTML=''}
-
-    if(window.innerWidth>850 && x==='pYeled'){pMeida[0].innerHTML=pYeled;pMeida[1].innerHTML=''}
-    if(window.innerWidth<=850 && x==='pYeled'){pMeida[1].innerHTML=pYeled;pMeida[0].innerHTML=''}
-
-    if(window.innerWidth>850 && x==='pPolisa'){pMeida[0].innerHTML=pPolisaBig;pMeida[1].innerHTML=''}
-    if(window.innerWidth<=850 && x==='pPolisa'){pMeida[1].innerHTML=pPolisaSmall;pMeida[0].innerHTML=''}
-
-    if(window.innerWidth>850 && x==='pHash'){pMeida[0].innerHTML=pHashBig;pMeida[1].innerHTML=''}
-    if(window.innerWidth<=850 && x==='pHash'){pMeida[1].innerHTML=pHashSmall;pMeida[0].innerHTML=''}
+   
+    if(window.innerWidth>850){
+      if(x==='pHish'){pMeida[0].innerHTML=pHishBig;pMeida[1].innerHTML=''};
+      if(x==='pGemel'){pMeida[0].innerHTML=pGemelBig;pMeida[1].innerHTML=''};
+      if(x==='pPensia'){pMeida[0].innerHTML=pPensiaBig;pMeida[1].innerHTML=''};
+      if( x==='pYeled'){pMeida[0].innerHTML=pYeled;pMeida[1].innerHTML=''};
+      if( x==='pPolisa'){pMeida[0].innerHTML=pPolisaBig;pMeida[1].innerHTML=''};
+      if(x==='pHash'){pMeida[0].innerHTML=pHashBig;pMeida[1].innerHTML=''}
+    } else{
+      if(x==='pHish'){pMeida[1].innerHTML=pHishSmall;pMeida[0].innerHTML=''}
+      if(x==='pGemel'){pMeida[1].innerHTML=pGemelSmall;pMeida[0].innerHTML=''}
+      if(x==='pPensia'){pMeida[1].innerHTML=pPensiaSmall;pMeida[0].innerHTML=''}
+      if(x==='pYeled'){pMeida[1].innerHTML=pYeled;pMeida[0].innerHTML=''}
+      if(x==='pPolisa'){pMeida[1].innerHTML=pPolisaSmall;pMeida[0].innerHTML=''}
+      if(x==='pHash'){pMeida[1].innerHTML=pHashSmall;pMeida[0].innerHTML=''}
+  }
 }
 async function searchMh(x){
      var mikom=""
