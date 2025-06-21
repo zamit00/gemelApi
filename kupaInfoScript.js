@@ -34,7 +34,6 @@ async function bring(data,mikom) {
     const shemkupa = data[0].shemkupa;
     const maslul = data[0].mas;
     
-    
 var menahelet = data[0].menahelet;
    
 
@@ -132,6 +131,18 @@ tableTesuot.innerHTML += `
   `
 
   }
+  kupaInfo.innerHTML+=`<canvas id="myChartkupa" style="width:100%;max-width:1000px;max-height: 200px;"></canvas>
+  	<canvas id="myChart"  style="width:100%;max-width: 1000px;
+ 		 max-height: 200px;margin:30px auto;"></canvas>
+  	<h3 id="nehasimkot" class="nehasimkot" style="text-align:center; color:blue;margin:10px auto"></h3>
+  	<div id="tblnehasim" class="tblnehasim">
+    <table id="nehasim" style="width:clamp(300px,90vw, 800px); margin:15px auto;
+     border-collapse: collapse; font-size: 16px;"></table>
+		<canvas id="pieChartkupa" 
+			style="width:clamp(250px,80vw,300px);
+	  	 	max-height: 400px;">
+		 </canvas> 
+	</div>`
    // document.getElementById('pdf').style.display='block';
     document.getElementById('kupaInfo').style.display='block';
     document.getElementById('kupaInfo').style.margin='0 auto';
