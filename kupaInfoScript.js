@@ -47,11 +47,6 @@ if (data[0]["tesuam60"] && data[0]["stiya60"] && data[0]["stiya60"] !== 0) {
 
     const kupaInfo = document.getElementById('kupaInfo');
     kupaInfo.innerHTML = '';
-    kupaInfo.innerHTML+=
-    `<div class='closekupainfo' id="closeinfo" onclick='hidekupainfo(); showAllimages();showMabaatar()'
-		style="margin-right:10px;display:block"><i class="fa-solid fa-rotate-left"></i>
-    </div>`
-
     kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;">נתונים כלליים</h3>
     <table id="tableklali" style="width:clamp(300px,90vw, 800px); margin:0 auto;
      border-collapse: collapse; font-size: 16px;">
