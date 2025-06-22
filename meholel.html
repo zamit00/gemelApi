@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <script src="data.js" defer></script>
 <title>מחולל סינון מוצרים</title>
 <style>
@@ -19,6 +20,7 @@
     padding: 5px;
     font-size: 1rem;
   }
+  h2{width: 100%;box-sizing: border-box;text-align: center;color:rgb(0,154,248)}
   .filterDiv{
     width: 100%;
     display:flex ;
@@ -33,7 +35,7 @@
     label{width: clamp(40vw,30vw,200px);margin-right: 0;padding-right: 2px;}
     .klalikoch {
        width: 100%;  
-	max-width:100%;
+	    max-width:100%;
     }
     .klalikoch,.tdsmall,.tdbig{border-collapse: collapse;
 		border-left: 1px solid rgba(0,0,0,0.2);
@@ -44,8 +46,8 @@
     display: flex;width:100%;}
     .tdmh,.tdsmall{width:15%;}
     .tdbig{width:25%;}
-    @media screen and (max-width:400px) {
-    .klalikoch {margin: 5px;font-size: 9px;}
+    @media screen and (max-width:600px) {
+    .klalikoch {margin: 5px;font-size: 10px;}
     .filterDiv{flex-direction: column;}
     .label,select{width: 100%;margin-right: auto;margin-left: auto;}
     }
@@ -54,7 +56,6 @@
 <body>
 
 <h2>מחולל סינון מוצרים</h2>
-
 <div id="filter-area">
     <div class="filterDiv">  
         <label>בחר מוצר:</label>
@@ -112,7 +113,7 @@
  
   const mozAllX = [
     'קרנות השתלמות', 'קופות גמל', 'קופת גמל להשקעה',
-    "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון", "קרנות פנסיה", "מרכזית לפיצויים"
+    "קופת גמל להשקעה - חסכון לילד", "קרנות פנסיה", "מרכזית לפיצויים"
   ];
 
   const gufmosdixAX = [
