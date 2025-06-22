@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="data.js" defer></script>
 <title>מחולל סינון מוצרים</title>
 <style>
   body {
@@ -72,6 +73,7 @@
       <option value="75+">מעל 75%</option>
     </select>
   </label>
+
 </div>
 
 <table id="resultsTable" aria-label="טבלת תוצאות סינון">
@@ -150,7 +152,7 @@
   // datanetunimKlaliXM = [...]; datanetunimKlaliXB = [...]; datanetunimKlaliXP = [...];
 
   // פונקציית סינון
-  function applyFilter() {
+  async function applyFilter() {
     const selectedProductDisplay = document.getElementById("productFilter").value;
     const selectedMaslul = document.getElementById("maslulFilter").value;
     const selectedGuf = document.getElementById("gufFilter").value;
@@ -163,9 +165,10 @@
     else if (internalProduct === "פוליסות חסכון") allData = datanetunimKlaliXB;
     else allData = datanetunimKlaliXM;
 
+    if(selectedMaslul){allData=await filterMaslulX(allData,selectedMaslul,selectedProductDisplay)}
+    
     const filtered = allData.filter(item => {
       const byProduct = !internalProduct || item.mozar === internalProduct;
-      const byMaslul = !selectedMaslul || item.mas === selectedMaslul || item.masmishni === selectedMaslul;
       const byGuf = !selectedGuf || item.menahelet.includes(selectedGuf);
       const byMenayot = (() => {
         if (!menayotRange) return true;
@@ -177,14 +180,54 @@
         if (menayotRange === "75+") return val >= 75;
         return true;
       })();
-      return byProduct && byMaslul && byGuf && byMenayot;
+      return byProduct && byGuf && byMenayot;
     });
 
     renderTable(filtered);
      
   }
 
-  // יצירת שורות בטבלה עם הנתונים המבוקשים
+async function filterMaslulX(dataforfilter, mas, moza, hevra=0) {
+    
+  const containsAll = (text, includes = [], excludes = []) =>
+    includes.every(str => text.includes(str)) &&
+    excludes.every(str => !text.includes(str));
+
+  const filters = {
+    "כללי": item => item.shemkupa.includes("כללי"),
+    "עוקב מדד s&p 500": item => item.shemkupa.includes("500"),
+    "מניות": item => containsAll(item.shemkupa, ["מניות"], ["מדד", "עוקב", "סחיר", "משולב", "25", '"אג\"ח"', "פאסיבי"]),
+    "אשראי ואג\"ח": item => containsAll(item.shemkupa, ["אשראי"], ["מניות", "עוקב", "סחיר"]),
+    "אשראי ואג\"ח עם מניות": item => containsAll(item.shemkupa, ["אשראי", "25"]),
+    "כספי (שקלי)": item => item.shemkupa.includes("כספי (שקלי)"),
+    "עוקב מדדים - גמיש": item => item.shemkupa.includes("עוקב") && item.shemkupa.includes("גמיש"),
+    "אג\"ח ממשלות": item => item.shemkupa.includes("ממשלות"),
+    "הלכה יהודית": item => item.shemkupa.includes("הלכה"),
+    "משולב סחיר": item => item.shemkupa.includes("משולב סחיר"),
+    "עוקב מדדי אג\"ח": item => containsAll(item.shemkupa, ["עוקב", "אג\"ח"], ["מניות"]),
+    "עוקב מדדי מניות": item => containsAll(item.shemkupa, ["עוקב", "מניות"], ["אג\"ח", "25"]),
+    "מניות סחיר": item => containsAll(item.shemkupa, ["מניות", "סחיר"], ["25"]),
+    "אג\"ח סחיר": item => containsAll(item.shemkupa, ["אג\"ח", "סחיר"], ["מניות"]),
+    "אג\"ח סחיר עם מניות": item => containsAll(item.shemkupa, ["אג\"ח", "סחיר", "מניות"]),
+    "עוקב מדדי אג\"ח עם מניות": item => containsAll(item.shemkupa, ["אג\"ח", "מניות", "עוקב"], ["סחיר"]),
+    "50-60": item => item.shemkupa.includes("50") && item.shemkupa.includes("60"),
+    "עד 50": item => item.shemkupa.includes("50") && !item.shemkupa.includes("60") && !item.shemkupa.includes("עוקב"),
+    "60 ומעלה": item => item.shemkupa.includes("60") && !item.shemkupa.includes("50"),
+    "סיכון מוגבר": item => item.shemkupa.includes("מוגבר"),
+    "סיכון מועט": item => item.shemkupa.includes("מועט"),
+    "סיכון בינוני": item => item.shemkupa.includes("בינוני")
+  };
+
+  const isMatch = filters[mas] || (() => false);
+  const result = dataforfilter.filter(item =>
+    item.mozar === moza &&
+    isMatch(item) &&
+    (hevra !== 0 ? item.menahelet.includes(hevra) : true)
+  );
+  result.sort((a, b) => Number(b.tesuam) - Number(a.tesuam));
+  return result;
+}
+ // יצירת שורות בטבלה עם הנתונים המבוקשים
   function renderTable(data) {
     const tbody = document.querySelector("#resultsTable tbody");
     tbody.innerHTML = "";
