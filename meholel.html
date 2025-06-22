@@ -33,6 +33,7 @@
     background: #007acc;
     color: white;
   }
+  .th1 {text-align:right}
   tbody tr:nth-child(even) {
     background: #eef5fb;
   }
@@ -44,31 +45,31 @@
 
 <div id="filter-area">
   <label>מוצר:
-    <select id="productFilter" onchange="updateMaslulOptions()">
+    <select id="productFilter" onchange="updateMaslulOptions();applyFilter()">
       <option value="">בחר מוצר</option>
     </select>
   </label>
 
   <label>מסלול:
-    <select id="maslulFilter">
+    <select id="maslulFilter" onchange="applyFilter()">
       <option value="">בחר מסלול</option>
     </select>
   </label>
 
   <label>חברה מנהלת:
-    <select id="gufFilter">
+    <select id="gufFilter" onchange="applyFilter()">
       <option value="">בחר גוף מוסדי</option>
     </select>
   </label>
 
   <label>חשיפה למניות:
-    <select id="menayotFilter">
+    <select id="menayotFilter" onchange="applyFilter()">
       <option value="">הכל</option>
       <option value="0-10">0%-10%</option>
-      <option value="10-20">10%-20%</option>
-      <option value="20-30">20%-30%</option>
-      <option value="30-40">30%-40%</option>
-      <option value="40+">מעל 40%</option>
+      <option value="10-30">10%-30%</option>
+      <option value="30-50">30%-50%</option>
+      <option value="50-75">50%-75%</option>
+      <option value="75+">מעל 75%</option>
     </select>
   </label>
 
@@ -172,16 +173,17 @@
         if (!menayotRange) return true;
         const val = parseFloat(item.kvutzaAhuz4751 || 0);
         if (menayotRange === "0-10") return val >= 0 && val < 10;
-        if (menayotRange === "10-20") return val >= 10 && val < 20;
-        if (menayotRange === "20-30") return val >= 20 && val < 30;
-        if (menayotRange === "30-40") return val >= 30 && val < 40;
-        if (menayotRange === "40+") return val >= 40;
+        if (menayotRange === "10-30") return val >= 10 && val < 30;
+        if (menayotRange === "30-50") return val >= 30 && val < 50;
+        if (menayotRange === "50-75") return val >= 50 && val < 75;
+        if (menayotRange === "75+") return val >= 75;
         return true;
       })();
       return byProduct && byMaslul && byGuf && byMenayot;
     });
 
     renderTable(filtered);
+     
   }
 
   // יצירת שורות בטבלה עם הנתונים המבוקשים
@@ -194,10 +196,11 @@
       return;
     }
 
+    data.sort((a, b) => Number(b.tesuam) - Number(a.tesuam));
     data.forEach(item => {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${item.shemkupa || ""}</td>
+        <td class='th1'>${item.shemkupa || ""}</td>
         <td>${item.tusaAharona != null ? Number(item.tusaAharona).toFixed(2) + "%" : ""}</td>
         <td>${item.tesuaMitchilatshana != null ? Number(item.tesuaMitchilatshana).toFixed(2) + "%" : ""}</td>
         <td>${item.tesuam != null ? Number(item.tesuam).toFixed(2) + "%" : ""}</td>
@@ -206,6 +209,14 @@
       `;
       tbody.appendChild(row);
     });
+    const tdies = tbody.querySelectorAll("td");
+    tdies.forEach(td => {
+      let text = td.textContent.trim();
+      if (text.startsWith("-")) {
+          td.innerHTML = `<span style="direction: ltr; display: inline-block;">${text}</span>`;
+          td.style.color="red";
+      }
+    })
   }
 
   // אתחול הבחירה במוצר ובגוף המוסדי
@@ -229,7 +240,9 @@
         }
         const data = await response.json(); 
         datanetunimKlaliXM = data;
-	    datanetunimKlaliXM= datanetunimKlaliXM.filter(item=>!item.menahelet.includes('סלייס'));    
+	    datanetunimKlaliXM= datanetunimKlaliXM.filter(item=>!item.menahelet.includes('סלייס'));
+        datanetunimKlaliXM=datanetunimKlaliXM.filter(item=>!item.ochlosiyayaad.includes('עובדי סקטור מסויים')
+    &&  !item.ochlosiyayaad.includes('עובדי מפעל/גוף מסויים')) ;   
         return data;  // חובה להחזיר נתונים כדי שהפונקציה תחכה באמת
     } catch (error) {
         console.error('שגיאה בשליפת הנתונים:', error);
