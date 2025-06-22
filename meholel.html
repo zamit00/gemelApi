@@ -31,6 +31,7 @@
     padding: 0%;
     margin: 0%;
     }
+    #resultsTable{display: none;}
     select{width: 200px;}
     label{width: 300px;margin-right: 0;padding-right: 2px;}
     .klalikoch {
@@ -177,15 +178,20 @@
     const selectedMaslul = document.getElementById("maslulFilter").value;
     const selectedGuf = document.getElementById("gufFilter").value;
     const menayotRange = document.getElementById("menayotFilter").value;
-
     const internalProduct = mapDisplayNameToInternalProduct(selectedProductDisplay);
+    
 
+    console.log(internalProduct)
+    if(selectedProductDisplay || selectedMaslul || selectedGuf || menayotRange){
+        document.getElementById('resultsTable').style.display="block"
+    }
+    else{document.getElementById('resultsTable').style.display='none';return}
     let allData = [];
     if (internalProduct === "קרנות חדשות") allData = datanetunimKlaliXP;
     else if (internalProduct === "פוליסות חסכון") allData = datanetunimKlaliXB;
     else allData = datanetunimKlaliXM;
 
-    if(selectedMaslul){allData=await filterMaslulX(allData,selectedMaslul,selectedProductDisplay)}
+    if(selectedMaslul){allData=await filterMaslulX(allData,selectedMaslul,internalProduct)}
     
     const filtered = allData.filter(item => {
       const byProduct = !internalProduct || item.mozar === internalProduct;
