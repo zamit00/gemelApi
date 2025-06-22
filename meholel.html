@@ -11,6 +11,8 @@
     direction: rtl;
     padding: 20px;
     background: #f5f7fa;
+    max-width: 100%;
+    overflow-x: hidden;
   }
   label {
     margin: 0 10px 0 0;
@@ -20,24 +22,34 @@
     padding: 5px;
     font-size: 1rem;
   }
-  table {
+  .filterDiv{
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-  }
-  th, td {
-    border: 1px solid #aaa;
-    padding: 8px 12px;
-    text-align: center;
-  }
-  th {
-    background: #007acc;
-    color: white;
-  }
-  .th1 {text-align:right}
-  tbody tr:nth-child(even) {
-    background: #eef5fb;
-  }
+    display:flex ;
+    flex-direction: row;
+    justify-content: right;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 0%;
+    margin: 0%;
+    }
+    select{width: clamp(100px,60vw,400px);position: relative;right:10%}
+    label{width: clamp(50px,30vw,200px);}
+    .klalikoch {
+       width: 100%;  
+	max-width:100%;
+    }
+    .klalikoch,.tdsmall,.tdbig{border-collapse: collapse;
+		border-left: 1px solid rgba(0,0,0,0.2);
+        border-right: 1px solid rgba(0,0,0,0.2);
+    }
+    .tbl tr:nth-child(even), .tblhevra tr:nth-child(even) {background-color: rgb(230, 238, 247);}
+    .divTblNetunim{
+    display: flex;width:100%;}
+    .tdmh,.tdsmall{width:15%;}
+    .tdbig{width:25%;}
+    @media screen and (max-width:400px) {
+    .klalikoch {margin: 5px;font-size: 9px;}
+    }
 </style>
 </head>
 <body>
@@ -45,52 +57,57 @@
 <h2>מחולל סינון מוצרים פיננסיים</h2>
 
 <div id="filter-area">
-  <label>מוצר:
-    <select id="productFilter" onchange="updateMaslulOptions();applyFilter()">
-      <option value="">בחר מוצר</option>
-    </select>
-  </label>
-
-  <label>מסלול:
-    <select id="maslulFilter" onchange="applyFilter()">
-      <option value="">בחר מסלול</option>
-    </select>
-  </label>
-
-  <label>חברה מנהלת:
-    <select id="gufFilter" onchange="applyFilter()">
-      <option value="">בחר גוף מוסדי</option>
-    </select>
-  </label>
-
-  <label>חשיפה למניות:
-    <select id="menayotFilter" onchange="applyFilter()">
-      <option value="">הכל</option>
-      <option value="0-10">0%-10%</option>
-      <option value="10-30">10%-30%</option>
-      <option value="30-50">30%-50%</option>
-      <option value="50-75">50%-75%</option>
-      <option value="75+">מעל 75%</option>
-    </select>
-  </label>
-
+    <div class="filterDiv">  
+        <label>בחר מוצר:</label>
+        <select id="productFilter" onchange="updateMaslulOptions();applyFilter()">
+            <option value="">בחר מוצר</option>
+        </select>
+    </div>
+    <div class="filterDiv">
+        <label>בחר מסלול:</label>
+        <select id="maslulFilter" onchange="applyFilter()">
+            <option value="">בחר מסלול</option>
+        </select>
+    </div>
+    <div class="filterDiv">
+        <label>חברה מנהלת:</label>
+        <select id="gufFilter" onchange="applyFilter()">
+            <option value="">בחר גוף מוסדי</option>
+        </select>
+    </div>
+    <div class="filterDiv">
+        <label>חשיפה למניות:</label>
+        <select  id="menayotFilter" onchange="applyFilter()">
+            <option value="">הכל</option>
+            <option value="0-10">10%-0%</option>
+            <option value="10-30">30%-10%</option>
+            <option value="30-50">50%-30%</option>
+            <option value="50-75">75%-50%</option>
+            <option value="75+">מעל 75%</option>
+        </select>
+    </div>
 </div>
 
-<table id="resultsTable" aria-label="טבלת תוצאות סינון">
-  <thead>
-    <tr>
-      <th>שם קופה</th>
-      <th>תשואה חודשית אחרונה</th>
-      <th>תשואה מתחילת שנה</th>
-      <th>תשואה שנה</th>
-      <th>תשואה 3 שנים</th>
-      <th>תשואה 5 שנים</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- תוצאות יוכנסו כאן -->
-  </tbody>
-</table>
+<div class="tbl">
+	<div class="divTblNetunim">
+		<table class="klalikoch" id="resultsTable"  aria-label="טבלת תוצאות סינון">
+            <thead>
+                <tr style='background-color: rgb(0,154,248);color:#f5f7fa;font-weight: bold;'>
+                <th class="tdmh tdbig">שם קופה</th>
+                <th class="tdmh tdsmall">תשואה חודשית אחרונה</th>
+                <th class="tdmh tdsmall">תשואה מתחילת שנה</th>
+                <th class="tdmh tdsmall">תשואה שנה</th>
+                <th class="tdmh tdsmall">תשואה 3 שנים</th>
+                <th class="tdmh tdsmall">תשואה 5 שנים</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- תוצאות יוכנסו כאן -->
+            </tbody>
+        </table>	
+	</div>
+</div>
+
 
 <script>
  
@@ -241,12 +258,12 @@ async function filterMaslulX(dataforfilter, mas, moza, hevra=0) {
     data.forEach(item => {
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td class='th1'>${item.shemkupa || ""}</td>
-        <td>${item.tusaAharona != null ? Number(item.tusaAharona).toFixed(2) + "%" : ""}</td>
-        <td>${item.tesuaMitchilatshana != null ? Number(item.tesuaMitchilatshana).toFixed(2) + "%" : ""}</td>
-        <td>${item.tesuam != null ? Number(item.tesuam).toFixed(2) + "%" : ""}</td>
-        <td>${item.tesuam36 != null ? Number(item.tesuam36).toFixed(2) + "%" : ""}</td>
-        <td>${item.tesuam60 != null ? Number(item.tesuam60).toFixed(2) + "%" : ""}</td>
+        <td class='th1 tdbig'>${item.shemkupa || ""}</td>
+        <td class='tdsmall'>${item.tusaAharona != null ? Number(item.tusaAharona).toFixed(2) + "%" : ""}</td>
+        <td class='tdsmall'>${item.tesuaMitchilatshana != null ? Number(item.tesuaMitchilatshana).toFixed(2) + "%" : ""}</td>
+        <td class='tdsmall'>${item.tesuam != null ? Number(item.tesuam).toFixed(2) + "%" : ""}</td>
+        <td class='tdsmall'>${item.tesuam36 != null ? Number(item.tesuam36).toFixed(2) + "%" : ""}</td>
+        <td class='tdsmall'>${item.tesuam60 != null ? Number(item.tesuam60).toFixed(2) + "%" : ""}</td>
       `;
       tbody.appendChild(row);
     });
