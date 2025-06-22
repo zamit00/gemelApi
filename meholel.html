@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>מחולל סינון מוצרים</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    padding: 20px;
+    background: #f5f7fa;
+  }
+  label {
+    margin: 0 10px 0 0;
+  }
+  select, button {
+    margin: 0 20px 10px 0;
+    padding: 5px;
+    font-size: 1rem;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+  }
+  th, td {
+    border: 1px solid #aaa;
+    padding: 8px 12px;
+    text-align: center;
+  }
+  th {
+    background: #007acc;
+    color: white;
+  }
+  tbody tr:nth-child(even) {
+    background: #eef5fb;
+  }
+</style>
+</head>
+<body>
+
+<h2>מחולל סינון מוצרים פיננסיים</h2>
+
+<div id="filter-area">
+  <label>מוצר:
+    <select id="productFilter" onchange="updateMaslulOptions()">
+      <option value="">בחר מוצר</option>
+    </select>
+  </label>
+
+  <label>מסלול:
+    <select id="maslulFilter">
+      <option value="">בחר מסלול</option>
+    </select>
+  </label>
+
+  <label>חברה מנהלת:
+    <select id="gufFilter">
+      <option value="">בחר גוף מוסדי</option>
+    </select>
+  </label>
+
+  <label>חשיפה למניות:
+    <select id="menayotFilter">
+      <option value="">הכל</option>
+      <option value="0-10">0%-10%</option>
+      <option value="10-20">10%-20%</option>
+      <option value="20-30">20%-30%</option>
+      <option value="30-40">30%-40%</option>
+      <option value="40+">מעל 40%</option>
+    </select>
+  </label>
+
+  <button onclick="applyFilter()">סנן</button>
+</div>
+
+<table id="resultsTable" aria-label="טבלת תוצאות סינון">
+  <thead>
+    <tr>
+      <th>שם קופה</th>
+      <th>תשואה חודשית אחרונה</th>
+      <th>תשואה מתחילת שנה</th>
+      <th>תשואה שנה</th>
+      <th>תשואה 3 שנים</th>
+      <th>תשואה 5 שנים</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- תוצאות יוכנסו כאן -->
+  </tbody>
+</table>
+
+<script>
+ 
+  const mozAllX = [
+    'קרנות השתלמות', 'קופות גמל', 'קופת גמל להשקעה',
+    "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון", "קרנות פנסיה", "מרכזית לפיצויים"
+  ];
+
+  const gufmosdixAX = [
+    'הראל פנסיה וגמל', 'כלל פנסיה וגמל',
+    'מגדל מקפת קרנות פנסיה וקופות גמל', 'מנורה מבטחים פנסיה וגמל',
+    'הפניקס פנסיה וגמל', 'אלטשולר שחם גמל ופנסיה',
+    'אנליסט קופות גמל', 'ילין לפידות ניהול קופות גמל',
+    'מור גמל ופנסיה', 'מיטב גמל ופנסיה', 'אינפיניטי השתלמות, גמל ופנסיה '
+  ];
+
+  const hishtalmotX = [
+    "כללי", "עוקב מדד s&p 500", "מניות", "אשראי ואג\"ח", "אשראי ואג\"ח עם מניות",
+    "כספי (שקלי)", "עוקב מדדים - גמיש", "אג\"ח ממשלות", "הלכה יהודית",
+    "משולב סחיר", "עוקב מדדי אג\"ח", "עוקב מדדי מניות", "אג\"ח סחיר",
+    "מניות סחיר", "עוקב מדדי אג\"ח עם מניות", "אג\"ח סחיר עם מניות"
+  ];
+
+  const gemelX = [
+    "מניות", "עוקב מדד s&p 500", "עד 50", "50-60", "60 ומעלה", "אשראי ואג\"ח",
+    "כספי (שקלי)", "משולב סחיר", "עוקב מדדים - גמיש", "אג\"ח ממשלות",
+    "הלכה יהודית", "מניות סחיר", "עוקב מדדי אג\"ח", "עוקב מדדי מניות",
+    "אג\"ח סחיר", "עוקב מדדי אג\"ח עם מניות", "אג\"ח סחיר עם מניות"
+  ];
+
+  const layeledX = ['סיכון מועט', 'סיכון בינוני', 'סיכון מוגבר', 'הלכה יהודית'];
+  // מיפוי שמות מוצגים לערכי מוצר פנימיים
+ 
+  function mapDisplayNameToInternalProduct(name) {
+    if (["קרן פנסיה", "קרנות פנסיה"].includes(name)) return "קרנות חדשות";
+    if (["קופת גמל", "קופות גמל"].includes(name)) return "תגמולים ואישית לפיצויים";
+    return name;
+  }
+
+  // החזרת מסלולים לפי מוצר
+  function getMaslulimByProduct(productName) {
+    if (["קרנות השתלמות", "קופת גמל להשקעה", "פוליסות חסכון"].includes(productName)) return hishtalmotX;
+    if (["תגמולים ואישית לפיצויים", "קרנות חדשות"].includes(productName)) return gemelX;
+    if (productName.includes("לילד")) return layeledX;
+    return [];
+  }
+
+  // עדכון אפשרויות המסלול אחרי בחירת מוצר
+  function updateMaslulOptions() {
+    const product = document.getElementById("productFilter").value;
+    const internalProduct = mapDisplayNameToInternalProduct(product);
+    const maslulList = getMaslulimByProduct(internalProduct);
+    const maslulSelect = document.getElementById("maslulFilter");
+    maslulSelect.innerHTML = '<option value="">בחר מסלול</option>' +
+      maslulList.map(m => `<option value="${m}">${m}</option>`).join("");
+  }
+
+  // ייבוא הנתונים שלך כאן! לדוגמה:
+  // datanetunimKlaliXM = [...]; datanetunimKlaliXB = [...]; datanetunimKlaliXP = [...];
+
+  // פונקציית סינון
+  function applyFilter() {
+    const selectedProductDisplay = document.getElementById("productFilter").value;
+    const selectedMaslul = document.getElementById("maslulFilter").value;
+    const selectedGuf = document.getElementById("gufFilter").value;
+    const menayotRange = document.getElementById("menayotFilter").value;
+
+    const internalProduct = mapDisplayNameToInternalProduct(selectedProductDisplay);
+
+    let allData = [];
+    if (internalProduct === "קרנות חדשות") allData = datanetunimKlaliXP;
+    else if (internalProduct === "פוליסות חסכון") allData = datanetunimKlaliXB;
+    else allData = datanetunimKlaliXM;
+
+    const filtered = allData.filter(item => {
+      const byProduct = !internalProduct || item.mozar === internalProduct;
+      const byMaslul = !selectedMaslul || item.mas === selectedMaslul || item.masmishni === selectedMaslul;
+      const byGuf = !selectedGuf || item.menahelet.includes(selectedGuf);
+      const byMenayot = (() => {
+        if (!menayotRange) return true;
+        const val = parseFloat(item.kvutzaAhuz4751 || 0);
+        if (menayotRange === "0-10") return val >= 0 && val < 10;
+        if (menayotRange === "10-20") return val >= 10 && val < 20;
+        if (menayotRange === "20-30") return val >= 20 && val < 30;
+        if (menayotRange === "30-40") return val >= 30 && val < 40;
+        if (menayotRange === "40+") return val >= 40;
+        return true;
+      })();
+      return byProduct && byMaslul && byGuf && byMenayot;
+    });
+
+    renderTable(filtered);
+  }
+
+  // יצירת שורות בטבלה עם הנתונים המבוקשים
+  function renderTable(data) {
+    const tbody = document.querySelector("#resultsTable tbody");
+    tbody.innerHTML = "";
+
+    if (data.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6">אין תוצאות תואמות לסינון</td></tr>`;
+      return;
+    }
+
+    data.forEach(item => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.shemkupa || ""}</td>
+        <td>${item.tusaAharona != null ? Number(item.tusaAharona).toFixed(2) + "%" : ""}</td>
+        <td>${item.tesuaMitchilatshana != null ? Number(item.tesuaMitchilatshana).toFixed(2) + "%" : ""}</td>
+        <td>${item.tesuam != null ? Number(item.tesuam).toFixed(2) + "%" : ""}</td>
+        <td>${item.tesuam36 != null ? Number(item.tesuam36).toFixed(2) + "%" : ""}</td>
+        <td>${item.tesuam60 != null ? Number(item.tesuam60).toFixed(2) + "%" : ""}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  // אתחול הבחירה במוצר ובגוף המוסדי
+  function initFilters() {
+    const productSelect = document.getElementById("productFilter");
+    mozAllX.forEach(p => {
+      productSelect.insertAdjacentHTML("beforeend", `<option value="${p}">${p}</option>`);
+    });
+
+    const gufSelect = document.getElementById("gufFilter");
+    gufmosdixAX.forEach(g => {
+      gufSelect.insertAdjacentHTML("beforeend", `<option value="${g}">${g}</option>`);
+    });
+  }
+
+  async function fetchdataJasonM() {
+    try {
+        const response = await fetch('dataJasonM.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json(); 
+        datanetunimKlaliXM = data;
+	    datanetunimKlaliXM= datanetunimKlaliXM.filter(item=>!item.menahelet.includes('סלייס'));    
+        return data;  // חובה להחזיר נתונים כדי שהפונקציה תחכה באמת
+    } catch (error) {
+        console.error('שגיאה בשליפת הנתונים:', error);
+        throw error;  // נזרוק את השגיאה כדי ש-Promise.all יוכל לטפל בה
+    }
+    
+}
+async function fetchdataJasonB() {
+    try {
+        const response = await fetch('dataJasonB.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json(); 
+        datanetunimKlaliXB = data; 
+        return data;  // החזרת הנתונים כדי ש-`await` יעבוד נכון
+    } catch (error) {
+        console.error('שגיאה בשליפת הנתונים:', error);
+        throw error;  // זורק את השגיאה כדי ש-Promise.all יוכל לטפל בה
+    }
+}
+async function fetchdataJasonP() {
+    try {
+        const response = await fetch('dataJasonP.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json(); 
+        datanetunimKlaliXP = data; 
+        return data;  // מחזיר את הנתונים כדי שהפונקציה תהיה באמת אסינכרונית
+    } catch (error) {
+        console.error('שגיאה בשליפת הנתונים:', error);
+        throw error;  // זורק את השגיאה כדי ש-Promise.all יוכל לטפל בה
+    }
+}
+
+window.onload =async () => {
+    try {
+        await Promise.all([
+            fetchdataJasonB(),
+            fetchdataJasonP(),
+             fetchdataJasonM(),
+            
+        ]);
+      initFilters();     
+       
+  } catch (error) {
+        console.error("שגיאה בטעינת הנתונים:", error);
+  }
+     
+};
+
+</script>
+
+</body>
+</html>
