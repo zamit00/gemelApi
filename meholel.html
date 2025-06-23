@@ -263,7 +263,13 @@ async function filterMaslulX(dataforfilter, mas, moza, hevra=0) {
       return;
     }
 
-    data.sort((a, b) => Number(b.tesuam) - Number(a.tesuam));
+    data.sort((a, b) => {
+        const diff1 = Number(b.tesuam) - Number(a.tesuam);
+        if (diff1 !== 0) return diff1;
+        const diff2 = Number(b.tesuaMitchilatshana) - Number(a.tesuaMitchilatshana);
+        if (diff2 !== 0) return diff2;
+        return Number(b.tusaAharona) - Number(a.tusaAharona);
+    });
     data.forEach(item => {
       const row = document.createElement("tr");
       row.innerHTML = `
