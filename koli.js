@@ -1,7 +1,7 @@
 let speechEnabled = false;
 let speakLaterLast='';
 const dummy = new SpeechSynthesisUtterance("");
-  dummy.lang = "he-IL";
+dummy.lang = "he-IL";
 const geminiInstruction = `
 אם המשתמש מבקש לבצע חישוב, השוואה, או להפעיל מחולל מסוים – יש להחזיר תשובה בפורמט JSON תקני בלבד, הכוללת:
 
@@ -46,24 +46,23 @@ const geminiInstruction = `
 
 בעת החזרת JSON – יש להחזיר אותו באופן נקי וללא טקסט נוסף לפניו או אחריו.
 `;
+let startStop = 0; let ifrmValue=0;
+let finalTranscript = '';  let transcript='';let matchKlaliLast;
+;let lastTranscript = '';
+
 function speakClick (){
-  // הפעלה ראשונית — מספיקה כדי לקבל הרשאה
   speechEnabled = true;
   speechSynthesis.speak(dummy);
 };
 function speakLater(text) {
  if(text===speakLaterLast){return}
  speakLaterLast=text;
-  if (!speechEnabled) return; // נוודא שהייתה אינטראקציה
+  if (!speechEnabled) return;
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "he-IL";
   speechSynthesis.speak(utter);
 }
 
-
-let startStop = 0; let ifrmValue=0;
- let finalTranscript = '';  var transcript='';var matchKlaliLast;
-;let lastTranscript = '';
  
 const recognition = typeof webkitSpeechRecognition !== "undefined"
   ? new webkitSpeechRecognition()
@@ -162,6 +161,16 @@ recognition.onresult = (event) => {
     return;
  }
   
+if (transcript.includes("עצור")) {
+    startStop = 1;
+    recognition.stop();
+    transcript = "";
+    lastTranscript = "";
+    return;
+  }
+
+
+
 if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcript.includes('ניהול')){
   const index = transcript.lastIndexOf('חדש');
   if (index === -1) return "";
@@ -190,23 +199,17 @@ if(transcript.includes('חדש') && !transcript.includes('דמי') && !transcrip
   }
 
   else if(document.getElementById("topFundsPopup")) {
-    if (transcript.includes("סגור") || transcript.includes("הסתר") || transcript.includes("אסתר")) {
-      document.getElementById("topFundsPopup").remove();
-      document.getElementById('allImages').style.opacity='1';    
-      transcript = "";
-      lastTranscript = "";
+    if (transcript.includes("סגור") || transcript.includes("הסתר") || transcript.includes("אסתר")) {    
+    document.getElementById("topFundsPopup").remove();
+    document.getElementById('allImages').style.opacity='1';    
+    transcript = "";
+    lastTranscript = "";  
       return;
     }
   }
 
   // ======= פקודות כלליות =======
-  if (transcript.includes("עצור")) {
-    startStop = 1;
-    recognition.stop();
-    transcript = "";
-    lastTranscript = "";
-    return;
-  }
+  
 
   if (transcript.includes("חזור")) {
     handleSearchFromVoice('חזור');
@@ -231,11 +234,24 @@ else if (transcript.includes('כוכבים') && transcript !== matchKlaliLast) {
     return;
   }
   recognition.stop();
-  const cleanTranscript = transcript.replace('סוף', '').replace('כוכבים', '').trim();
-  kochavim(cleanTranscript) // מוסיף את ההוראות ל־Gemini
+ // const cleanTranscript = transcript.replace('סוף', '').replace('כוכבים', '').trim();
+  showForStars();
+  //kochavim(cleanTranscript) // מוסיף את ההוראות ל־Gemini
   return;
 }
-
+else if(document.getElementById("hamb").className.includes('open')){
+  if (transcript.includes('סגור') || transcript.includes('אסתר') || transcript.includes('הסתר')) {
+    document.getElementById("hamb").classList.remove("open");
+    document.querySelector(".menu-container").style.display='none';
+    document.getElementById("menu").classList.remove("open");
+    transcript = "";
+    lastTranscript = "";
+    return;
+  }
+  const cleanTranscript = transcript;
+  kochavim(cleanTranscript)
+  return;
+}
 else if (transcript.includes('תהליך') && transcript !== matchKlaliLast) {
   matchKlaliLast = transcript;
   
@@ -1086,12 +1102,15 @@ function handleMenahalot(transcript) {
 if(transcript.includes("מול")){
  
   setTimeout(function() {
-    menahalotDoc.getElementById('form2').style.display='flex';
-	  menahalotDoc.getElementById('form1').style.display='none';
+
+    if(menahalotDoc.getElementById('form2')) { 
+    menahalotDoc.getElementById('form2').style.display='flex';}
+    if(menahalotDoc.getElementById('form2')){
+	  menahalotDoc.getElementById('form1').style.display='none';}
     const matchtext=transcript.split("מול");
     input=matchHevra(matchtext[0].trim());
     var match1 = gufmosdixA.find(name => name.includes(input));
-    if(match1){
+    if(match1 && rd2){
       rd2.checked=true; 
       menahalotWindow.selchange();
       selmenu1.value = match1;
@@ -1114,9 +1133,10 @@ if(transcript.includes("מול")){
        if(transcript.includes("מול")){
         input=matchHevra(transcript);
         var match = gufmosdixA.find(name => name.includes(input));
-        if(match){
+        if(match && selmenu2){
           selmenu2.value = match;
         }
+        if(selmenu1 && selmenu2){
         if(selmenu1.value && selmenu2.value){
           menahalotWindow.compare2();
           setTimeout(function() {
@@ -1124,6 +1144,7 @@ if(transcript.includes("מול")){
             iframex.contentWindow.scrollBy(0, window.innerHeight*0.5);
           }, 100);
         }
+      }
         transcript='';return; 
       }
      }
@@ -1172,7 +1193,8 @@ else if ((transcript.includes("שתי") && menahalotWindow.document.getElementBy
         menahalotWindow.pdfDo();
 		}
 }
-if (transcript.includes("מרובה") || rd1.checked===true) {
+
+if (transcript.includes("מרובה") || (typeof rd1 !== "undefined" && rd1 && rd1.checked === true)) {
     const matchHev=matchHevra(transcript);
 		rd1.checked=true;
 		menahalotWindow.selchange()
@@ -2029,7 +2051,6 @@ function kochavim(mozar) {
   const sortKey = 'tesuam'; 
   let Data;
   let moz;
-
   if (mozar) {
     moz = matchsugMuzar(mozar);
     if(moz === 'קרנות השתלמות' || moz === 'תגמולים ואישית לפיצויים'  ||
