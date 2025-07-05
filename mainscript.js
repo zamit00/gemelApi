@@ -370,7 +370,7 @@ function openOdot(){
 
 async function fetchdataJasonM() {
     try {
-        const response = await fetch('dataJasonM.json'); 
+        const response = await fetch('https://storage.googleapis.com/datajason/dataJasonM.json'); 
         if (!response.ok) {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
@@ -393,7 +393,7 @@ async function fetchdataJasonM() {
 }
 async function fetchdataJasonB() {
     try {
-        const response = await fetch('dataJasonB.json'); 
+        const response = await fetch('https://storage.googleapis.com/datajason/dataJasonB.json'); 
         if (!response.ok) {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
@@ -407,7 +407,7 @@ async function fetchdataJasonB() {
 }
 async function fetchdataJasonP() {
     try {
-        const response = await fetch('dataJasonP.json'); 
+        const response = await fetch('https://storage.googleapis.com/datajason/dataJasonP.json'); 
         if (!response.ok) {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
