@@ -57,8 +57,8 @@ window.onload = async function() {
   try {
         await Promise.all([
             fetchdataJasonB(),
-            dataJasonP(),
-             dataJasonM(),
+            fetchdataJasonP(),
+             fetchdataJasonM(),
             
         ]);
        indications(); 
@@ -591,7 +591,6 @@ if (result["tesuam60"] && result["stiya60"]) {
   } 
 
 };
-
 
 
 
