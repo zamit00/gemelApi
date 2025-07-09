@@ -168,7 +168,7 @@ function addtbleX(x,mas){
   const htmlt=`<div class="tblMuzarim" id="tblMuzarimX${x}">`
 	const tbladd=
   `<div class="tbl">
-		    <h4>${mas}</h4>	
+		    <h4 style="color:rgb(0,154,248)">${mas}</h4>	
 		    <div class="divTblNetunim">
 			      <table class="klalikoch" id="klalikochX${x}"> 
 			      </table>	
