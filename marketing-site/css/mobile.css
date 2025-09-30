@@ -1,0 +1,592 @@
+/* Mobile Optimization CSS */
+
+/* Global Mobile Styles */
+@media (max-width: 768px) {
+    /* Typography adjustments */
+    .hero-title {
+        font-size: 2.2rem !important;
+        line-height: 1.3;
+    }
+    
+    .section-title {
+        font-size: 2rem !important;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem !important;
+    }
+    
+    /* Navigation improvements */
+    .navbar {
+        padding: 0.75rem 0;
+    }
+    
+    .navbar-brand img {
+        height: 35px;
+    }
+    
+    .navbar-toggler {
+        border: none;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .navbar-collapse {
+        background: white;
+        border-radius: 10px;
+        margin-top: 1rem;
+        padding: 1rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .navbar-nav .nav-link {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #f0f0f0;
+        margin: 0;
+    }
+    
+    .navbar-nav .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    /* Hero section mobile */
+    .hero-section {
+        padding-top: 80px;
+        text-align: center;
+    }
+    
+    .hero-buttons .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+    
+    .hero-buttons .btn:last-child {
+        margin-bottom: 0;
+    }
+    
+    .hero-features {
+        margin-top: 2rem;
+    }
+    
+    .hero-features .feature-item {
+        justify-content: center;
+        margin-bottom: 0.75rem;
+    }
+    
+    /* Service cards mobile */
+    .service-card {
+        margin-bottom: 2rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .service-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .service-card h4 {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+    
+    .service-features {
+        text-align: center;
+    }
+    
+    /* Tool cards mobile */
+    .tool-card-large {
+        margin-bottom: 2rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .tool-icon-large {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .tool-card-large h3 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .tool-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* About section mobile */
+    .about-content {
+        text-align: center;
+        padding-right: 0 !important;
+        margin-top: 2rem;
+    }
+    
+    .about-name {
+        font-size: 2rem;
+    }
+    
+    .about-title {
+        font-size: 1.2rem;
+    }
+    
+    .credentials {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .about-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
+    }
+    
+    /* Contact form mobile */
+    .contact-form {
+        padding: 2rem 1.5rem;
+    }
+    
+    .contact-form .form-control,
+    .contact-form .form-select {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+    
+    .contact-info {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+    }
+    
+    /* Knowledge page mobile */
+    .knowledge-stats {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .knowledge-category-card {
+        margin-bottom: 2rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    .category-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .knowledge-category-card h3 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+    
+    .category-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Article cards mobile */
+    .featured-article-card {
+        margin-bottom: 2rem;
+    }
+    
+    .article-image {
+        height: 200px;
+    }
+    
+    .article-content {
+        padding: 1.5rem;
+    }
+    
+    .article-content h3 {
+        font-size: 1.3rem;
+        line-height: 1.4;
+    }
+    
+    .article-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* Newsletter mobile */
+    .newsletter-form .input-group {
+        flex-direction: column;
+    }
+    
+    .newsletter-form .form-control,
+    .newsletter-form .btn {
+        border-radius: 10px;
+        margin-bottom: 0.5rem;
+        padding: 1rem;
+    }
+    
+    .newsletter-form .btn {
+        margin-bottom: 0;
+    }
+    
+    /* Footer mobile */
+    .footer-contact {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .footer-contact h5 {
+        margin-bottom: 1rem;
+    }
+    
+    .footer-contact p {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 576px) {
+    /* Even smaller typography */
+    .hero-title {
+        font-size: 1.8rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.7rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+    }
+    
+    /* Compact spacing */
+    .hero-section,
+    .services-section,
+    .tools-grid-section,
+    .knowledge-categories,
+    .featured-articles {
+        padding: 3rem 0;
+    }
+    
+    /* Service cards compact */
+    .service-card {
+        padding: 1.5rem;
+    }
+    
+    .service-card h4 {
+        font-size: 1.2rem;
+    }
+    
+    .service-card p {
+        font-size: 1rem;
+    }
+    
+    /* Tool cards compact */
+    .tool-card-large {
+        padding: 1.5rem;
+    }
+    
+    .tool-card-large h3 {
+        font-size: 1.3rem;
+    }
+    
+    .tool-card-large p {
+        font-size: 1rem;
+    }
+    
+    /* Knowledge cards compact */
+    .knowledge-category-card {
+        padding: 1.5rem;
+    }
+    
+    .knowledge-category-card h3 {
+        font-size: 1.3rem;
+    }
+    
+    .knowledge-category-card p {
+        font-size: 1rem;
+    }
+    
+    /* Article cards compact */
+    .article-content {
+        padding: 1.25rem;
+    }
+    
+    .article-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .article-content p {
+        font-size: 1rem;
+    }
+    
+    /* Contact form compact */
+    .contact-form {
+        padding: 1.5rem;
+    }
+    
+    /* Buttons compact */
+    .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 400px) {
+    /* Container adjustments */
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Typography for very small screens */
+    .hero-title {
+        font-size: 1.6rem !important;
+    }
+    
+    .section-title {
+        font-size: 1.5rem !important;
+    }
+    
+    /* Compact cards */
+    .service-card,
+    .tool-card-large,
+    .knowledge-category-card {
+        padding: 1.25rem;
+    }
+    
+    /* Smaller icons */
+    .service-icon,
+    .tool-icon-large,
+    .category-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    /* Compact buttons */
+    .btn {
+        padding: 0.7rem 1.25rem;
+        font-size: 0.95rem;
+    }
+    
+    .btn-lg {
+        padding: 0.9rem 1.75rem;
+        font-size: 1.05rem;
+    }
+}
+
+/* Touch-friendly improvements */
+@media (max-width: 768px) {
+    /* Larger touch targets */
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .nav-link {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+    
+    /* Better spacing for touch */
+    .navbar-nav .nav-link {
+        padding: 1rem 0;
+    }
+    
+    /* Improved form inputs */
+    .form-control,
+    .form-select {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Better modal sizing */
+    .tool-modal-content,
+    .category-modal-content {
+        width: 95%;
+        height: 95%;
+        margin: 2.5% auto;
+    }
+    
+    /* Improved card spacing */
+    .service-card,
+    .tool-card-large,
+    .knowledge-category-card,
+    .featured-article-card {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero-section {
+        padding-top: 60px;
+        padding-bottom: 2rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem !important;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-buttons {
+        margin-bottom: 1rem;
+    }
+    
+    .hero-features {
+        margin-top: 1rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero-image img,
+    .about-image img,
+    .knowledge-hero-image img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .navbar {
+        background: #1a1a1a !important;
+        border-bottom: 1px solid #333;
+    }
+    
+    .navbar-nav .nav-link {
+        color: #e9ecef !important;
+        border-bottom-color: #333;
+    }
+    
+    .navbar-nav .nav-link:hover {
+        color: #3498db !important;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .hero-section::before,
+    .knowledge-hero::before,
+    .contact-section::before {
+        display: none;
+    }
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .footer,
+    .btn,
+    .hero-buttons,
+    .contact-section,
+    .newsletter-section {
+        display: none !important;
+    }
+    
+    .hero-section,
+    .services-section,
+    .tools-grid-section,
+    .knowledge-categories {
+        padding: 1rem 0;
+        background: white !important;
+    }
+    
+    .hero-title,
+    .section-title {
+        color: #000 !important;
+    }
+    
+    .service-card,
+    .tool-card-large,
+    .knowledge-category-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+}
+
+/* Accessibility improvements */
+@media (max-width: 768px) {
+    /* Focus indicators */
+    .btn:focus,
+    .form-control:focus,
+    .form-select:focus,
+    .nav-link:focus {
+        outline: 3px solid #3498db;
+        outline-offset: 2px;
+    }
+    
+    /* Skip links */
+    .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 6px;
+        background: #000;
+        color: #fff;
+        padding: 8px;
+        text-decoration: none;
+        z-index: 1000;
+    }
+    
+    .skip-link:focus {
+        top: 6px;
+    }
+    
+    /* Better contrast for small text */
+    .article-meta,
+    .stat-label,
+    .feature-item span {
+        color: #495057;
+        font-weight: 500;
+    }
+}
+
+/* Performance optimizations */
+@media (max-width: 768px) {
+    /* Reduce animations on mobile */
+    .fade-in-up {
+        animation: none;
+    }
+    
+    .tool-card-large:hover,
+    .service-card:hover,
+    .knowledge-category-card:hover {
+        transform: none;
+    }
+    
+    /* Optimize images */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    /* Reduce box shadows on mobile */
+    .service-card,
+    .tool-card-large,
+    .knowledge-category-card,
+    .featured-article-card {
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+}

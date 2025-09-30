@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ידע מקצועי | חגי זך יועץ פנסיוני</title>
+    <meta name="description" content="מידע מקצועי מקיף על קופות גמל, קרנות השתלמות, קרנות פנסיה, מיסוי פנסיוני וייעוץ השקעות. מדריכים מקצועיים וטיפים פנסיוניים">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="css/knowledge.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <img src="../../logoxnew.png" alt="חגי זך יועץ פנסיוני" height="40">
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html">בית</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#services">שירותים</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../tools/index.html">כלים ומחשבונים</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">ידע מקצועי</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#about">אודות</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html#contact">צור קשר</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex">
+                    <a href="tel:050-123-4567" class="btn btn-primary me-2">
+                        <i class="fas fa-phone"></i> 050-123-4567
+                    </a>
+                    <a href="https://wa.me/972501234567" class="btn btn-success" target="_blank">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="knowledge-hero">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <div class="knowledge-hero-content">
+                        <h1 class="knowledge-title">
+                            ידע מקצועי 
+                            <span class="text-primary">בתחום הפנסיוני</span>
+                        </h1>
+                        <p class="knowledge-subtitle">
+                            מדריכים מקצועיים, טיפים פנסיוניים ומידע עדכני על קופות גמל, 
+                            קרנות השתלמות, קרנות פנסיה ומיסוי פנסיוני. כל מה שצריך לדעת לתכנון פנסיוני מושלם.
+                        </p>
+                        <div class="knowledge-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">מאמרים מקצועיים</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">20+</div>
+                                <div class="stat-label">שנות ניסיון</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">100%</div>
+                                <div class="stat-label">מידע עדכני</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="knowledge-hero-image">
+                        <img src="../../studies.jpg" alt="ידע מקצועי פנסיוני" class="img-fluid rounded shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="knowledge-categories py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">קטגוריות ידע</h2>
+                    <p class="section-subtitle">בחר את הנושא שמעניין אותך</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- קרנות השתלמות -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="knowledge-category-card" onclick="showCategory('hishtalmut')">
+                        <div class="category-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>קרנות השתלמות</h3>
+                        <p>מדריכים מקיפים על קרנות השתלמות, הטבות מס, מסלולי השקעה ובחירת הקרן המתאימה</p>
+                        <div class="category-articles">
+                            <span class="article-count">12 מאמרים</span>
+                        </div>
+                        <div class="category-button">
+                            <i class="fas fa-arrow-left"></i>
+                            קרא מאמרים
+                        </div>
+                    </div>
+                </div>
+
+                <!-- קרנות פנסיה -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="knowledge-category-card" onclick="showCategory('pension')">
+                        <div class="category-icon">
+                            <i class="fas fa-piggy-bank"></i>
+                        </div>
+                        <h3>קרנות פנסיה</h3>
+                        <p>כל מה שצריך לדעת על קרנות פנסיה, רכיבי הפנסיה, גיל פרישה ותכנון פנסיוני</p>
+                        <div class="category-articles">
+                            <span class="article-count">15 מאמרים</span>
+                        </div>
+                        <div class="category-button">
+                            <i class="fas fa-arrow-left"></i>
+                            קרא מאמרים
+                        </div>
+                    </div>
+                </div>
+
+                <!-- קופות גמל -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="knowledge-category-card" onclick="showCategory('gemel')">
+                        <div class="category-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>קופות גמל</h3>
+                        <p>מדריכים על קופות גמל להשקעה, קופות גמל לקצבה, הטבות מס ואסטרטגיות השקעה</p>
+                        <div class="category-articles">
+                            <span class="article-count">18 מאמרים</span>
+                        </div>
+                        <div class="category-button">
+                            <i class="fas fa-arrow-left"></i>
+                            קרא מאמרים
+                        </div>
+                    </div>
+                </div>
+
+                <!-- מיסוי פנסיוני -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="knowledge-category-card" onclick="showCategory('tax')">
+                        <div class="category-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>מיסוי פנסיוני</h3>
+                        <p>הטבות מס, אופטימיזציה מיסויית, משיכות פנסיוניות ותכנון מס מתקדם</p>
+                        <div class="category-articles">
+                            <span class="article-count">10 מאמרים</span>
+                        </div>
+                        <div class="category-button">
+                            <i class="fas fa-arrow-left"></i>
+                            קרא מאמרים
+                        </div>
+                    </div>
+                </div>
+
+                <!-- השקעות וסיכונים -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="knowledge-category-card" onclick="showCategory('investments')">
+                        <div class="category-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>השקעות וסיכונים</h3>
+                        <p>ניהול סיכונים, פיזור השקעות, פרופיל סיכון ואסטרטגיות השקעה ארוכות טווח</p>
+                        <div class="category-articles">
+                            <span class="article-count">8 מאמרים</span>
+                        </div>
+                        <div class="category-button">
+                            <i class="fas fa-arrow-left"></i>
+                            קרא מאמרים
+                        </div>
+                    </div>
+                </div>
+
+                <!-- טיפים ועצות -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="knowledge-category-card" onclick="showCategory('tips')">
+                        <div class="category-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3>טיפים ועצות</h3>
+                        <p>טיפים מעשיים, שגיאות נפוצות, המלצות מקצועיות ועצות לתכנון פנסיוני מושלם</p>
+                        <div class="category-articles">
+                            <span class="article-count">20 מאמרים</span>
+                        </div>
+                        <div class="category-button">
+                            <i class="fas fa-arrow-left"></i>
+                            קרא מאמרים
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Articles -->
+    <section class="featured-articles py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="section-title">מאמרים מומלצים</h2>
+                    <p class="section-subtitle">המאמרים הכי פופולריים והמומלצים ביותר</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="featured-article-card">
+                        <div class="article-image">
+                            <img src="../../pension.jpg" alt="מדריך קרנות פנסיה" class="img-fluid">
+                            <div class="article-category">קרנות פנסיה</div>
+                        </div>
+                        <div class="article-content">
+                            <h3>המדריך השלם לבחירת קרן פנסיה</h3>
+                            <p>כל מה שצריך לדעת על בחירת קרן פנסיה מתאימה, רכיבי הפנסיה, דמי ניהול והטבות מס. מדריך מקצועי עם טיפים מעשיים.</p>
+                            <div class="article-meta">
+                                <span class="reading-time"><i class="fas fa-clock"></i> 8 דקות קריאה</span>
+                                <span class="article-date"><i class="fas fa-calendar"></i> 15 בינואר 2024</span>
+                            </div>
+                            <a href="#" class="article-link">קרא את המאמר המלא <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="featured-article-card">
+                        <div class="article-image">
+                            <img src="../../education.jpg" alt="הטבות מס קרנות השתלמות" class="img-fluid">
+                            <div class="article-category">קרנות השתלמות</div>
+                        </div>
+                        <div class="article-content">
+                            <h3>הטבות המס בקרנות השתלמות - המדריך המלא</h3>
+                            <p>כל ההטבות המס בקרנות השתלמות, תקרות הפקדה, מועדי משיכה ואופטימיזציה מיסויית. מידע עדכני לשנת 2024.</p>
+                            <div class="article-meta">
+                                <span class="reading-time"><i class="fas fa-clock"></i> 6 דקות קריאה</span>
+                                <span class="article-date"><i class="fas fa-calendar"></i> 10 בינואר 2024</span>
+                            </div>
+                            <a href="#" class="article-link">קרא את המאמר המלא <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="featured-article-card">
+                        <div class="article-image">
+                            <img src="../../investing.jpg" alt="ניהול סיכונים פנסיוני" class="img-fluid">
+                            <div class="article-category">השקעות וסיכונים</div>
+                        </div>
+                        <div class="article-content">
+                            <h3>איך לנהל סיכונים בתיק הפנסיוני שלך</h3>
+                            <p>אסטרטגיות ניהול סיכונים, פיזור השקעות, בחירת מסלולי השקעה מתאימים וניהול תיק פנסיוני מאוזן.</p>
+                            <div class="article-meta">
+                                <span class="reading-time"><i class="fas fa-clock"></i> 10 דקות קריאה</span>
+                                <span class="article-date"><i class="fas fa-calendar"></i> 5 בינואר 2024</span>
+                            </div>
+                            <a href="#" class="article-link">קרא את המאמר המלא <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="featured-article-card">
+                        <div class="article-image">
+                            <img src="../../calculators.jpg" alt="מיסוי פנסיוני" class="img-fluid">
+                            <div class="article-category">מיסוי פנסיוני</div>
+                        </div>
+                        <div class="article-content">
+                            <h3>אופטימיזציה מיסויית בפנסיה - המדריך המעשי</h3>
+                            <p>כל ההטבות המס בפנסיה, דרכים לחסוך במס, תכנון משיכות פנסיוניות ואופטימיזציה מיסויית מתקדמת.</p>
+                            <div class="article-meta">
+                                <span class="reading-time"><i class="fas fa-clock"></i> 7 דקות קריאה</span>
+                                <span class="article-date"><i class="fas fa-calendar"></i> 1 בינואר 2024</span>
+                            </div>
+                            <a href="#" class="article-link">קרא את המאמר המלא <i class="fas fa-arrow-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="mb-3">הישאר מעודכן</h2>
+                    <p class="mb-0">הירשם לניוזלטר שלי וקבל עדכונים שוטפים על חדשות פנסיוניות, טיפים מקצועיים ומאמרים חדשים</p>
+                </div>
+                <div class="col-lg-4">
+                    <form class="newsletter-form">
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="הכנס כתובת אימייל">
+                            <button class="btn btn-light" type="submit">
+                                <i class="fas fa-paper-plane"></i> הירשם
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="knowledge-cta py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="mb-4">צריך ייעוץ אישי?</h2>
+                    <p class="mb-4">אני כאן לעזור לך להבין את העולם הפנסיוני ולקבל החלטות מושכלות</p>
+                    <a href="../index.html#contact" class="btn btn-primary btn-lg me-3">
+                        <i class="fas fa-phone"></i> קבל ייעוץ חינם
+                    </a>
+                    <a href="../tools/index.html" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-calculator"></i> השתמש בכלים
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="footer-content">
+                        <img src="../../logoxnew.png" alt="חגי זך יועץ פנסיוני" height="40" class="mb-3">
+                        <p class="mb-3">
+                            ייעוץ פנסיוני מקצועי עם מעל 20 שנות ניסיון. 
+                            מומחה בתחום הפנסיוני עם רישיון פנסיוני ורואה חשבון.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-end">
+                    <div class="footer-contact">
+                        <h5>צור קשר</h5>
+                        <p><i class="fas fa-phone"></i> 050-123-4567</p>
+                        <p><i class="fab fa-whatsapp"></i> WhatsApp</p>
+                        <p><i class="fas fa-envelope"></i> hagai@example.com</p>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2024 חגי זך - יועץ פנסיוני. כל הזכויות שמורות.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/knowledge.js"></script>
+</body>
+</html>

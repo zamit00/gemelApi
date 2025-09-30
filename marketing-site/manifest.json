@@ -1,0 +1,40 @@
+{
+  "name": "חגי זך - יועץ פנסיוני מומחה",
+  "short_name": "חגי זך יועץ",
+  "description": "ייעוץ פנסיוני מקצועי עם מעל 20 שנות ניסיון. השוואות קופות גמל, מחשבונים פיננסיים וייעוץ פנסיוני מקצועי",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3498db",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "../logoxnew.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "../logoxnew.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "finance",
+    "business",
+    "productivity"
+  ],
+  "screenshots": [
+    {
+      "src": "../pension.jpg",
+      "sizes": "1280x720",
+      "type": "image/jpeg",
+      "form_factor": "wide"
+    }
+  ]
+}
