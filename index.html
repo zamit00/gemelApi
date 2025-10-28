@@ -102,6 +102,14 @@ function hidekupainfo(){
 		<line x1="27" y1="27" x2="40" y2="40" stroke="black" stroke-width="1" stroke-linecap="round" />
 	  </svg>
 	  </span>
+    <nav class="topnav" aria-label="ניווט ראשי">
+      <a href="/" class="nav-item" onclick="hideframe();showAllimages();">דף הבית</a>
+      <a href="#" class="nav-item" onclick="showMachshevonim()">מחשבונים</a>
+      <a href="#" class="nav-item" onclick="showHashvaa()">השוואות</a>
+      <a href="services.html" class="nav-item">שירותים</a>
+      <a href="about.html" class="nav-item">אודות</a>
+      <a href="contact.html" class="nav-item cta">צור קשר</a>
+    </nav>
 </header>
  <div id="timerDisplay" style="position:fixed; top:100px; left:20px; font-size:24px; display:none;z-index:10000"></div>
 <div id='odotH' >
@@ -311,5 +319,9 @@ function hidekupainfo(){
  	<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
 	<script src="https://cdn.userway.org/widget.js" data-account="rylh57CLUH"></script>
 	<script src="scores.js" defer></script>
+
+    <div class="sticky-cta" role="region" aria-label="קריאה לפעולה">
+      <button class="cta-btn" onclick="yossi()">דברו איתי</button>
+    </div>
 </body>
 </html>
