@@ -132,7 +132,13 @@ async function maslulim(t,moz,hevra){
          dataY = await filterMaslul(typamas[i], sugmuzar,hevra);
          if (hadashim && hadashim.checked===false){
           dataY.sort((a, b) => b.tesuam - a.tesuam);}
-          else if (hadashim){dataY.sort((a, b) => b.tusaAharona - a.tusaAharona);}
+          else if (hadashim){
+            dataY.sort((a, b) => {
+              const aVal = a.tusaAharona !== undefined && a.tusaAharona !== null ? a.tusaAharona : -Infinity;
+              const bVal = b.tusaAharona !== undefined && b.tusaAharona !== null ? b.tusaAharona : -Infinity;
+              return bVal - aVal;
+            });
+          }
           else{dataY.sort((a, b) => b.tesuam - a.tesuam);}
         if(dataY.length===0){continue}
          addtble(z,typamas[i])
@@ -184,7 +190,14 @@ async function maslulim(t,moz,hevra){
                     td.className="tdsmall";
                     td.style.boxSizing="border-box";
                     td.style.textAlign="center";
-                    td.textContent = dataY[tb].tusaAharona.toFixed(2) + "%";
+                    // בדיקה מפורשת אם השדה קיים (גם אם הוא 0)
+                    const tusaAharonaValue = dataY[tb].tusaAharona;
+                    if(tusaAharonaValue !== undefined && tusaAharonaValue !== null && !isNaN(tusaAharonaValue)){
+                      td.textContent = Number(tusaAharonaValue).toFixed(2) + "%";
+                    }
+                    else{
+                      td.textContent = "0.00%";
+                    }
                     trm.appendChild(td);
                     // יצירת תאים נוספים
                     td = document.createElement('td');
