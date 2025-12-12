@@ -115,7 +115,13 @@ async function fetchInvestmentData() {
 
 async function fetchdataJasonM() {
     try {
-        const response = await fetch('dataJasonM.json'); 
+        const response = await fetch('https://bringjasonfile-742661432038.me-west1.run.app/api/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ fileName: 'dataJasonM.json' })
+        }); 
         if (!response.ok) {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
@@ -138,7 +144,13 @@ async function fetchdataJasonM() {
 }
 async function fetchdataJasonB() {
     try {
-        const response = await fetch('dataJasonB.json'); 
+        const response = await fetch('https://bringjasonfile-742661432038.me-west1.run.app/api/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ fileName: 'dataJasonB.json' })
+        }); 
         if (!response.ok) {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
@@ -152,7 +164,13 @@ async function fetchdataJasonB() {
 }
 async function fetchdataJasonP() {
     try {
-        const response = await fetch('dataJasonP.json'); 
+        const response = await fetch('https://bringjasonfile-742661432038.me-west1.run.app/api/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ fileName: 'dataJasonP.json' })
+        }); 
         if (!response.ok) {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
