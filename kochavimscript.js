@@ -158,72 +158,69 @@ async function maslulim(t,moz,hevra){
             console.error(`Data is not valid for typamas: ${typamas}, sugmuzar: ${sugmuzar}`);
             return; 
         }
-            for (let tb = 0; tb < dataY.length; tb++) {
-                //if (dataY[tb].tesuam) {
-                    const trm = document.createElement('tr');
-                    // יצירת תא ראשון
-                    let td = document.createElement('td');
-                    td.style.color = '#333';
-		    td.style.textAlign='center';
-                    td.className="tdmh";
-                    td.style.boxSizing="border-box";
-                    td.textContent = dataY[tb].mh;
-                    trm.appendChild(td);
-                    // יצירת תא שני עם קישור
-                    td = document.createElement('td');
-                    td.style.color = '#333';
-                    td.className="tdbig";
-                    td.style.boxSizing="border-box";
-                    td.style.textAlign = "right";
-                    td.style.boxSizing="border-box";
-                    td.style.paddingRight = "5px";
-                    let link = document.createElement('a');
-                    link.href = '#';
-                    link.className="linktdbig";
-                  
-                    link.textContent = dataY[tb].shemkupa;
-              td.appendChild(link);
-              trm.appendChild(td);
-                
-                    td = document.createElement('td');
-                    
-                    td.className="tdsmall";
-                    td.style.boxSizing="border-box";
-                    td.style.textAlign="center";
-                    // בדיקה מפורשת אם השדה קיים (גם אם הוא 0)
-                    const tusaAharonaValue = dataY[tb].tusaAharona;
-                    if(tusaAharonaValue !== undefined && tusaAharonaValue !== null && !isNaN(tusaAharonaValue)){
-                      td.textContent = Number(tusaAharonaValue).toFixed(2) + "%";
-                    }
-                    else{
-                      td.textContent = "0.00%";
-                    }
-                    trm.appendChild(td);
-                    // יצירת תאים נוספים
-                    td = document.createElement('td');
-                    td.style.color = '#333';
-                    td.className="tdsmall";
-                    td.style.boxSizing="border-box";
-                    td.style.textAlign="center"
-                    td.textContent = dataY[tb].tesuam.toFixed(2) + "%";
-                    trm.appendChild(td);
-                    td = document.createElement('td');
-                    
-                    td.className="tdsmall";
-                    td.style.boxSizing="border-box";
-                    td.style.textAlign="center"
-                    if (dataY[tb].tesuam36) { td.textContent = dataY[tb].tesuam36.toFixed(2) + "%"; }
-                    trm.appendChild(td);
-                    td = document.createElement('td');
-                    td.style.color = '#333';
-                    td.className="tdsmall";
-                    td.style.boxSizing="border-box";
-                    td.style.textAlign="center"
-                    if (dataY[tb].tesuam60) { td.textContent = dataY[tb].tesuam60.toFixed(2) + "%"; }
-                    trm.appendChild(td);
-                    table.appendChild(trm);
-                //}
-            }
+          for (let tb = 0; tb < dataY.length; tb++) {
+            //if (dataY[tb].tesuam) {
+          const trm = document.createElement('tr');
+          // יצירת תא ראשון
+          let td = document.createElement('td');
+          td.style.color = '#333';
+          td.style.textAlign='center';
+          td.className="tdmh";
+          td.style.boxSizing="border-box";
+          td.textContent = dataY[tb].mh;
+          trm.appendChild(td);
+          // יצירת תא שני עם קישור
+          td = document.createElement('td');
+          td.style.color = '#333';
+          td.className="tdbig";
+          td.style.boxSizing="border-box";
+          td.style.textAlign = "right";
+          td.style.boxSizing="border-box";
+          td.style.paddingRight = "5px";
+          let link = document.createElement('a');
+          link.href = '#';
+          link.className="linktdbig";
+        
+          link.textContent = dataY[tb].shemkupa;
+          td.appendChild(link);
+          trm.appendChild(td);
+      
+          td = document.createElement('td');
+          
+          td.className="tdsmall";
+          td.style.boxSizing="border-box";
+          td.style.textAlign="center";
+          // בדיקה מפורשת אם השדה קיים (גם אם הוא 0)
+          const tusaAharonaValue = dataY[tb].tesua12;
+          if(tusaAharonaValue){
+            td.textContent = Number(tusaAharonaValue.split('=')[0]).toFixed(2) + "%";
+          }
+          trm.appendChild(td);
+          // יצירת תאים נוספים
+          td = document.createElement('td');
+          td.style.color = '#333';
+          td.className="tdsmall";
+          td.style.boxSizing="border-box";
+          td.style.textAlign="center"
+          td.textContent = dataY[tb].tesuam.toFixed(2) + "%";
+          trm.appendChild(td);
+          td = document.createElement('td');
+          
+          td.className="tdsmall";
+          td.style.boxSizing="border-box";
+          td.style.textAlign="center"
+          if (dataY[tb].tesuam36) { td.textContent = dataY[tb].tesuam36.toFixed(2) + "%"; }
+          trm.appendChild(td);
+          td = document.createElement('td');
+          td.style.color = '#333';
+          td.className="tdsmall";
+          td.style.boxSizing="border-box";
+          td.style.textAlign="center"
+          if (dataY[tb].tesuam60) { td.textContent = dataY[tb].tesuam60.toFixed(2) + "%"; }
+          trm.appendChild(td);
+          table.appendChild(trm);
+            //}
+        }
             z++;           
     }
   } 

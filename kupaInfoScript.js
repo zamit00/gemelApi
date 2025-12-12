@@ -25,6 +25,7 @@ const fieldsToCompare = [
     "kvutzaAhuz4751", "kvutzaAhuz4761", 
     "tesuaLestiya36", "tesuaLestiya60"
   ];
+
   
 
 async function bring(data,mikom) {
@@ -32,8 +33,8 @@ async function bring(data,mikom) {
     const mhkupa = data[0].mh;
     const muzar = data[0].mozar; 
     const shemkupa = data[0].shemkupa;
-    const maslul = getMaslulType(shemkupa);
-    console.log(maslul);
+    const maslul = data[0].mas;
+    
     
 var menahelet = data[0].menahelet;
    
@@ -60,7 +61,7 @@ if (data[0]["tesuam60"] && data[0]["stiya60"] && data[0]["stiya60"] !== 0) {
 	</table>`
     const tbody = document.querySelector('#tableklali tbody');
     if(!menahelet || menahelet === 'undefined' || menahelet === 'null'){
-        menahelet = matchHevra(shemkupa);
+        menahelet = matchHevra(shemkupa).replace("-"," ");
     }
     tbody.innerHTML += `
     <tr>
@@ -89,7 +90,7 @@ kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;margin:10px auto"
 		<tbody></tbody>
 	</table>`
 const tbodyOfi = document.querySelector('#tableOfi tbody');
-const mas = await maslultype(maslul);
+
 tbodyOfi.innerHTML += `
     <tr>
         <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">אפיק השקעה:</td>
@@ -97,7 +98,7 @@ tbodyOfi.innerHTML += `
     </tr>
     <tr>
         <td style="background:aliceblue;color:#333;padding:8px; border:1px solid #ccc;">אופי מסלול השקעה:</td>
-        <td style="padding:8px; border:1px solid #ccc;">${mas[0]}</td>
+        <td style="padding:8px; border:1px solid #ccc;">${data[0].masOfi}</td>
     </tr>
   `
 kupaInfo.innerHTML +=`<h3 style="text-align:center; color:blue;margin:10px auto">נתוני נכסים, תשואה וסיכון</h3>
@@ -429,6 +430,9 @@ function pie(nehasim) {
         element.style.display = originalDisplay;
         document.getElementById('closeinfo').style.display='block';
 }*/
+function matchHevra(hevra) {
+  return hevra.split(' ')[0];
+}
 function exportToPDF() {
     const element = document.getElementById('kupaInfo');
     const kupa = document.getElementById('shemkupa');
