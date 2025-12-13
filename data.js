@@ -238,6 +238,7 @@ function filterIncludes(text, includes = [], excludes = []) {
     let dataforfilter =
       moza === "פוליסות חסכון" || moza === "פוליסת ביטוח חיים משולב חיסכון" ? datanetunimKlaliXB :
       moza === "קרנות חדשות" ? datanetunimKlaliXP :
+      moza === "קרנות כלליות" ? datanetunimKlaliXP :
       datanetunimKlaliXM;
   
     if (dataforfilter === datanetunimKlaliXM) {

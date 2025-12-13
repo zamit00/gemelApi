@@ -193,7 +193,9 @@ async function maslulim(t,moz,hevra){
           // בדיקה מפורשת אם השדה קיים (גם אם הוא 0)
           const tusaAharonaValue = dataY[tb].tesua12;
           if(tusaAharonaValue){
-            td.textContent = Number(tusaAharonaValue.split('=')[0]).toFixed(2) + "%";
+            if(tusaAharonaValue.includes('=') && tusaAharonaValue.includes(tkofa.split("/")[1])){
+              td.textContent = Number(tusaAharonaValue.split('=')[0]).toFixed(2) + "%";
+            }
           }
           trm.appendChild(td);
           // יצירת תאים נוספים
@@ -314,7 +316,7 @@ if(typeof hidkot === 'function') hidkot();
 
     const table = x.closest("table"); // מקבל את אלמנט הטבלה
     const mhkupaf = x.parentNode.firstElementChild.textContent.trim(); ;// מקבל את הערך מהתא הראשון בשורה
-   console.log(mhkupaf)
+   
    
     const rows = table.getElementsByTagName('tr'); // כל השורות בטבלה
     for (let i = 0; i < rows.length; i++) {

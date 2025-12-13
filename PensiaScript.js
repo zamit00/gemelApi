@@ -1,6 +1,7 @@
 
 const mozkochX = [
-  'קרנות חדשות'
+  'קרנות חדשות',
+  'קרנות כלליות'
 ];
 
 const pensia=[
@@ -26,6 +27,7 @@ const pensia=[
 
 
 async function maslulimP(t,moz,hev){ 
+
   
   const allTheTables=document.getElementById('allTheTables');
   if (!allTheTables) {
@@ -37,12 +39,17 @@ async function maslulimP(t,moz,hev){
   
 
   var z = 0;var dataY;
-    const sugmuzar=mozkochX[0];const sugmozP='קרנות פנסיה - מקיפה'
+    const sugmuzar=moz;let sugmozP;
+    
+    if(sugmuzar==='קרנות כלליות'){sugmozP='קרנות פנסיה - כלליות'}
+    else{sugmozP='קרנות פנסיה - חדשות'}
+    
     const msll=`<h2 id="h2Hish" name="h2Hish" style="font-size:1rem;
     line-height:1.8rem;vertical-align:middle; margin-top:15px;text-align:right;
     padding-right:5px;">${sugmozP} <a onclick="maslulimP(30,'${sugmuzar}',0)"
     class="txta" id="spanHish" name="spanHish">כל המסלולים</a></h2>`
     allTheTables.innerHTML+=msll;
+    
     const mesanen=document.getElementById('sanenMosdy')
     const sinonHevra=document.getElementById('sinonHevra')
     if (sinonHevra) sinonHevra.selectedIndex = 0
@@ -57,7 +64,6 @@ async function maslulimP(t,moz,hev){
         // שנה את ה- onclick ב-a
         a.setAttribute('onclick', 'maslulim(1,0,0); if(typeof backtop === \"function\") backtop(); if(typeof showMabaatar === \"function\") showMabaatar(); if(typeof hideMabaatarSpecific === \"function\") hideMabaatarSpecific();');
         // שנה את הטקסט של ה-a
-        a.textContent = 'חזור';
         a.className='spanHish back';
         a.style.color="#333";
         a.style.fontWeight = "bold";
@@ -65,9 +71,10 @@ async function maslulimP(t,moz,hev){
     } 
     var typamas;     
     typamas= pensia;
-    for (let i = 0; i < typamas.length; i++) {  
+    for (let i = 0; i < typamas.length; i++) {
       if (i>t && i>2){continue;}
          dataY = await filterMaslul(typamas[i], sugmuzar,hev);
+         console.log(dataY);
           dataY.sort((a, b) => b.tesuam - a.tesuam);
         if(dataY.length===0){continue}
          addtbleX(z,typamas[i])

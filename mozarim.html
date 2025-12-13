@@ -368,6 +368,7 @@
               <a href="#" onclick="loadProduct('חסכון לילד'); return false;">חסכון לילד</a>
               <a href="#" onclick="loadProduct('פוליסות חסכון'); return false;">פוליסות חסכון</a>
               <a href="#" onclick="loadProduct('קרנות פנסיה חדשות'); return false;">קרנות פנסיה חדשות</a>
+              <a href="#" onclick="loadProduct('קרנות פנסיה כלליות'); return false;">קרנות פנסיה כלליות</a>
             </div>
           </li>
           <li class="nav-dropdown">
@@ -517,7 +518,8 @@
                 'קופות גמל להשקעה': 'קופת גמל להשקעה',
                 'חסכון לילד': 'קופת גמל להשקעה - חסכון לילד',
                 'פוליסות חסכון': 'פוליסות חסכון',
-                'קרנות פנסיה חדשות': 'קרנות חדשות'
+                'קרנות פנסיה חדשות': 'קרנות חדשות',
+                'קרנות פנסיה כלליות': 'קרנות כלליות'
             };
             
             const internalName = productMap[productType];
@@ -534,7 +536,7 @@
                     throw new Error('Data not loaded after timeout');
                 }
 
-                if (productType === 'קרנות פנסיה חדשות') {
+                if (productType === 'קרנות פנסיה חדשות' || productType === 'קרנות פנסיה כלליות') {
                     if (typeof maslulimP === 'function') {
                         await maslulimP(30, internalName, 0);
                     } else {
@@ -1110,6 +1112,10 @@
         <button class="product-btn" onclick="loadProduct('קרנות פנסיה חדשות')" data-product="קרנות פנסיה חדשות">
             <i class="fas fa-star"></i>
             <span>קרנות פנסיה חדשות</span>
+        </button>
+        <button class="product-btn" onclick="loadProduct('קרנות פנסיה כלליות')" data-product="קרנות פנסיה כלליות">
+            <i class="fas fa-star"></i>
+            <span>קרנות פנסיה כלליות</span>
         </button>
     </div>
 
