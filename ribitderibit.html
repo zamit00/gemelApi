@@ -624,6 +624,7 @@ box-sizing: border-box;margin: 0%;padding: 0%;
           <a href="mozarim.html?product=yeled">חסכון לילד</a>
           <a href="mozarim.html?product=polisot">פוליסות חסכון</a>
           <a href="mozarim.html?product=pensia">קרנות פנסיה חדשות</a>
+          <a href="mozarim.html?product=pensiaKlalit">קרנות פנסיה כלליות</a>
         </div>
       </li>
       <li class="nav-dropdown">
@@ -785,12 +786,13 @@ async function showProductTables(productType) {
                 'קופות גמל להשקעה': 'קופת גמל להשקעה',
                 'חסכון לילד': 'קופת גמל להשקעה - חסכון לילד',
                 'פוליסות חסכון': 'פוליסות חסכון',
-                'קרנות פנסיה חדשות': 'קרנות חדשות'
+                'קרנות פנסיה חדשות': 'קרנות חדשות',
+                'קרנות פנסיה כלליות': 'קרנות כלליות'
             };
             
             const internalName = productMap[productType];
             
-            if (productType === 'קרנות פנסיה חדשות') {
+            if (productType === 'קרנות פנסיה חדשות' || productType === 'קרנות פנסיה כלליות') {
                 // Call pension function
                 if (typeof maslulimP === 'function') {
                     await maslulimP(1, internalName, 0);

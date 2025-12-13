@@ -118,7 +118,7 @@ async function maslulimP(t,moz,hev){
                     td.style.paddingRight = "5px";
                     let link = document.createElement('a');
                     link.href = '#';
-                    link.className="linktdbigX";
+                    link.className="linktdbig";
                     link.style.textDecoration = "none";
                     link.textContent = dataY[tb].shemkupa;
                     td.appendChild(link);
@@ -207,7 +207,7 @@ function addtbleX(x,mas){
 }
 function addclickX(){
     
-  const elements = document.querySelectorAll(".linktdbigX"); 
+  const elements = document.querySelectorAll(".linktdbig"); 
   elements.forEach((element) => {
     const aTag = element.outerHTML.match(/<a [^>]+>/)[0];
     const updatedATag = aTag.replace(/<a /, `<a onclick="bringinfoX(this)" `);

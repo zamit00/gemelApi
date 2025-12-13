@@ -67,6 +67,8 @@
             text-align: center;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .page-header h1 {
@@ -112,7 +114,7 @@
             gap: 15px;
             justify-content: center;
             padding: 30px 20px;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
@@ -475,7 +477,8 @@
                     'gemelHashkaa': 'קופות גמל להשקעה',
                     'yeled': 'חסכון לילד',
                     'polisot': 'פוליסות חסכון',
-                    'pensia': 'קרנות פנסיה חדשות'
+                    'pensia': 'קרנות פנסיה חדשות',
+                    'pensiaKlalit': 'קרנות פנסיה כלליות'
                 };
                 
                 const productName = productMap[productParam];
@@ -551,13 +554,13 @@
                 }
 
                 // Scroll to tables after they load (with offset)
-                setTimeout(() => {
-                    const yOffset = -100; // 100px מעל האלמנט
-                    const element = tablesContainer;
-                    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                //setTimeout(() => {
+                //    const yOffset = -100; // 100px מעל האלמנט
+                //    const element = tablesContainer;
+                //    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
                     
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                }, 300);
+               //     window.scrollTo({ top: y, behavior: 'smooth' });
+              //  }, 300);
             } catch (error) {
                 console.error('Error loading product data:', error);
                 tablesContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: red;"><i class="fas fa-exclamation-circle" style="font-size: 3rem;"></i><p style="margin-top: 20px;">שגיאה בטעינת הנתונים: ' + error.message + '</p></div>';
@@ -1114,7 +1117,7 @@
             <span>קרנות פנסיה חדשות</span>
         </button>
         <button class="product-btn" onclick="loadProduct('קרנות פנסיה כלליות')" data-product="קרנות פנסיה כלליות">
-            <i class="fas fa-star"></i>
+            <i class="fa-solid fa-sliders"></i>
             <span>קרנות פנסיה כלליות</span>
         </button>
     </div>
