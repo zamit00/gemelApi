@@ -114,7 +114,16 @@ async function fetchInvestmentData() {
 
 
 async function fetchdataJasonM() {
-    try {
+	try {
+        const response = await fetch('dataJasonM.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json(); 
+        datanetunimKlaliXM = data;
+
+	
+   /* try {
         const response = await fetch('https://bringjasonfile-742661432038.me-west1.run.app/api/data', {
             method: 'POST',
             headers: {
@@ -126,7 +135,8 @@ async function fetchdataJasonM() {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
         const data = await response.json(); 
-        datanetunimKlaliXM = data;
+        datanetunimKlaliXM = data;*/
+		
 	    datanetunimKlaliXM= datanetunimKlaliXM.filter(item=>!item.menahelet.includes('סלייס'));    
 
         //let tkofa = document.getElementById('tkufatdivuach');
@@ -143,7 +153,15 @@ async function fetchdataJasonM() {
     
 }
 async function fetchdataJasonB() {
-    try {
+	try {
+        const response = await fetch('dataJasonB.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json(); 
+        datanetunimKlaliXB = data;
+		
+   /* try {
         const response = await fetch('https://bringjasonfile-742661432038.me-west1.run.app/api/data', {
             method: 'POST',
             headers: {
@@ -155,7 +173,7 @@ async function fetchdataJasonB() {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
         const data = await response.json(); 
-        datanetunimKlaliXB = data; 
+        datanetunimKlaliXB = data; */
         return data;  // החזרת הנתונים כדי ש-`await` יעבוד נכון
     } catch (error) {
         console.error('❌ שגיאה בשליפת dataJasonB.json:', error);
@@ -164,6 +182,13 @@ async function fetchdataJasonB() {
 }
 async function fetchdataJasonP() {
     try {
+        const response = await fetch('dataJasonP.json'); 
+        if (!response.ok) {
+            throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
+        }
+        const data = await response.json(); 
+        datanetunimKlaliXP = data;
+	/*try {
         const response = await fetch('https://bringjasonfile-742661432038.me-west1.run.app/api/data', {
             method: 'POST',
             headers: {
@@ -175,7 +200,8 @@ async function fetchdataJasonP() {
             throw new Error(`שגיאה: ${response.status} ${response.statusText}`);
         }
         const data = await response.json(); 
-        datanetunimKlaliXP = data; 
+        datanetunimKlaliXP = data;*/
+		
         return data;  // מחזיר את הנתונים כדי שהפונקציה תהיה באמת אסינכרונית
     } catch (error) {
         console.error('❌ שגיאה בשליפת dataJasonP.json:', error);
@@ -300,4 +326,5 @@ async function indications(){
     
   }
   
+
 
