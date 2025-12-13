@@ -555,13 +555,21 @@
 
                 // Scroll to tables after they load (with offset)
                 //
-                setTimeout(() => {
-                const yOffset = -100; // 100px מעל האלמנט
-                const element = tablesContainer;
-                 const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                    
-                 window.scrollTo({ top: y, behavior: 'smooth' });
-               }, 300);
+                if (window.innerWidth < 600) {
+    setTimeout(() => {
+        const yOffset = -100; // 100px מעל האלמנט
+        const element = tablesContainer;
+
+        if (!element) return;
+
+        const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+        window.scrollTo({
+            top: y,
+            behavior: 'smooth'
+        });
+    }, 300);
+}
             } catch (error) {
                 console.error('Error loading product data:', error);
                 tablesContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: red;"><i class="fas fa-exclamation-circle" style="font-size: 3rem;"></i><p style="margin-top: 20px;">שגיאה בטעינת הנתונים: ' + error.message + '</p></div>';
