@@ -57,7 +57,8 @@ async function loadalldata() {
         
         await indications();
         await fetchInvestmentData();
-        
+        console.log(dataIndicators);
+	  console.log(dataIndicatorsSikon); 
         const tkofaItem = datanetunimKlaliXM.filter(item=>item.mh==='579')[0].tesua12
         ;
         if (tkofaItem) {
@@ -326,6 +327,7 @@ async function indications(){
     
   }
   
+
 
 
 
