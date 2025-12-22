@@ -10,7 +10,7 @@ const gufmosdixA = [
 ];
 const mozAll = [
   'קרנות השתלמות', 'תגמולים ואישית לפיצויים', 'קופת גמל להשקעה',
-  "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון","קרנות חדשות","מרכזית לפיצויים"
+  "קופת גמל להשקעה - חסכון לילד", "פוליסות חסכון","קרנות חדשות","קרנות כלליות","מרכזית לפיצויים"
 ];
 
 const fieldsToAverage = [
@@ -209,13 +209,13 @@ async function fetchdataJasonP() {
     }
 }
 async function indications(){ 
-  for(let r=0;r<=5;r++){
+  for(let r=0;r<=6;r++){
     const sugmuzar=mozAll[r] 
   var typamas;
   if(r===0 || r===2 || r===4){typamas=hishtalmot}
   else if(r===1){typamas=gemel}
   else if(r===3){typamas=layeled}
-  else if(r===5){typamas=pensia}  // קרנות פנסיה
+  else if(r===5 || r===6){typamas=pensia}  // קרנות פנסיה
   
   
   for (let i = 0; i < typamas.length; i++) {
@@ -326,5 +326,6 @@ async function indications(){
     
   }
   
+
 
 
