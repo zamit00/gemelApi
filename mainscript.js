@@ -324,9 +324,25 @@ async function indications(){
     }
     
     }
-    
+    makejasonInd(dataIndicators);makejasonInd(dataIndicatorsSikon);
   }
+
+async function makejasonInd(data) {
+        // המרת הנתונים לפורמט JSON
+        const json = JSON.stringify(data, null, 2);
+        exportJSONToExcel(data, 'dataindicators.xlsx');
+        // יצירת הקובץ
+        const blob = new Blob([json], { type: "application/json" });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'dataJasonM.json';
+        link.click();
+
+        console.log("הקובץ נוצר בהצלחה!");
+        localStorage.setItem("downloadIndex", 1);
+}
   
+
 
 
 
