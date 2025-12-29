@@ -1725,151 +1725,200 @@ function hatraa(x){
     });
 }
 async function compare2() {
-    btnPdf.style.display='block';
-    divCompare.style.display='block';
-    if(selmenu1.value===selmenu2.value){
-        hatraa("נדרש לבחור חברות שונות");return;
-    }
-    var secondSpace;
-    divCompare.innerHTML='';
-    var men1 = selmenu1.value; // חברה 1
-    var men2 = selmenu2.value; // חברה 2
-    var moz;
-    var data;
-    var toz1;
-    var toz2;
-    var dataspecific = [];
-    // חיתוך המחרוזת לשם החברה הראשונה והשנייה
-    secondSpace = men1.indexOf(" ", men1.indexOf(" ") + 1);
-    const men1x = men1.slice(0, secondSpace + 1);
-    secondSpace = men2.indexOf(" ", men2.indexOf(" ") + 1);
-    const men2x = men2.slice(0, secondSpace);
-    divCompare.innerHTML += `
-        <h3 style="width:100%;max-width:100%;text-align:center;">יתרונות ${men1x} מול ${men2x} בתשואה ל - 12 חודשים</h3>
-    `;
-    const selectedValues = [];
-    selectedValues.push(men1, men2);
-    let relevantList;
-    let results = []; // משתנה לאחסון התוצאות שבהן לחברה 1 יש יתרון
-    // לולאה על כל המוצרים (moz) והמסלולים
-    for (let r = 0; r < mozkochCompare.length; r++) {
-        dataspecific='';
-        moz = mozkochCompare[r];
-        if (moz === "קרנות השתלמות" || moz === "קופת גמל להשקעה" 
-        || moz === "פוליסות חסכון"
-        ) {
-            relevantList = hishtalmot;
-        } else if (moz === "תגמולים ואישית לפיצויים" || 
-        moz === 'קרנות חדשות') {
-            relevantList = gemel;
-        } else if (moz === "קופת גמל להשקעה - חסכון לילד") {
-            relevantList = layeled;
-        }
-        // לולאה על כל מסלול במוצר
-        for (let i = 0; i < relevantList.length; i++) {
-            dataspecific = await filterMaslulXa(relevantList[i], moz);
-            if(!dataspecific){continue}
-            else if(dataspecific.length<2){continue}
-            // פילטר לפי תשואה ומנהלת החברה
-            if(moz !== "פוליסות חסכון"){ 
-            toz1 = dataspecific.filter(item => 
-                item.menahelet.includes(men1) 
-            );
-            toz2 = dataspecific.filter(item => 
-                item.tesuam !== undefined &&
-                item.menahelet.includes(men2) 
-            );
-            }
-            else{
-                men1=men1.split(" ")[0];men2=men2.split(" ")[0]
-                toz1 = dataspecific.filter(item => 
-                item.tesuam !== undefined &&
-                item.shemkupa.includes(men1) 
-            );
-                toz2 = dataspecific.filter(item => 
-                item.tesuam !== undefined &&
-                item.shemkupa.includes(men2) 
-            );
-            }
-            // בדיקת יתרון לחברה 1 (men1) - התשואה שלה גבוהה יותר
-            if (toz1[0] !== undefined && toz2[0] !== undefined 
-                && toz1[0].tesuam && toz2[0].tesuam
-            ) {
-                if (Number(toz1[0].tesuam) > Number(toz2[0].tesuam)) {
-                    // הוסף את התוצאה למערך results אם לחברה 1 יש יתרון
-                    results.push({
-                        product: moz,
-                        track: relevantList[i],
-                        company1Return: {
-                            year: toz1[0].tesuam !== undefined && toz1[0].tesuam !== 0 ? toz1[0].tesuam : '',
-                            threeYears: toz1[0].tesuam36 !== undefined && toz1[0].tesuam36 !== 0 ? toz1[0].tesuam36 : '',
-                            fiveYears: toz1[0].tesuam60 !== undefined && toz1[0].tesuam60 !== 0 ? toz1[0].tesuam60 : ''
-                        },
-                        company2Return: {
-                            year: toz2[0].tesuam !== undefined && toz2[0].tesuam !== 0 ? toz2[0].tesuam : '',
-                            threeYears: toz2[0].tesuam36 !== undefined && toz2[0].tesuam36 !== 0 ? toz2[0].tesuam36 : '',
-                            fiveYears: toz2[0].tesuam60 !== undefined && toz2[0].tesuam60 !== 0 ? toz2[0].tesuam60 : ''
-                        }
-                    });
-                }
-            }
-        }
-        if (results.length > 0) {
-        var colortd1="#333";var colortd2="#333";var colortd3="#333";
-        
-          
-       
-        if(moz!=='קרנות חדשות'){divCompare.innerHTML += `<h4 style="width:100%;max-width:100%;text-align:center;">${moz}</h4>`}
-        else{divCompare.innerHTML += `<h4 style="width:100%;max-width:100%;text-align:center;">קרנות פנסיה - אישית</h4>`}
-        results.forEach(result => {
-            if(result.company1Return.year && result.company2Return.year){ 
-        if(Number(result.company1Return.year) > Number(result.company2Return.year)){
-            colortd1='green';
-        }
-        }
-        if(result.company1Return.threeYears && result.company2Return.threeYears ){ 
-        if(Number(result.company1Return.threeYears) > Number(result.company2Return.threeYears)){
-            colortd2='green';
-        }
-        }
-        if(result.company1Return.fiveyear && result.company2Return.fiveyear ){ 
-        if(Number(result.company1Return.fiveyear) > Number(result.company2Return.fiveyear)){
-            colortd3='green';
-        }
-        }
-            divCompare.innerHTML += `<br>
+  btnPdf.style.display = 'block';
+  divCompare.style.display = 'block';
 
-                <table class="tblRashi">
-                    <thead>
-                        <tr><th class="thkotrash" colspan="4">מסלול: ${result.track}</th></tr>
-                        <tr>
-                            <th class="thkotmish">שם מנהלת</th>
-                            <th class="thkotmish">שנה</th>
-                            <th class="thkotmish">3 שנים </th>
-                            <th class="thkotmish"> 5 שנים</th>
-                        </tr>
-                        <tr>
-                            <td class="tdshura">${men1}</td>
-                            <td class="tdshura" style='color:${colortd1}'>${result.company1Return.year ? result.company1Return.year + "%" : 'לא קיים'}</td>
-                            <td class="tdshura" style='color:${colortd2}'>${result.company1Return.threeYears ? result.company1Return.threeYears + "%" : 'לא קיים'}</td>
-                            <td class="tdshura" style='color:${colortd3}'>${result.company1Return.fiveYears ? result.company1Return.fiveYears + "%" : 'לא קיים'}</td>
-                        </tr>
-                        <tr>
-                            <td class="tdshura">${men2}</td>
-                            <td class="tdshura">${result.company2Return.year ? result.company2Return.year + "%" : 'לא קיים'}</td>
-                            <td class="tdshura">${result.company2Return.threeYears ? result.company2Return.threeYears + "%" : 'לא קיים'}</td>
-                            <td class="tdshura">${result.company2Return.fiveYears ? result.company2Return.fiveYears + "%" : 'לא קיים'}</td>
-                        </tr>
-                    </thead>
-                    <tbody>     
-       `;
-          colortd1='#333'; colortd2='#333'; colortd3='#333';
+  if (selmenu1.value === selmenu2.value) {
+    hatraa("נדרש לבחור חברות שונות");
+    return;
+  }
+
+  divCompare.innerHTML = '';
+
+  // ===== שמות מקוריים לתצוגה =====
+  const men1Display = selmenu1.value;
+  const men2Display = selmenu2.value;
+
+  // ===== עזר: חיתוך לשם קצר לכותרות =====
+  const cutCompanyName = (s) => {
+    const firstSpace = s.indexOf(" ");
+    if (firstSpace === -1) return s;
+    const secondSpace = s.indexOf(" ", firstSpace + 1);
+    return secondSpace === -1 ? s : s.slice(0, secondSpace + 1);
+  };
+
+  const men1x = cutCompanyName(men1Display);
+  const men2x = cutCompanyName(men2Display);
+
+  // ===== עזר: המרת תשואה למספר (כולל ניקוי %) =====
+  const toNum = (v) => {
+    if (v === undefined || v === null || v === '' || v === 0) return null;
+    if (typeof v === 'string') {
+      const s = v.replace('%', '').replace(/,/g, '').trim();
+      if (!s) return null;
+      const n = Number(s);
+      return Number.isFinite(n) ? n : null;
+    }
+    const n = Number(v);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const buildSide = (src) => ({
+    year: toNum(src?.tesuam),
+    threeYears: toNum(src?.tesuam36),
+    fiveYears: toNum(src?.tesuam60),
+  });
+
+  const getRelevantList = (moz) => {
+    if (moz === "קרנות השתלמות" || moz === "קופת גמל להשקעה" || moz === "פוליסות חסכון") return hishtalmot;
+    if (moz === "תגמולים ואישית לפיצויים" || moz === "קרנות חדשות") return gemel;
+    if (moz === "קופת גמל להשקעה - חסכון לילד") return layeled;
+    return null;
+  };
+
+  const productTitle = (moz) => (moz !== 'קרנות חדשות' ? moz : 'קרנות פנסיה - אישית');
+
+  const addWin = (map, moz, obj) => {
+    if (!map[moz]) map[moz] = [];
+    map[moz].push(obj);
+  };
+
+  // ===== מפות תוצאות: חלק 1 (men1 מובילה) וחלק 2 (men2 מובילה) =====
+  const wins1ByProduct = {}; // A = men1, B = men2
+  const wins2ByProduct = {}; // A = men2, B = men1
+
+  // ===== שלב חישוב: מעבר על מוצרים+מסלולים =====
+  for (let r = 0; r < mozkochCompare.length; r++) {
+    const moz = mozkochCompare[r];
+    const relevantList = getRelevantList(moz);
+    if (!relevantList) continue;
+
+    for (let i = 0; i < relevantList.length; i++) {
+      const dataspecific = await filterMaslulXa(relevantList[i], moz);
+      if (!dataspecific || dataspecific.length < 2) continue;
+
+      // פילטרים לפי סוג מוצר (לא לשנות men1Display/men2Display!)
+      let toz1, toz2;
+
+      if (moz !== "פוליסות חסכון") {
+        toz1 = dataspecific.filter(item => item?.menahelet?.includes(men1Display));
+        toz2 = dataspecific.filter(item => item?.tesuam !== undefined && item?.menahelet?.includes(men2Display));
+      } else {
+        // בפוליסות חסכון לפי shemkupa ולרוב מספיק מילה ראשונה
+        const men1Key = men1Display.split(" ")[0];
+        const men2Key = men2Display.split(" ")[0];
+
+        toz1 = dataspecific.filter(item => item?.tesuam !== undefined && item?.shemkupa?.includes(men1Key));
+        toz2 = dataspecific.filter(item => item?.tesuam !== undefined && item?.shemkupa?.includes(men2Key));
+      }
+
+      const a1 = toz1?.[0];
+      const a2 = toz2?.[0];
+      if (!a1 || !a2) continue;
+
+      // השוואה אך ורק על 12 חודשים (tesuam)
+      const y1 = toNum(a1.tesuam);
+      const y2 = toNum(a2.tesuam);
+      if (y1 === null || y2 === null) continue;
+
+      if (y1 > y2) {
+        // men1 מובילה => A=men1, B=men2
+        addWin(wins1ByProduct, moz, {
+          product: moz,
+          track: relevantList[i],
+          AName: men1Display,
+          BName: men2Display,
+          A: buildSide(a1),
+          B: buildSide(a2)
         });
-    } 
-    results = [];
+      } else if (y2 > y1) {
+        // men2 מובילה => A=men2, B=men1 (החלפה מלאה של הנתונים!)
+        addWin(wins2ByProduct, moz, {
+          product: moz,
+          track: relevantList[i],
+          AName: men2Display,
+          BName: men1Display,
+          A: buildSide(a2),
+          B: buildSide(a1)
+        });
+      }
     }
-}
+  }
 
+  // ===== רינדור =====
+  const cellColor = (a, b) => {
+    if (a === null || b === null) return '#333';
+    return Number(a) > Number(b) ? 'green' : '#333';
+  };
+
+  const renderSection = (titleHtml, map) => {
+    divCompare.innerHTML += titleHtml;
+
+    // שמירה על סדר מוצרים כמו mozkochCompare
+    let hasAny = false;
+
+    for (let r = 0; r < mozkochCompare.length; r++) {
+      const moz = mozkochCompare[r];
+      const arr = map[moz];
+      if (!arr || arr.length === 0) continue;
+
+      hasAny = true;
+      divCompare.innerHTML += `<h4 style="width:100%;max-width:100%;text-align:center;">${productTitle(moz)}</h4>`;
+
+      arr.forEach(result => {
+        const cYear = cellColor(result.A.year, result.B.year);
+        const c3Y   = cellColor(result.A.threeYears, result.B.threeYears);
+        const c5Y   = cellColor(result.A.fiveYears, result.B.fiveYears);
+
+        const disp = (n) => (n === null ? 'לא קיים' : (n.toFixed(2) + "%"));
+
+        divCompare.innerHTML += `
+          <br>
+          <table class="tblRashi">
+            <thead>
+              <tr><th class="thkotrash" colspan="4">מסלול: ${result.track}</th></tr>
+              <tr>
+                <th class="thkotmish">שם מנהלת</th>
+                <th class="thkotmish">שנה</th>
+                <th class="thkotmish">3 שנים</th>
+                <th class="thkotmish">5 שנים</th>
+              </tr>
+              <tr>
+                <td class="tdshura">${result.AName}</td>
+                <td class="tdshura" style="color:${cYear}">${disp(result.A.year)}</td>
+                <td class="tdshura" style="color:${c3Y}">${disp(result.A.threeYears)}</td>
+                <td class="tdshura" style="color:${c5Y}">${disp(result.A.fiveYears)}</td>
+              </tr>
+              <tr>
+                <td class="tdshura">${result.BName}</td>
+                <td class="tdshura">${disp(result.B.year)}</td>
+                <td class="tdshura">${disp(result.B.threeYears)}</td>
+                <td class="tdshura">${disp(result.B.fiveYears)}</td>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        `;
+      });
+    }
+
+    if (!hasAny) {
+      divCompare.innerHTML += `<p style="width:100%;text-align:center;margin:10px 0;">לא נמצאו תוצאות להצגה.</p>`;
+    }
+  };
+
+  // ===== חלק 1: men1 מובילה על men2 (12 חודשים) =====
+  renderSection(
+    `<h3 style="width:100%;max-width:100%;text-align:center;">יתרונות ${men1x} מול ${men2x} בתשואה ל-12 חודשים</h3>`,
+    wins1ByProduct
+  );
+
+  // ===== חלק 2: men2 מובילה על men1 (12 חודשים) =====
+  renderSection(
+    `<h3 style="width:100%;max-width:100%;text-align:center;margin-top:22px;">יתרונות ${men2x} מול ${men1x} בתשואה ל-12 חודשים</h3>`,
+    wins2ByProduct
+  );
+}
 
 
 function pdfDo() {
