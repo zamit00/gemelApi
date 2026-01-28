@@ -62,8 +62,9 @@ async function loadalldata() {
         const tkofaItem = datanetunimKlaliXM.filter(item=>item.mh==='579')[0].tesua12
         ;
         if (tkofaItem) {
-           tkofa = tkofaItem.split('=')[1].slice(4,6) +"/"+tkofaItem.split('=')[1].slice(0,4)
-        } else {
+          // tkofa = tkofaItem.split('=')[1].slice(4,6) +"/"+tkofaItem.split('=')[1].slice(0,4)
+        tkofa="דצמבר 2025"
+		} else {
            //console.error('לא נמצא פריט עם mh=579');
         }
   } catch (error) {
@@ -342,6 +343,7 @@ async function makejasonInd(data) {
         localStorage.setItem("downloadIndex", 1);
 }
   
+
 
 
 
