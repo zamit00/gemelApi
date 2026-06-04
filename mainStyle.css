@@ -1,3 +1,11 @@
+/* ─── Shared Table Cell ──────────────────────────────────────────────────────── */
+.td-label {
+    background: aliceblue;
+    color: #333;
+    padding: 8px;
+    border: 1px solid #ccc;
+}
+
 #accessibility-panel {
   position: fixed;
   top: 20%;
